@@ -4,6 +4,8 @@ from lxml import etree
 from services.html_to_text_runs_service import (
     parse_html_text_to_text_runs as parse_inline_html_to_runs,
 )
+import tempfile
+import zipfile
 
 from pptx import Presentation
 from pptx.shapes.autoshape import Shape
@@ -65,6 +67,140 @@ class PptxPresentationCreator:
         element.attrib.update(kwargs)
         parent.append(element)
         return element
+
+
+    def fix_keynote_compatibility(self, pptx_path: str):
+        """Patch pptx XML for stricter parsers like Keynote."""
+        PRESENTATION_NS = "http://schemas.openxmlformats.org/presentationml/2006/main"
+        DRAWING_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
+        REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+        PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
+        NOTES_MASTER_REL_TYPE = (
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesMaster"
+        )
+
+        def ensure_grp_sppr_xfrm(slide_path: str):
+            slide_tree = etree.parse(slide_path)
+            slide_root = slide_tree.getroot()
+            grp_sppr_elements = slide_root.findall(
+                f".//{{{PRESENTATION_NS}}}grpSpPr"
+            )
+            changed = False
+            for grp_sppr in grp_sppr_elements:
+                xfrm = grp_sppr.find(f"{{{DRAWING_NS}}}xfrm")
+                if xfrm is None:
+                    xfrm = etree.SubElement(grp_sppr, f"{{{DRAWING_NS}}}xfrm")
+                    etree.SubElement(xfrm, f"{{{DRAWING_NS}}}off", x="0", y="0")
+                    etree.SubElement(xfrm, f"{{{DRAWING_NS}}}ext", cx="0", cy="0")
+                    etree.SubElement(xfrm, f"{{{DRAWING_NS}}}chOff", x="0", y="0")
+                    etree.SubElement(xfrm, f"{{{DRAWING_NS}}}chExt", cx="0", cy="0")
+                    changed = True
+            if changed:
+                slide_tree.write(
+                    slide_path,
+                    xml_declaration=True,
+                    encoding="UTF-8",
+                    standalone="yes",
+                )
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            extract_dir = os.path.join(temp_dir, "pptx_contents")
+            os.makedirs(extract_dir, exist_ok=True)
+            with zipfile.ZipFile(pptx_path, "r") as existing_zip:
+                existing_zip.extractall(extract_dir)
+
+            ppt_dir = os.path.join(extract_dir, "ppt")
+            slides_dir = os.path.join(ppt_dir, "slides")
+            if os.path.isdir(slides_dir):
+                for file_name in os.listdir(slides_dir):
+                    if file_name.endswith(".xml"):
+                        ensure_grp_sppr_xfrm(os.path.join(slides_dir, file_name))
+
+            rels_path = os.path.join(ppt_dir, "_rels", "presentation.xml.rels")
+            presentation_path = os.path.join(ppt_dir, "presentation.xml")
+            if os.path.exists(rels_path) and os.path.exists(presentation_path):
+                rels_tree = etree.parse(rels_path)
+                rels_root = rels_tree.getroot()
+                rel_tag = f"{{{PACKAGE_REL_NS}}}Relationship"
+                notes_master_rel = None
+                existing_ids = set()
+                for rel in rels_root.findall(rel_tag):
+                    rel_id = rel.get("Id")
+                    if rel_id:
+                        existing_ids.add(rel_id)
+                    if rel.get("Type") == NOTES_MASTER_REL_TYPE:
+                        notes_master_rel = rel
+
+                notes_masters_dir = os.path.join(ppt_dir, "notesMasters")
+                has_notes_master = (
+                    os.path.isdir(notes_masters_dir)
+                    and any(
+                        name.endswith(".xml") for name in os.listdir(notes_masters_dir)
+                    )
+                )
+
+                if has_notes_master and notes_master_rel is None:
+                    next_id = 1
+                    while f"rId{next_id}" in existing_ids:
+                        next_id += 1
+                    notes_master_rel = etree.SubElement(rels_root, rel_tag)
+                    notes_master_rel.set("Id", f"rId{next_id}")
+                    notes_master_rel.set("Type", NOTES_MASTER_REL_TYPE)
+                    notes_master_rel.set(
+                        "Target", "notesMasters/notesMaster1.xml"
+                    )
+                    rels_tree.write(
+                        rels_path,
+                        xml_declaration=True,
+                        encoding="UTF-8",
+                        standalone="yes",
+                    )
+
+                if has_notes_master and notes_master_rel is not None:
+                    presentation_tree = etree.parse(presentation_path)
+                    presentation_root = presentation_tree.getroot()
+                    notes_master_id_lst = presentation_root.find(
+                        f"{{{PRESENTATION_NS}}}notesMasterIdLst"
+                    )
+                    if notes_master_id_lst is None:
+                        notes_master_id_lst = etree.Element(
+                            f"{{{PRESENTATION_NS}}}notesMasterIdLst"
+                        )
+                        sld_master_id_lst = presentation_root.find(
+                            f"{{{PRESENTATION_NS}}}sldMasterIdLst"
+                        )
+                        if sld_master_id_lst is not None:
+                            insert_index = list(presentation_root).index(
+                                sld_master_id_lst
+                            ) + 1
+                            presentation_root.insert(insert_index, notes_master_id_lst)
+                        else:
+                            presentation_root.insert(0, notes_master_id_lst)
+                    if not notes_master_id_lst.findall(
+                        f"{{{PRESENTATION_NS}}}notesMasterId"
+                    ):
+                        notes_master_id = etree.SubElement(
+                            notes_master_id_lst,
+                            f"{{{PRESENTATION_NS}}}notesMasterId",
+                        )
+                        notes_master_id.set(
+                            f"{{{REL_NS}}}id",
+                            notes_master_rel.get("Id"),
+                        )
+                        presentation_tree.write(
+                            presentation_path,
+                            xml_declaration=True,
+                            encoding="UTF-8",
+                            standalone="yes",
+                        )
+
+            with zipfile.ZipFile(pptx_path, "w", zipfile.ZIP_DEFLATED) as new_zip:
+                for root, _, files in os.walk(extract_dir):
+                    for file_name in files:
+                        full_path = os.path.join(root, file_name)
+                        archive_name = os.path.relpath(full_path, extract_dir)
+                        new_zip.write(full_path, archive_name)
+
 
     async def fetch_network_assets(self):
         image_urls = []
@@ -484,3 +620,4 @@ class PptxPresentationCreator:
 
     def save(self, path: str):
         self._ppt.save(path)
+        self.fix_keynote_compatibility(path)

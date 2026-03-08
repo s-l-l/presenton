@@ -138,3 +138,7 @@ def get_codex_account_id_env():
 
 def get_codex_model_env():
     return os.getenv("CODEX_MODEL")
+
+
+def get_migrate_database_on_startup_env():
+    return os.getenv("MIGRATE_DATABASE_ON_STARTUP")

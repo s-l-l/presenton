@@ -1,10 +1,11 @@
 import os
 from typing import List, Optional
-from urllib.parse import unquote
 from lxml import etree
 from services.html_to_text_runs_service import (
     parse_html_text_to_text_runs as parse_inline_html_to_runs,
 )
+import tempfile
+import zipfile
 
 from pptx import Presentation
 from pptx.shapes.autoshape import Shape
@@ -17,7 +18,6 @@ from pptx.oxml.xmlchemy import OxmlElement
 
 from pptx.util import Pt
 from pptx.dml.color import RGBColor
-from utils.path_helpers import get_resource_path
 
 from models.pptx_models import (
     PptxAutoShapeBoxModel,
@@ -50,29 +50,6 @@ import uuid
 BLANK_SLIDE_LAYOUT = 6
 
 
-def _http_url_to_local_path(image_path: str) -> Optional[str]:
-    """
-    If image_path is an HTTP(S) URL that actually points to a local file path
-    (e.g. http://127.0.0.1:40001/C:/Users/.../image.png or http://host/home/user/...),
-    return the resolved absolute path; otherwise return None.
-    """
-    if not (image_path.startswith("http://") or image_path.startswith("https://")):
-        return None
-    parts = image_path.split("/", 3)
-    if len(parts) < 4:
-        return None
-    decoded = unquote(parts[3])
-    # Windows: path after domain is like "C:/Users/..." or "D:/..."
-    if len(decoded) >= 2 and decoded[1] == ":":
-        potential_path = os.path.normpath(decoded)
-    else:
-        # Unix: path after domain is like "home/user/..." -> /home/user/...
-        potential_path = "/" + decoded if not decoded.startswith("/") else decoded
-    if os.path.isabs(potential_path) and os.path.exists(potential_path):
-        return potential_path
-    return None
-
-
 class PptxPresentationCreator:
     def __init__(self, ppt_model: PptxPresentationModel, temp_dir: str):
         self._temp_dir = temp_dir
@@ -91,6 +68,140 @@ class PptxPresentationCreator:
         parent.append(element)
         return element
 
+
+    def fix_keynote_compatibility(self, pptx_path: str):
+        """Patch pptx XML for stricter parsers like Keynote."""
+        PRESENTATION_NS = "http://schemas.openxmlformats.org/presentationml/2006/main"
+        DRAWING_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
+        REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+        PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
+        NOTES_MASTER_REL_TYPE = (
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesMaster"
+        )
+
+        def ensure_grp_sppr_xfrm(slide_path: str):
+            slide_tree = etree.parse(slide_path)
+            slide_root = slide_tree.getroot()
+            grp_sppr_elements = slide_root.findall(
+                f".//{{{PRESENTATION_NS}}}grpSpPr"
+            )
+            changed = False
+            for grp_sppr in grp_sppr_elements:
+                xfrm = grp_sppr.find(f"{{{DRAWING_NS}}}xfrm")
+                if xfrm is None:
+                    xfrm = etree.SubElement(grp_sppr, f"{{{DRAWING_NS}}}xfrm")
+                    etree.SubElement(xfrm, f"{{{DRAWING_NS}}}off", x="0", y="0")
+                    etree.SubElement(xfrm, f"{{{DRAWING_NS}}}ext", cx="0", cy="0")
+                    etree.SubElement(xfrm, f"{{{DRAWING_NS}}}chOff", x="0", y="0")
+                    etree.SubElement(xfrm, f"{{{DRAWING_NS}}}chExt", cx="0", cy="0")
+                    changed = True
+            if changed:
+                slide_tree.write(
+                    slide_path,
+                    xml_declaration=True,
+                    encoding="UTF-8",
+                    standalone="yes",
+                )
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            extract_dir = os.path.join(temp_dir, "pptx_contents")
+            os.makedirs(extract_dir, exist_ok=True)
+            with zipfile.ZipFile(pptx_path, "r") as existing_zip:
+                existing_zip.extractall(extract_dir)
+
+            ppt_dir = os.path.join(extract_dir, "ppt")
+            slides_dir = os.path.join(ppt_dir, "slides")
+            if os.path.isdir(slides_dir):
+                for file_name in os.listdir(slides_dir):
+                    if file_name.endswith(".xml"):
+                        ensure_grp_sppr_xfrm(os.path.join(slides_dir, file_name))
+
+            rels_path = os.path.join(ppt_dir, "_rels", "presentation.xml.rels")
+            presentation_path = os.path.join(ppt_dir, "presentation.xml")
+            if os.path.exists(rels_path) and os.path.exists(presentation_path):
+                rels_tree = etree.parse(rels_path)
+                rels_root = rels_tree.getroot()
+                rel_tag = f"{{{PACKAGE_REL_NS}}}Relationship"
+                notes_master_rel = None
+                existing_ids = set()
+                for rel in rels_root.findall(rel_tag):
+                    rel_id = rel.get("Id")
+                    if rel_id:
+                        existing_ids.add(rel_id)
+                    if rel.get("Type") == NOTES_MASTER_REL_TYPE:
+                        notes_master_rel = rel
+
+                notes_masters_dir = os.path.join(ppt_dir, "notesMasters")
+                has_notes_master = (
+                    os.path.isdir(notes_masters_dir)
+                    and any(
+                        name.endswith(".xml") for name in os.listdir(notes_masters_dir)
+                    )
+                )
+
+                if has_notes_master and notes_master_rel is None:
+                    next_id = 1
+                    while f"rId{next_id}" in existing_ids:
+                        next_id += 1
+                    notes_master_rel = etree.SubElement(rels_root, rel_tag)
+                    notes_master_rel.set("Id", f"rId{next_id}")
+                    notes_master_rel.set("Type", NOTES_MASTER_REL_TYPE)
+                    notes_master_rel.set(
+                        "Target", "notesMasters/notesMaster1.xml"
+                    )
+                    rels_tree.write(
+                        rels_path,
+                        xml_declaration=True,
+                        encoding="UTF-8",
+                        standalone="yes",
+                    )
+
+                if has_notes_master and notes_master_rel is not None:
+                    presentation_tree = etree.parse(presentation_path)
+                    presentation_root = presentation_tree.getroot()
+                    notes_master_id_lst = presentation_root.find(
+                        f"{{{PRESENTATION_NS}}}notesMasterIdLst"
+                    )
+                    if notes_master_id_lst is None:
+                        notes_master_id_lst = etree.Element(
+                            f"{{{PRESENTATION_NS}}}notesMasterIdLst"
+                        )
+                        sld_master_id_lst = presentation_root.find(
+                            f"{{{PRESENTATION_NS}}}sldMasterIdLst"
+                        )
+                        if sld_master_id_lst is not None:
+                            insert_index = list(presentation_root).index(
+                                sld_master_id_lst
+                            ) + 1
+                            presentation_root.insert(insert_index, notes_master_id_lst)
+                        else:
+                            presentation_root.insert(0, notes_master_id_lst)
+                    if not notes_master_id_lst.findall(
+                        f"{{{PRESENTATION_NS}}}notesMasterId"
+                    ):
+                        notes_master_id = etree.SubElement(
+                            notes_master_id_lst,
+                            f"{{{PRESENTATION_NS}}}notesMasterId",
+                        )
+                        notes_master_id.set(
+                            f"{{{REL_NS}}}id",
+                            notes_master_rel.get("Id"),
+                        )
+                        presentation_tree.write(
+                            presentation_path,
+                            xml_declaration=True,
+                            encoding="UTF-8",
+                            standalone="yes",
+                        )
+
+            with zipfile.ZipFile(pptx_path, "w", zipfile.ZIP_DEFLATED) as new_zip:
+                for root, _, files in os.walk(extract_dir):
+                    for file_name in files:
+                        full_path = os.path.join(root, file_name)
+                        archive_name = os.path.relpath(full_path, extract_dir)
+                        new_zip.write(full_path, archive_name)
+
+
     async def fetch_network_assets(self):
         image_urls = []
         models_with_network_asset: List[PptxPictureBoxModel] = []
@@ -99,28 +210,6 @@ class PptxPresentationCreator:
             for each_shape in self._ppt_model.shapes:
                 if isinstance(each_shape, PptxPictureBoxModel):
                     image_path = each_shape.picture.path
-                    
-                    # Handle file:// URLs by converting to local path
-                    if image_path.startswith("file://"):
-                        image_path = image_path.replace("file:///", "")
-                        # URL-decode the path (e.g. %20 -> space for macOS "Application Support")
-                        image_path = unquote(image_path)
-                        # Check if it's a Windows path (has colon at index 1)
-                        if not (len(image_path) > 1 and image_path[1] == ':'):
-                            image_path = '/' + image_path
-                        each_shape.picture.path = image_path
-                        each_shape.picture.is_network = False
-                        continue
-                    
-                    # Handle /static/ URLs by converting to file path
-                    if image_path.startswith("/static/"):
-                        relative_static_path = image_path[len("/static/"):]
-                        local_path = get_resource_path(os.path.join("static", relative_static_path))
-                        each_shape.picture.path = local_path
-                        each_shape.picture.is_network = False
-                        print(f"[PPTX] Converted /static/ URL: {image_path} -> {local_path}")
-                        continue
-                    
                     if image_path.startswith("http"):
                         if "app_data/" in image_path:
                             relative_path = image_path.split("app_data/")[1]
@@ -129,24 +218,6 @@ class PptxPresentationCreator:
                             )
                             each_shape.picture.is_network = False
                             continue
-                        
-                        # Handle HTTP URLs that point to local files (from Next.js server)
-                        # Example: http://127.0.0.1:40001/home/user/.config/presenton/images/file.png
-                        # Should become: /home/user/.config/presenton/images/file.png
-                        if image_path.startswith('http://') or image_path.startswith('https://'):
-                            # Extract the path after the domain
-                            # Format: http://domain:port/actual/file/path
-                            parts = image_path.split('/', 3)  # ['http:', '', 'domain:port', 'actual/file/path']
-                            if len(parts) >= 4:
-                                # Get the part after the domain and URL-decode it
-                                potential_path = '/' + unquote(parts[3])
-                                # Check if it's an absolute file path
-                                if os.path.isabs(potential_path) and os.path.exists(potential_path):
-                                    each_shape.picture.path = potential_path
-                                    each_shape.picture.is_network = False
-                                    print(f"[PPTX] Converted HTTP URL to local path: {image_path} -> {potential_path}")
-                                    continue
-                        
                         image_urls.append(image_path)
                         models_with_network_asset.append(each_shape)
 
@@ -154,34 +225,6 @@ class PptxPresentationCreator:
             for each_shape in each_slide.shapes:
                 if isinstance(each_shape, PptxPictureBoxModel):
                     image_path = each_shape.picture.path
-                    
-                    print(f"[PPTX] Processing image path: {image_path}")
-                    
-                    # Handle file:// URLs by converting to local path
-                    if image_path.startswith("file://"):
-                        original_path = image_path
-                        image_path = image_path.replace("file:///", "")
-                        # URL-decode the path (e.g. %20 -> space for macOS "Application Support")
-                        image_path = unquote(image_path)
-                        # Check if it's a Windows path (has colon at index 1)
-                        if not (len(image_path) > 1 and image_path[1] == ':'):
-                            image_path = '/' + image_path
-                        each_shape.picture.path = image_path
-                        each_shape.picture.is_network = False
-                        print(f"[PPTX] Converted file:// URL: {original_path} -> {image_path}")
-                        print(f"[PPTX] File exists after conversion: {os.path.exists(image_path)}")
-                        continue
-                    
-                    # Handle /static/ URLs by converting to file path
-                    if image_path.startswith("/static/"):
-                        relative_static_path = image_path[len("/static/"):]
-                        local_path = get_resource_path(os.path.join("static", relative_static_path))
-                        each_shape.picture.path = local_path
-                        each_shape.picture.is_network = False
-                        print(f"[PPTX] Converted /static/ URL: {image_path} -> {local_path}")
-                        print(f"[PPTX] File exists after conversion: {os.path.exists(local_path)}")
-                        continue
-                    
                     if image_path.startswith("http"):
                         if "app_data" in image_path:
                             relative_path = image_path.split("app_data/")[1]
@@ -190,16 +233,6 @@ class PptxPresentationCreator:
                             )
                             each_shape.picture.is_network = False
                             continue
-                        
-                        # Handle HTTP URLs that point to local files (from Next.js server)
-                        # e.g. http://127.0.0.1:40001/C:/Users/.../image.png (Windows) or http://host/home/user/... (Unix)
-                        local_path = _http_url_to_local_path(image_path)
-                        if local_path is not None:
-                            each_shape.picture.path = local_path
-                            each_shape.picture.is_network = False
-                            print(f"[PPTX] Converted HTTP URL to local path: {image_path} -> {local_path}")
-                            continue
-                        
                         image_urls.append(image_path)
                         models_with_network_asset.append(each_shape)
 
@@ -245,8 +278,6 @@ class PptxPresentationCreator:
 
     def add_and_populate_slide(self, slide_model: PptxSlideModel):
         slide = self._ppt.slides.add_slide(self._ppt.slide_layouts[BLANK_SLIDE_LAYOUT])
-        
-        print(f"[PPTX] Adding slide with {len(slide_model.shapes)} shapes")
 
         if slide_model.background:
             self.apply_fill_to_shape(slide.background, slide_model.background)
@@ -256,8 +287,6 @@ class PptxPresentationCreator:
 
         for shape_model in slide_model.shapes:
             model_type = type(shape_model)
-            
-            print(f"[PPTX] Processing shape type: {model_type.__name__}")
 
             if model_type is PptxPictureBoxModel:
                 self.add_picture(slide, shape_model)
@@ -283,15 +312,6 @@ class PptxPresentationCreator:
 
     def add_picture(self, slide: Slide, picture_model: PptxPictureBoxModel):
         image_path = picture_model.picture.path
-        
-        # Handle HTTP URLs that point to local files (e.g. Windows: http://host/C:/Users/.../image.png)
-        resolved = _http_url_to_local_path(image_path)
-        if resolved is not None:
-            image_path = resolved
-        
-        print(f"[PPTX] Adding picture: {image_path}")
-        print(f"[PPTX] File exists: {os.path.exists(image_path)}")
-        
         if (
             picture_model.clip
             or picture_model.border_radius
@@ -302,9 +322,8 @@ class PptxPresentationCreator:
         ):
             try:
                 image = Image.open(image_path)
-            except Exception as e:
-                print(f"[PPTX] ERROR: Could not open image: {image_path}")
-                print(f"[PPTX] ERROR: Exception: {e}")
+            except Exception:
+                print(f"Could not open image: {image_path}")
                 return
 
             image = image.convert("RGBA")
@@ -339,13 +358,7 @@ class PptxPresentationCreator:
             picture_model.position, picture_model.margin
         )
 
-        try:
-            slide.shapes.add_picture(image_path, *margined_position.to_pt_list())
-            print(f"[PPTX] Successfully added picture to slide")
-        except Exception as e:
-            print(f"[PPTX] ERROR: Failed to add picture to slide: {e}")
-            print(f"[PPTX] ERROR: Image path: {image_path}")
-            print(f"[PPTX] ERROR: File exists: {os.path.exists(image_path)}")
+        slide.shapes.add_picture(image_path, *margined_position.to_pt_list())
 
     def add_autoshape(self, slide: Slide, autoshape_box_model: PptxAutoShapeBoxModel):
         position = autoshape_box_model.position
@@ -607,3 +620,4 @@ class PptxPresentationCreator:
 
     def save(self, path: str):
         self._ppt.save(path)
+        self.fix_keynote_compatibility(path)

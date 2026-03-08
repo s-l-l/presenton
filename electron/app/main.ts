@@ -1,5 +1,5 @@
 require("dotenv").config();
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, shell } from "electron";
 import path from "path";
 import fs from "fs";
 import { findUnusedPorts, killProcess, setupEnv, setUserConfig } from "./utils";
@@ -9,6 +9,7 @@ import { appDataDir, baseDir, ensureDirectoriesExist, fastapiDir, isDev, localho
 import { setupIpcHandlers } from "./ipc";
 import { setupLibreOfficeInstallHandlers } from "./ipc/libreoffice_install_handlers";
 import { checkLibreOfficeBeforeWindow, getSofficePath } from "./utils/libreoffice-check";
+import { startUpdateChecker, stopUpdateChecker } from "./utils/update-checker";
 
 
 var win: BrowserWindow | undefined;
@@ -51,6 +52,16 @@ const createWindow = () => {
       preload: path.join(__dirname, 'preloads/index.js'),
     },
   });
+
+  // Open external links (e.g. "Download update") in the system browser so the user
+  // sees download progress and can manage downloads normally.
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+      shell.openExternal(url);
+      return { action: "deny" };
+    }
+    return { action: "allow" };
+  });
 };
 
 async function startServers(fastApiPort: number, nextjsPort: number) {
@@ -90,6 +101,7 @@ async function startServers(fastApiPort: number, nextjsPort: number) {
         APP_DATA_DIRECTORY: appDataDir,
         TEMP_DIRECTORY: tempDir,
         USER_CONFIG_PATH: userConfigPath,
+        MIGRATE_DATABASE_ON_STARTUP: "True",
         // Resolved by libreoffice-check.ts at startup; lets Python invoke the
         // exact binary path instead of relying on the system PATH.
         SOFFICE_PATH: getSofficePath(),
@@ -180,9 +192,16 @@ app.whenReady().then(async () => {
 
   await startServers(fastApiPort, nextjsPort);
   win?.loadURL(`${localhost}:${nextjsPort}`);
+
+  // Begin polling the version server for available updates
+  if (win) {
+    process.stderr.write("[Presenton] Starting update checker...\n");
+    startUpdateChecker(win);
+  }
 });
 
 app.on("window-all-closed", async () => {
+  stopUpdateChecker();
   await stopServers();
   app.quit();
 });

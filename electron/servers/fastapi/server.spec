@@ -41,9 +41,11 @@ a = Analysis(
     datas=[
         ('assets', 'assets'),
         ('static', 'static'),
+        ('alembic', 'alembic'),
     ] + datas_fastembed_cache + datas_fastembed + datas_fastembed_vs + datas_onnx + datas_pptx + datas_docx2everything + datas_greenlet + datas_docling + datas_docling_core + datas_docling_parse + datas_docling_ibm + datas_docx,
     hiddenimports=[
         'aiosqlite',
+        'alembic',
         'sqlite3',
         'numpy',
         'pandas',

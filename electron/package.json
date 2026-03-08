@@ -1,7 +1,7 @@
 {
   "name": "presenton",
   "productName": "Presenton Open Source",
-  "version": "0.6.1-beta",
+  "version": "0.6.0-beta",
   "main": "app_dist/main.js",
   "description": "Open-Source AI Presentation Generator",
   "homepage": "https://presenton.ai",
@@ -35,7 +35,7 @@
     "build:css": "tailwindcss -i ./resources/ui/assets/css/tailwind.import.css -o ./resources/ui/assets/css/tailwind.css --watch",
     "build:vectorstore": "cd servers/fastapi && uv run python build_vectorstore.py",
     "build:nextjs": "rm -rf resources/nextjs && cd servers/nextjs && cross-env BUILD_TARGET=electron npm run build && cp -r .next-build ../../resources/nextjs && cp -r app/presentation-templates ../../resources/nextjs/presentation-templates",
-    "build:fastapi": "rm -rf resources/fastapi && npm run build:vectorstore && cd servers/fastapi && uv run python -m PyInstaller --distpath ../../resources server.spec",
+    "build:fastapi": "rm -rf resources/fastapi && npm run build:vectorstore && (cp ../servers/fastapi/alembic/versions/*.py servers/fastapi/alembic/versions/ 2>/dev/null || true) && cd servers/fastapi && uv run python -m PyInstaller --distpath ../../resources server.spec",
     "generate:version": "node generate_update.js",
     "build:electron": "npm run generate:version && rm -rf app_dist && tsc && node build.js",
     "build:all": "npm run clean:build && npm run setup:env && npm run build:ts && npm run install:pyinstaller && npm run build:nextjs && npm run build:fastapi && npm run build:electron",

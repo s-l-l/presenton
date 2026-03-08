@@ -1,8 +1,8 @@
 {
-  "version": "0.6.1-beta",
+  "version": "0.6.0-beta",
   "downloads": {
-    "linux": "https://github.com/presenton/presenton/releases/download/electron-v0.6.1-beta/Presenton-0.6.1-beta.deb",
-    "mac": "https://github.com/presenton/presenton/releases/download/electron-v0.6.1-beta/Presenton-0.6.1-beta.dmg",
-    "windows": "https://github.com/presenton/presenton/releases/download/electron-v0.6.1-beta/Presenton-0.6.1-beta.exe"
+    "linux": "https://github.com/presenton/presenton/releases/download/electron-v0.6.0-beta/Presenton-0.6.0-beta.deb",
+    "mac": "https://github.com/presenton/presenton/releases/download/electron-v0.6.0-beta/Presenton-0.6.0-beta.dmg",
+    "windows": "https://github.com/presenton/presenton/releases/download/electron-v0.6.0-beta/Presenton-0.6.0-beta.exe"
   }
 }
