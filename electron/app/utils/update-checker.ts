@@ -32,6 +32,7 @@ function log(msg: string): void {
 
 interface VersionResponse {
   version: string;
+  message?: string;
   downloads: {
     linux: string;
     mac: string;
@@ -91,7 +92,7 @@ async function fetchVersionInfo(): Promise<VersionResponse | null> {
 }
 
 /** Pending update to re-inject on navigation (production: React/Next.js may replace DOM). */
-let pendingUpdate: { version: string; downloadUrl: string } | null = null;
+let pendingUpdate: { version: string; downloadUrl: string; message?: string } | null = null;
 
 /**
  * Schedules banner injection after INJECT_DELAY_MS so React/Next.js can mount first.
@@ -100,79 +101,113 @@ let pendingUpdate: { version: string; downloadUrl: string } | null = null;
 function scheduleBannerInjection(
   win: BrowserWindow,
   version: string,
-  downloadUrl: string
+  downloadUrl: string,
+  message?: string
 ): void {
-  pendingUpdate = { version, downloadUrl };
+  pendingUpdate = { version, downloadUrl, message };
   setTimeout(() => {
     if (win.isDestroyed() || !pendingUpdate) return;
     log(`Injecting banner now`);
-    injectUpdateBanner(win, pendingUpdate.version, pendingUpdate.downloadUrl);
+    injectUpdateBanner(win, pendingUpdate.version, pendingUpdate.downloadUrl, pendingUpdate.message);
   }, INJECT_DELAY_MS);
 }
 
+/** Escape HTML to prevent XSS; preserve newlines for display. */
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/\n/g, "<br>");
+}
+
 /**
- * Injects a Cursor-style update banner at the bottom of the renderer window.
- * Safe to call multiple times; a second call while the banner is visible is a no-op.
+ * Injects an update banner at the bottom, aligned with the app UI.
+ * Includes a "View details" overlay for changelog/message.
  */
 function injectUpdateBanner(
   win: BrowserWindow,
   latest: string,
   downloadUrl: string,
-  releaseNotes?: string
+  message?: string
 ): void {
-  const notesHtml = releaseNotes
-    ? `<span style="color:#a6adc8;margin-right:8px;">${releaseNotes}</span>`
+  const hasMessage = Boolean(message && message.trim());
+  const safeMessage = hasMessage ? escapeHtml(message!.trim()) : "";
+  const safeMessageJson = JSON.stringify(safeMessage);
+  const viewDetailsBtnHtml = hasMessage
+    ? '<button id="__presenton_view_details_btn__" style="color:#64748b;background:none;border:none;cursor:pointer;font-size:12px;padding:4px 8px;text-decoration:underline;text-underline-offset:2px;">View details</button>'
     : "";
 
   const script = /* js */ `
     (function () {
       if (document.getElementById('__presenton_update_banner__')) return;
 
+      const msgHtml = ${safeMessageJson};
+
       const banner = document.createElement('div');
       banner.id = '__presenton_update_banner__';
       banner.style.cssText = [
         'position:fixed',
-        'bottom:0',
-        'left:0',
-        'right:0',
-        'background:#1e1e2e',
-        'color:#cdd6f4',
+        'bottom:16px',
+        'left:50%',
+        'transform:translateX(-50%)',
+        'max-width:min(560px,calc(100vw - 32px))',
+        'width:100%',
+        'background:rgba(255,255,255,0.95)',
+        'backdrop-filter:blur(12px)',
+        '-webkit-backdrop-filter:blur(12px)',
+        'color:#191919',
         'display:flex',
         'align-items:center',
         'justify-content:space-between',
-        'padding:10px 18px',
+        'padding:12px 16px',
         'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif',
         'font-size:13px',
-        'z-index:2147483647',
-        'border-top:1px solid #313244',
-        'box-shadow:0 -4px 16px rgba(0,0,0,0.35)',
+        'z-index:2147483646',
+        'border:1px solid rgba(148,163,184,0.3)',
+        'border-radius:12px',
+        'box-shadow:0 4px 24px rgba(0,0,0,0.08)',
         'gap:12px',
       ].join(';');
 
       banner.innerHTML = \`
         <span style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">
-          <span style="font-size:16px;">✨</span>
+          <span style="font-size:18px;">✨</span>
           <span>
-            Presenton&nbsp;<strong>${latest}</strong>&nbsp;is available
+            Presenton&nbsp;<strong style="color:#5141e5">${latest}</strong>&nbsp;is available
             &mdash;&nbsp;you have&nbsp;<strong>${CURRENT_VERSION}</strong>
           </span>
-          ${notesHtml}
         </span>
         <div style="display:flex;gap:8px;align-items:center;flex-shrink:0;">
-          <a
-            href="${downloadUrl}"
-            target="_blank"
-            style="color:#89b4fa;text-decoration:none;border:1px solid #89b4fa;padding:4px 14px;border-radius:5px;font-size:12px;white-space:nowrap;"
-          >Download update</a>
-          <button
-            onclick="document.getElementById('__presenton_update_banner__').remove()"
-            title="Dismiss"
-            style="background:none;border:none;color:#6c7086;cursor:pointer;font-size:20px;line-height:1;padding:0 2px;"
-          >&times;</button>
+          ${viewDetailsBtnHtml}
+          <a href="${downloadUrl}" target="_blank" style="color:#fff;text-decoration:none;background:#5141e5;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:500;white-space:nowrap;">Download update</a>
+          <button onclick="document.getElementById('__presenton_update_banner__').remove();var o=document.getElementById('__presenton_update_overlay__');if(o)o.remove();" title="Dismiss" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:20px;line-height:1;padding:0 2px;">&times;</button>
         </div>
       \`;
 
       document.body.appendChild(banner);
+
+      if (msgHtml) {
+        const overlay = document.createElement('div');
+        overlay.id = '__presenton_update_overlay__';
+        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.4);display:none;align-items:center;justify-content:center;z-index:2147483647;padding:24px;';
+        overlay.onclick = function(e) { if (e.target === overlay) overlay.style.display = 'none'; };
+        overlay.innerHTML = \`
+          <div style="background:#fff;border-radius:16px;max-width:420px;width:100%;max-height:80vh;overflow:auto;box-shadow:0 24px 48px rgba(0,0,0,0.15);padding:24px;" onclick="event.stopPropagation()">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+              <h3 style="margin:0;font-size:18px;font-weight:600;color:#191919;">What's new in ${latest}</h3>
+              <button onclick="document.getElementById('__presenton_update_overlay__').style.display='none'" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:24px;line-height:1;padding:0;">&times;</button>
+            </div>
+            <div style="color:#475569;font-size:14px;line-height:1.6;" id="__presenton_overlay_content__"></div>
+          </div>
+        \`;
+        document.body.appendChild(overlay);
+        document.getElementById('__presenton_overlay_content__').innerHTML = msgHtml;
+        document.getElementById('__presenton_view_details_btn__').onclick = function() {
+          document.getElementById('__presenton_update_overlay__').style.display = 'flex';
+        };
+      }
     })();
   `;
 
@@ -202,7 +237,7 @@ async function checkForUpdatesWithRetry(win: BrowserWindow): Promise<void> {
       if (newer) {
         const downloadUrl = getDownloadUrlForPlatform(data.downloads);
         log(`Injecting banner for ${data.version} (after ${INJECT_DELAY_MS}ms delay)`);
-        scheduleBannerInjection(win, data.version, downloadUrl);
+        scheduleBannerInjection(win, data.version, downloadUrl, data.message);
       } else {
         log("No update needed, skipping banner");
       }
@@ -230,7 +265,7 @@ export function startUpdateChecker(win: BrowserWindow): void {
   const onLoad = () => {
     if (pendingUpdate) {
       log("did-finish-load (navigation), re-injecting banner");
-      scheduleBannerInjection(win, pendingUpdate.version, pendingUpdate.downloadUrl);
+      scheduleBannerInjection(win, pendingUpdate.version, pendingUpdate.downloadUrl, pendingUpdate.message);
     } else if (!hasRunCheck) {
       hasRunCheck = true;
       log(`did-finish-load fired, first poll in ${INITIAL_DELAY_MS / 1_000}s`);

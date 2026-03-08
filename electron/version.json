@@ -1,5 +1,6 @@
 {
   "version": "0.6.0-beta",
+  "message": "• Bug fixes and performance improvements\n• New template designs\n• Improved export quality",
   "downloads": {
     "linux": "https://github.com/presenton/presenton/releases/download/electron-v0.6.0-beta/Presenton-0.6.0-beta.deb",
     "mac": "https://github.com/presenton/presenton/releases/download/electron-v0.6.0-beta/Presenton-0.6.0-beta.dmg",
