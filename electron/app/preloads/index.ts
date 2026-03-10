@@ -11,6 +11,8 @@ contextBridge.exposeInMainWorld('env', {
 contextBridge.exposeInMainWorld('electron', {
   fileDownloaded: (filePath: string) => ipcRenderer.invoke("file-downloaded", filePath),
   exportAsPDF: (id: string, title: string) => ipcRenderer.invoke("export-as-pdf", id, title),
+  exportPresentation: (id: string, title: string, format: "pptx" | "pdf" | "png") =>
+    ipcRenderer.invoke("export-presentation", id, title, format),
   getUserConfig: () => ipcRenderer.invoke("get-user-config"),
   setUserConfig: (userConfig: UserConfig) => ipcRenderer.invoke("set-user-config", userConfig),
   getCanChangeKeys: () => ipcRenderer.invoke("get-can-change-keys"),

@@ -75,6 +75,25 @@ const Header = ({
     return pptx_model;
   };
 
+  const exportViaIpc = async (format: "pptx" | "pdf"): Promise<boolean> => {
+    if (typeof window === 'undefined') return false;
+    if (!(window as any).electron?.exportPresentation) return false;
+    trackEvent(
+      format === "pptx"
+        ? MixpanelEvent.Header_ExportAsPPTX_API_Call
+        : MixpanelEvent.Header_ExportAsPDF_API_Call
+    );
+    const result = await (window as any).electron.exportPresentation(
+      presentation_id,
+      presentationData?.title || 'presentation',
+      format
+    );
+    if (!result?.success) {
+      throw new Error(result?.message || 'Export failed');
+    }
+    return true;
+  };
+
   const handleExportPptx = async () => {
     if (isStreaming) return;
 
@@ -84,28 +103,12 @@ const Header = ({
       // Save the presentation data before exporting
       trackEvent(MixpanelEvent.Header_UpdatePresentationContent_API_Call);
       await PresentationGenerationApi.updatePresentationContent(presentationData);
-      trackEvent(MixpanelEvent.Header_GetPptxModel_API_Call);
-      const pptx_model = await get_presentation_pptx_model(presentation_id);
-      if (!pptx_model) {
-        throw new Error("Failed to get presentation PPTX model");
+      if (await exportViaIpc("pptx")) {
+        toast.success("PPTX exported successfully!");
+        return;
       }
-      trackEvent(MixpanelEvent.Header_ExportAsPPTX_API_Call);
-      const pptx_path = await PresentationGenerationApi.exportAsPPTX(pptx_model);
-      if (pptx_path) {
-        // Check if we're in Electron mode
-        if (typeof window !== 'undefined' && (window as any).electron?.fileDownloaded) {
-          // Use Electron's file download dialog
-          const result = await (window as any).electron.fileDownloaded(pptx_path);
-          if (!result.success) {
-            throw new Error('Export cancelled or failed');
-          }
-        } else {
-          // Fallback to direct download for web mode
-          downloadLink(pptx_path);
-        }
-      } else {
-        throw new Error("No path returned from export");
-      }
+
+      throw new Error("Export is only supported in the desktop app.");
     } catch (error) {
       console.error("Export failed:", error);
       setShowLoader(false);
@@ -130,32 +133,26 @@ const Header = ({
 
       trackEvent(MixpanelEvent.Header_ExportAsPDF_API_Call);
       
-      // Check if running in Electron environment
-      if (typeof window !== 'undefined' && window.electron?.exportAsPDF) {
-        // Use Electron IPC handler
-        const result = await window.electron.exportAsPDF(presentation_id, presentationData?.title || 'presentation');
-        if (result.success) {
-          toast.success("PDF exported successfully!");
-        } else {
-          throw new Error("Failed to export PDF");
-        }
-      } else {
-        // Fallback to API route for web-based deployments
-        const response = await fetch('/api/export-as-pdf', {
-          method: 'POST',
-          body: JSON.stringify({
-            id: presentation_id,
-            title: presentationData?.title,
-          })
-        });
+      if (await exportViaIpc("pdf")) {
+        toast.success("PDF exported successfully!");
+        return;
+      }
 
-        if (response.ok) {
-          const { path: pdfPath } = await response.json();
-          // window.open(pdfPath, '_blank');
-          downloadLink(pdfPath);
-        } else {
-          throw new Error("Failed to export PDF");
-        }
+      // Fallback to API route for web-based deployments
+      const response = await fetch('/api/export-as-pdf', {
+        method: 'POST',
+        body: JSON.stringify({
+          id: presentation_id,
+          title: presentationData?.title,
+        })
+      });
+
+      if (response.ok) {
+        const { path: pdfPath } = await response.json();
+        // window.open(pdfPath, '_blank');
+        downloadLink(pdfPath);
+      } else {
+        throw new Error("Failed to export PDF");
       }
 
     } catch (err) {
