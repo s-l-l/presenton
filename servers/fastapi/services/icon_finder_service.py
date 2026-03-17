@@ -23,9 +23,20 @@ class IconFinderService:
             self.collection = self.client.get_collection(
                 self.collection_name, embedding_function=self.embedding_function
             )
-        except Exception:
-            with open("assets/icons.json", "r") as f:
-                icons = json.load(f)
+        except Exception as e:
+            print(f"Collection not found or error accessing it: {e}. Creating new collection...")
+            try:
+                with open("assets/icons.json", "r") as f:
+                    icons = json.load(f)
+            except FileNotFoundError:
+                 print("Error: assets/icons.json not found. Cannot populate icons.")
+                 # Create empty collection to prevent startup failure
+                 self.collection = self.client.create_collection(
+                    name=self.collection_name,
+                    embedding_function=self.embedding_function,
+                    metadata={"hnsw:space": "cosine"},
+                )
+                 return
 
             documents = []
             ids = []
@@ -37,12 +48,19 @@ class IconFinderService:
                     ids.append(each["name"])
 
             if documents:
-                self.collection = self.client.create_collection(
-                    name=self.collection_name,
-                    embedding_function=self.embedding_function,
-                    metadata={"hnsw:space": "cosine"},
-                )
-                self.collection.add(documents=documents, ids=ids)
+                try:
+                    # Check if collection exists again to be safe or use get_or_create
+                    self.collection = self.client.get_or_create_collection(
+                        name=self.collection_name,
+                        embedding_function=self.embedding_function,
+                        metadata={"hnsw:space": "cosine"},
+                    )
+                    # Only add if empty (simple check) to avoid duplicates on partial failures
+                    if self.collection.count() == 0:
+                         self.collection.add(documents=documents, ids=ids)
+                except Exception as create_err:
+                     print(f"Error creating/populating collection: {create_err}")
+                     raise create_err
 
     async def search_icons(self, query: str, k: int = 1):
         result = await asyncio.to_thread(

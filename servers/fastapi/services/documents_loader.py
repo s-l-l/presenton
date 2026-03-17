@@ -17,11 +17,16 @@ class DocumentsLoader:
 
     def __init__(self, file_paths: List[str]):
         self._file_paths = file_paths
-
-        self.docling_service = DoclingService()
+        self._docling_service = None
 
         self._documents: List[str] = []
         self._images: List[List[str]] = []
+
+    @property
+    def docling_service(self):
+        if not self._docling_service:
+            self._docling_service = DoclingService()
+        return self._docling_service
 
     @property
     def documents(self):
@@ -59,9 +64,9 @@ class DocumentsLoader:
             elif mime_type in TEXT_MIME_TYPES:
                 document = await self.load_text(file_path)
             elif mime_type in POWERPOINT_TYPES:
-                document = self.load_powerpoint(file_path)
+                document = await self.load_powerpoint(file_path)
             elif mime_type in WORD_TYPES:
-                document = self.load_msword(file_path)
+                document = await self.load_msword(file_path)
 
             documents.append(document)
             images.append(imgs)
@@ -80,7 +85,7 @@ class DocumentsLoader:
         document: str = ""
 
         if load_text:
-            document = self.docling_service.parse_to_markdown(file_path)
+            document = await self.docling_service.parse_to_markdown_async(file_path)
 
         if load_images:
             image_paths = await self.get_page_images_from_pdf_async(file_path, temp_dir)
@@ -88,14 +93,18 @@ class DocumentsLoader:
         return document, image_paths
 
     async def load_text(self, file_path: str) -> str:
-        with open(file_path, "r") as file:
-            return await asyncio.to_thread(file.read)
+        try:
+            with open(file_path, "r", encoding="utf-8") as file:
+                return await asyncio.to_thread(file.read)
+        except UnicodeDecodeError:
+            with open(file_path, "r", encoding="gbk", errors="ignore") as file:
+                return await asyncio.to_thread(file.read)
 
-    def load_msword(self, file_path: str) -> str:
-        return self.docling_service.parse_to_markdown(file_path)
+    async def load_msword(self, file_path: str) -> str:
+        return await self.docling_service.parse_to_markdown_async(file_path)
 
-    def load_powerpoint(self, file_path: str) -> str:
-        return self.docling_service.parse_to_markdown(file_path)
+    async def load_powerpoint(self, file_path: str) -> str:
+        return await self.docling_service.parse_to_markdown_async(file_path)
 
     @classmethod
     def get_page_images_from_pdf(cls, file_path: str, temp_dir: str) -> List[str]:

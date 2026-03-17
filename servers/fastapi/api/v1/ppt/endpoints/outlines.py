@@ -42,12 +42,24 @@ async def stream_outlines(
         ).to_string()
 
         additional_context = ""
-        if presentation.file_paths:
-            documents_loader = DocumentsLoader(file_paths=presentation.file_paths)
-            await documents_loader.load_documents(temp_dir)
-            documents = documents_loader.documents
-            if documents:
-                additional_context = "\n\n".join(documents)
+        try:
+            if presentation.file_paths:
+                documents_loader = DocumentsLoader(file_paths=presentation.file_paths)
+                await documents_loader.load_documents(temp_dir)
+                documents = documents_loader.documents
+                if documents:
+                    additional_context = "\n\n".join(documents)
+        except Exception as e:
+            traceback.print_exc()
+            yield SSEErrorResponse(
+                detail=f"Error loading documents: {str(e)}"
+            ).to_string()
+            # Don't return, try to generate without documents if possible, 
+            # or return if context is critical. 
+            # Here we choose to continue without context but warn the user.
+            yield SSEStatusResponse(
+                status="Warning: Failed to load documents, generating without context..."
+            ).to_string()
 
         presentation_outlines_text = ""
 
@@ -58,30 +70,37 @@ async def stream_outlines(
                 (presentation.n_slides - needed_toc_count) / 10
             )
 
-        async for chunk in generate_ppt_outline(
-            presentation.content,
-            n_slides_to_generate,
-            presentation.language,
-            additional_context,
-            presentation.tone,
-            presentation.verbosity,
-            presentation.instructions,
-            presentation.include_title_slide,
-            presentation.web_search,
-        ):
-            # Give control to the event loop
-            await asyncio.sleep(0)
+        try:
+            async for chunk in generate_ppt_outline(
+                presentation.content,
+                n_slides_to_generate,
+                presentation.language,
+                additional_context,
+                presentation.tone,
+                presentation.verbosity,
+                presentation.instructions,
+                presentation.include_title_slide,
+                presentation.web_search,
+            ):
+                # Give control to the event loop
+                await asyncio.sleep(0)
 
-            if isinstance(chunk, HTTPException):
-                yield SSEErrorResponse(detail=chunk.detail).to_string()
-                return
+                if isinstance(chunk, HTTPException):
+                    yield SSEErrorResponse(detail=chunk.detail).to_string()
+                    return
 
-            yield SSEResponse(
-                event="response",
-                data=json.dumps({"type": "chunk", "chunk": chunk}),
+                yield SSEResponse(
+                    event="response",
+                    data=json.dumps({"type": "chunk", "chunk": chunk}),
+                ).to_string()
+
+                presentation_outlines_text += chunk
+        except Exception as e:
+            traceback.print_exc()
+            yield SSEErrorResponse(
+                detail=f"Error generating outline: {str(e)}"
             ).to_string()
-
-            presentation_outlines_text += chunk
+            return
 
         try:
             presentation_outlines_json = dict(

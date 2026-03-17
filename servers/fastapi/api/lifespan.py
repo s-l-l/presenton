@@ -19,7 +19,9 @@ async def app_lifespan(_: FastAPI):
     MIGRATE_DATABASE_ON_STARTUP=true, creates any missing tables, and checks
     LLM model availability.
     """
-    os.makedirs(get_app_data_directory_env(), exist_ok=True)
+    app_data_dir = get_app_data_directory_env()
+    if app_data_dir:
+        os.makedirs(app_data_dir, exist_ok=True)
     await migrate_database_on_startup()
     await create_db_and_tables()
     await check_llm_and_image_provider_api_or_model_availability()

@@ -1,6 +1,6 @@
 import os
 from typing import Optional, Union
-
+import tempfile
 from utils.get_env import get_temp_directory_env
 import uuid
 
@@ -8,7 +8,9 @@ import uuid
 class TempFileService:
 
     def __init__(self):
-        self.base_dir = get_temp_directory_env() or "/tmp/presenton"
+        self.base_dir = get_temp_directory_env() or os.path.join(
+            tempfile.gettempdir(), "presenton"
+        )
         self.cleanup_base_dir()
         os.makedirs(self.base_dir, exist_ok=True)
 
@@ -64,7 +66,10 @@ class TempFileService:
             os.rmdir(dir_path)
 
     def cleanup_base_dir(self):
-        self.cleanup_temp_dir(self.base_dir)
+        try:
+            self.cleanup_temp_dir(self.base_dir)
+        except Exception as e:
+            print(f"Error cleaning up base directory: {e}")
 
 
 TEMP_FILE_SERVICE = TempFileService()

@@ -411,8 +411,17 @@ async def update_presentation(
 
 @PRESENTATION_ROUTER.post("/export/pptx", response_model=str)
 async def export_presentation_as_pptx(
-    pptx_model: Annotated[PptxPresentationModel, Body()],
+    request: Request,
 ):
+    try:
+        body = await request.json()
+        print(f"DEBUG: /export/pptx received body: {json.dumps(body)[:500]}...")
+        pptx_model = PptxPresentationModel(**body)
+    except Exception as e:
+        print(f"ERROR: Validation failed for /export/pptx: {e}")
+        # Re-raise or return detailed error to help debug
+        raise HTTPException(status_code=422, detail=f"Validation Error: {str(e)}")
+
     temp_dir = TEMP_FILE_SERVICE.create_temp_dir()
 
     pptx_creator = PptxPresentationCreator(pptx_model, temp_dir)

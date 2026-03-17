@@ -128,7 +128,7 @@ class PptxAutoShapeBoxModel(PptxShapeModel):
     shadow: Optional[PptxShadowModel] = None
     position: PptxPositionModel
     text_wrap: bool = True
-    border_radius: Optional[int] = None
+    border_radius: Optional[float] = None
     paragraphs: Optional[List[PptxParagraphModel]] = None
 
 

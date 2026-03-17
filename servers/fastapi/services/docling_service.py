@@ -1,3 +1,5 @@
+import asyncio
+import os
 from docling.document_converter import (
     DocumentConverter,
     PdfFormatOption,
@@ -10,6 +12,10 @@ from docling.datamodel.base_models import InputFormat
 
 class DoclingService:
     def __init__(self):
+        # Set HF_ENDPOINT to mirror site to fix connection issues in some regions
+        if not os.environ.get("HF_ENDPOINT"):
+             os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
+        
         self.pipeline_options = PdfPipelineOptions()
         self.pipeline_options.do_ocr = False
 
@@ -31,3 +37,6 @@ class DoclingService:
     def parse_to_markdown(self, file_path: str) -> str:
         result = self.converter.convert(file_path)
         return result.document.export_to_markdown()
+
+    async def parse_to_markdown_async(self, file_path: str) -> str:
+        return await asyncio.to_thread(self.parse_to_markdown, file_path)  

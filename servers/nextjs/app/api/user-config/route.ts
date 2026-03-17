@@ -33,6 +33,13 @@ export async function POST(request: Request) {
     });
   }
 
+  if (!userConfigPath) {
+    return NextResponse.json({
+      error: "User config path not found",
+      status: 500,
+    });
+  }
+
   const userConfig = await request.json();
 
   let existingConfig: LLMConfig = {};

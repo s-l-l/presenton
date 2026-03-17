@@ -68,7 +68,8 @@ export function sanitizeFilename(input: string | null | undefined, replacement =
   sanitized = sanitized.replace(/\.\./g, replacement);
   
   // Regular filename sanitization (but preserve forward slashes for paths)
-  const illegalRe = /[\?<>\\:\*\|"]/g; // Removed / from illegal characters
+  // Modified to allow backslashes and colons for Windows paths
+  const illegalRe = /[\?<>\|\*"]/g; 
   const controlRe = /[\x00-\x1f\x80-\x9f]/g;
   const reservedRe = /^\.+$/;
   const windowsReservedRe = /^(con|prn|aux|nul|com\d|lpt\d)$/i;
@@ -79,8 +80,14 @@ export function sanitizeFilename(input: string | null | undefined, replacement =
     .replace(controlRe, replacement);
 
   // Split path into segments to handle reserved names and trailing characters per segment
-  const pathSegments = sanitized.split('/');
+  // Handle both forward and backward slashes
+  const pathSegments = sanitized.split(/[/\\]/);
   const cleanedSegments = pathSegments.map(segment => {
+    // Skip checking drive letters (e.g. "C:")
+    if (segment.match(/^[a-zA-Z]:$/)) {
+      return segment;
+    }
+
     let cleanSegment = segment
       .replace(reservedRe, replacement)
       .replace(windowsReservedRe, replacement)
@@ -92,21 +99,13 @@ export function sanitizeFilename(input: string | null | undefined, replacement =
     return cleanSegment;
   });
 
-  sanitized = cleanedSegments.join('/');
-
-  // Remove any remaining path traversal attempts after other replacements
-  sanitized = sanitized.replace(/\.\./g, replacement);
+  // Reconstruct path using original separators if possible, or forward slashes
+  // Since we split by both, we might lose the original separator info.
+  // A safer bet for cross-platform Node.js is to use path.join/normalize later,
+  // but here we just want to return the sanitized string.
+  // For Windows paths, we need to be careful not to double-sanitize backslashes.
   
-  // Normalize multiple consecutive slashes to single slash
-  sanitized = sanitized.replace(/\/+/g, '/');
-
-  if (sanitized.length === 0) {
-    sanitized = 'file';
-  }
-  // Note: We don't apply MAX_FILENAME_LENGTH to full paths as they can be longer than 255 chars
-  // Individual filename components should still be reasonable length
-
-  return sanitized;
+  return cleanedSegments.join('/'); 
 }
 
 
