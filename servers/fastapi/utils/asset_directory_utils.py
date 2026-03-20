@@ -63,18 +63,61 @@ def resolve_image_path_to_filesystem(path_or_url: str) -> Optional[str]:
     return actual if os.path.isfile(actual) else None
 
 
+def _get_base_app_data_dir():
+    app_data_dir = get_app_data_directory_env()
+    if not app_data_dir:
+        # Cross-platform fallback
+        app_data_dir = os.path.join(os.environ.get("APPDATA") or os.environ.get("HOME") or os.getcwd(), ".presenton")
+    return app_data_dir
+
+
 def get_images_directory():
-    images_directory = os.path.join(get_app_data_directory_env(), "images")
+    images_directory = os.path.join(_get_base_app_data_dir(), "images")
     os.makedirs(images_directory, exist_ok=True)
     return images_directory
 
 
 def get_exports_directory():
-    export_directory = os.path.join(get_app_data_directory_env(), "exports")
+    export_directory = os.path.join(_get_base_app_data_dir(), "exports")
     os.makedirs(export_directory, exist_ok=True)
     return export_directory
 
 def get_uploads_directory():
-    uploads_directory = os.path.join(get_app_data_directory_env(), "uploads")
+    uploads_directory = os.path.join(_get_base_app_data_dir(), "uploads")
     os.makedirs(uploads_directory, exist_ok=True)
     return uploads_directory
+
+
+def to_public_image_url(path_or_url: str) -> str:
+    """
+    Convert local filesystem image paths to web-safe paths consumed by frontend.
+    - Keep http(s) URLs as-is
+    - Keep /static and /app_data paths as-is
+    - Convert files under app_data/images to /app_data/images/<relative>
+    - Otherwise return original string
+    """
+    if not path_or_url:
+        return path_or_url
+    if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
+        return path_or_url
+    if path_or_url.startswith("file://"):
+        parsed = urlparse(path_or_url)
+        path_or_url = unquote(parsed.path).lstrip("/")
+    if path_or_url.startswith("/static/") or path_or_url.startswith("/app_data/"):
+        return path_or_url
+
+    try:
+        normalized = os.path.abspath(path_or_url)
+        images_dir = os.path.abspath(get_images_directory())
+        if normalized.startswith(images_dir):
+            relative = os.path.relpath(normalized, images_dir).replace("\\", "/")
+            return f"/app_data/images/{relative}"
+        normalized_unix = normalized.replace("\\", "/").lower()
+        marker = "/app_data/images/"
+        if marker in normalized_unix:
+            idx = normalized_unix.index(marker) + len(marker)
+            tail = normalized.replace("\\", "/")[idx:]
+            return f"/app_data/images/{tail}"
+    except Exception:
+        pass
+    return path_or_url

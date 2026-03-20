@@ -170,10 +170,11 @@ export class PresentationGenerationApi {
   // IMAGE AND ICON SEARCH
   
   
-  static async generateImage(imageGenerate: ImageGenerate) {
+  static async generateImage(imageGenerate: ImageGenerate): Promise<string | string[]> {
+    const count = imageGenerate.count ?? 1;
     try {
       const response = await fetch(
-        getApiUrl(`api/v1/ppt/images/generate?prompt=${imageGenerate.prompt}`),
+        getApiUrl(`api/v1/ppt/images/generate?prompt=${encodeURIComponent(imageGenerate.prompt)}&count=${count}`),
         {
           method: "GET",
           headers: getHeader(),

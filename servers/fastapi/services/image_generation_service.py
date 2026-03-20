@@ -10,6 +10,8 @@ from models.image_prompt import ImagePrompt
 from models.sql.image_asset import ImageAsset
 from utils.get_env import (
     get_dall_e_3_quality_env,
+    get_doubao_api_key_env,
+    get_doubao_image_model_env,
     get_gpt_image_1_5_quality_env,
     get_pexels_api_key_env,
 )
@@ -17,6 +19,7 @@ from utils.get_env import get_pixabay_api_key_env
 from utils.get_env import get_comfyui_url_env
 from utils.get_env import get_comfyui_workflow_env
 from utils.image_provider import (
+    get_selected_image_provider,
     is_gpt_image_1_5_selected,
     is_image_generation_disabled,
     is_pixels_selected,
@@ -25,8 +28,11 @@ from utils.image_provider import (
     is_nanobanana_pro_selected,
     is_dalle3_selected,
     is_comfyui_selected,
+    is_doubao_image_selected,
 )
 import uuid
+
+DEFAULT_DOUBAO_IMAGE_MODEL = "doubao-seedream-5-0-260128"
 
 
 class ImageGenerationService:
@@ -53,6 +59,8 @@ class ImageGenerationService:
             return self.generate_image_openai_gpt_image_1_5
         elif is_comfyui_selected():
             return self.generate_image_comfyui
+        elif is_doubao_image_selected():
+            return self.generate_image_doubao
         return None
 
     def is_stock_provider_selected(self):
@@ -200,6 +208,119 @@ class ImageGenerationService:
             data = await response.json()
             image_url = data["hits"][0]["largeImageURL"]
             return image_url
+
+    async def generate_image_doubao(self, prompt: str, output_directory: str) -> str:
+        """
+        Generate image using Doubao's image generation model.
+        Compatible with Ark ImageGenerations response variants.
+        """
+        doubao_api_key = get_doubao_api_key_env()
+        doubao_image_model = get_doubao_image_model_env() or DEFAULT_DOUBAO_IMAGE_MODEL
+
+        if not doubao_api_key:
+            raise ValueError("DOUBAO_API_KEY environment variable is not set")
+        if not get_doubao_image_model_env():
+            print(
+                "generate_image_doubao: DOUBAO_IMAGE_MODEL is not set, "
+                f"falling back to default model '{DEFAULT_DOUBAO_IMAGE_MODEL}'"
+            )
+
+        url = "https://ark.cn-beijing.volces.com/api/v3/images/generations"
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {doubao_api_key}",
+        }
+        # Base payload from Ark docs (prompt-based).
+        base_payload = {
+            "model": doubao_image_model,
+            "prompt": prompt,
+            "size": "2k",
+            "response_format": "url",
+            "watermark": False,
+            "sequential_image_generation": "disabled",
+            "seed": 42,
+        }
+
+        async with aiohttp.ClientSession(trust_env=True) as session:
+            async def try_request(payload: dict) -> tuple[bool, dict | None, str]:
+                async with session.post(url, headers=headers, json=payload) as response:
+                    raw = await response.text()
+                    try:
+                        data = json.loads(raw)
+                    except json.JSONDecodeError:
+                        data = None
+                    return response.status == 200, data, raw
+
+            prompt_attempts = [
+                ("prompt_only", base_payload),
+                ("prompt_only_no_seed", {k: v for k, v in base_payload.items() if k != "seed"}),
+            ]
+            content_attempts = [
+                ("content_text_list", {**base_payload, "content": [{"type": "text", "text": prompt}]}),
+                ("content_text_string", {**base_payload, "content": prompt}),
+            ]
+            attempts = prompt_attempts
+
+            last_error = None
+            for attempt_name, payload in attempts:
+                print(
+                    "generate_image_doubao: attempt request "
+                    f"name={attempt_name}, payload={json.dumps(payload, ensure_ascii=False)}"
+                )
+                ok, data, raw_text = await try_request(payload)
+                if not ok:
+                    err_obj = (data or {}).get("error") if isinstance(data, dict) else None
+                    print(
+                        "generate_image_doubao: attempt failed "
+                        f"name={attempt_name}, status!=200, error={err_obj or raw_text[:400]}"
+                    )
+                    last_error = f"status_non_200 body={raw_text}"
+                    # If server explicitly asks for content, switch to content-form retries.
+                    err_code = (err_obj or {}).get("code") if isinstance(err_obj, dict) else None
+                    err_param = (err_obj or {}).get("param") if isinstance(err_obj, dict) else None
+                    if (
+                        err_code == "MissingParameter"
+                        and err_param == "content"
+                        and attempts is prompt_attempts
+                    ):
+                        attempts = content_attempts
+                        continue
+                    continue
+
+                if not isinstance(data, dict):
+                    last_error = f"invalid_json body={raw_text[:500]}"
+                    continue
+                if data.get("error"):
+                    last_error = f"api_error={data['error']}"
+                    print(f"generate_image_doubao: attempt api error name={attempt_name}, error={data['error']}")
+                    continue
+
+                images = data.get("data")
+                if not isinstance(images, list) or len(images) == 0:
+                    # some variants may use imagecontent
+                    images = data.get("imagecontent")
+                if not isinstance(images, list) or len(images) == 0:
+                    last_error = f"no_image_data data={data}"
+                    continue
+
+                first = images[0] or {}
+                image_path = os.path.join(output_directory, f"{uuid.uuid4()}.png")
+
+                image_url = first.get("url")
+                if image_url:
+                    # Prefer provider URL directly for rendering to avoid local
+                    # filesystem path issues across Windows/Linux environments.
+                    return image_url
+
+                b64_image = first.get("b64_json") or first.get("b64")
+                if b64_image:
+                    with open(image_path, "wb") as f:
+                        f.write(base64.b64decode(b64_image))
+                    return image_path
+
+                last_error = f"unsupported_response first={first}"
+
+            raise Exception(f"Failed to generate image from Doubao after retries: {last_error}")
 
     async def generate_image_comfyui(self, prompt: str, output_directory: str) -> str:
         """

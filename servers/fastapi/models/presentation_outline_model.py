@@ -1,9 +1,9 @@
 from typing import List
-from pydantic import BaseModel
+from pydantic import AliasChoices, BaseModel, Field
 
 
 class SlideOutlineModel(BaseModel):
-    content: str
+    content: str = Field(validation_alias=AliasChoices("content", "slide_content"))
 
 
 class PresentationOutlineModel(BaseModel):

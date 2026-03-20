@@ -17,6 +17,10 @@ class UserConfig(BaseModel):
     ANTHROPIC_API_KEY: Optional[str] = None
     ANTHROPIC_MODEL: Optional[str] = None
 
+    # Doubao
+    DOUBAO_API_KEY: Optional[str] = None
+    DOUBAO_MODEL: Optional[str] = None
+
     # Ollama
     OLLAMA_URL: Optional[str] = None
     OLLAMA_MODEL: Optional[str] = None
@@ -29,6 +33,7 @@ class UserConfig(BaseModel):
     # Image Provider
     DISABLE_IMAGE_GENERATION: Optional[bool] = None
     IMAGE_PROVIDER: Optional[str] = None
+    DOUBAO_IMAGE_MODEL: Optional[str] = None
     PEXELS_API_KEY: Optional[str] = None
     PIXABAY_API_KEY: Optional[str] = None
 

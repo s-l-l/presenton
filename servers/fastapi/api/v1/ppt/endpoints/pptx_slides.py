@@ -497,14 +497,38 @@ async def _install_fonts(fonts: List[UploadFile], temp_dir: str) -> None:
                 check=True,
                 capture_output=True,
             )
-        except subprocess.CalledProcessError as e:
+        except Exception as e:
             print(f"Warning: Failed to install font {font_file.filename}: {e}")
 
     # Refresh font cache
     try:
         subprocess.run(["fc-cache", "-f", "-v"], check=True, capture_output=True)
-    except subprocess.CalledProcessError as e:
+    except Exception as e:
         print(f"Warning: Failed to refresh font cache: {e}")
+
+
+def _get_libreoffice_executable() -> str:
+    """
+    Resolve LibreOffice executable across platforms.
+    Priority:
+    1) LIBREOFFICE_EXECUTABLE env
+    2) SOFFICE_PATH env
+    3) PATH lookup for common command names
+    """
+    env_candidate = (
+        os.getenv("LIBREOFFICE_EXECUTABLE") or os.getenv("SOFFICE_PATH") or ""
+    ).strip()
+    if env_candidate:
+        return env_candidate
+
+    for cmd in ("libreoffice", "soffice", "soffice.exe"):
+        resolved = shutil.which(cmd)
+        if resolved:
+            return resolved
+
+    raise Exception(
+        "LibreOffice executable not found. Set LIBREOFFICE_EXECUTABLE or SOFFICE_PATH."
+    )
 
 
 def _extract_slide_xmls(pptx_path: str, temp_dir: str) -> List[str]:
@@ -569,10 +593,13 @@ async def _convert_pptx_to_pdf(pptx_path: str, temp_dir: str) -> str:
         pdf_filename = "temp_presentation.pdf"
         pdf_path = os.path.join(screenshots_dir, pdf_filename)
 
+        libreoffice_executable = _get_libreoffice_executable()
+        print(f"Using LibreOffice executable: {libreoffice_executable}")
+
         try:
             result = subprocess.run(
                 [
-                    "libreoffice",
+                    libreoffice_executable,
                     "--headless",
                     "--convert-to",
                     "pdf",
@@ -591,7 +618,7 @@ async def _convert_pptx_to_pdf(pptx_path: str, temp_dir: str) -> str:
             if result.stderr:
                 print(f"LibreOffice PDF conversion warnings: {result.stderr}")
         except subprocess.TimeoutExpired:
-            raise Exception("LibreOffice PDF conversion timed out after 120 seconds")
+            raise Exception("LibreOffice PDF conversion timed out after 500 seconds")
         except subprocess.CalledProcessError as e:
             error_msg = e.stderr if e.stderr else str(e)
             raise Exception(f"LibreOffice PDF conversion failed: {error_msg}")

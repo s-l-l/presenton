@@ -8,7 +8,7 @@ import traceback
 from typing import Annotated, List, Literal, Optional, Tuple
 import dirtyjson
 from fastapi import APIRouter, BackgroundTasks, Body, Depends, HTTPException, Path, Request
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, FileResponse
 from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
@@ -261,15 +261,19 @@ async def prepare_presentation(
 async def stream_presentation(
     id: uuid.UUID, sql_session: AsyncSession = Depends(get_async_session)
 ):
+    print(f"[{id}] PRESENTATION_STREAM_START: Handling presentation stream request")
     presentation = await sql_session.get(PresentationModel, id)
     if not presentation:
+        print(f"[{id}] PRESENTATION_STREAM_ERROR: Presentation not found")
         raise HTTPException(status_code=404, detail="Presentation not found")
     if not presentation.structure:
+        print(f"[{id}] PRESENTATION_STREAM_ERROR: Presentation not prepared for stream")
         raise HTTPException(
             status_code=400,
             detail="Presentation not prepared for stream",
         )
     if not presentation.outlines:
+        print(f"[{id}] PRESENTATION_STREAM_ERROR: Outlines can not be empty")
         raise HTTPException(
             status_code=400,
             detail="Outlines can not be empty",
@@ -278,6 +282,10 @@ async def stream_presentation(
     image_generation_service = ImageGenerationService(get_images_directory())
 
     async def inner():
+        import time
+        start_time = time.time()
+        print(f"[{id}] PRESENTATION_STREAM_GENERATING: Started generating slide contents")
+        
         structure = presentation.get_structure()
         layout = presentation.get_layout()
         outline = presentation.get_presentation_outline()
@@ -290,54 +298,126 @@ async def stream_presentation(
             event="response",
             data=json.dumps({"type": "chunk", "chunk": '{ "slides": [ '}),
         ).to_string()
-        for i, slide_layout_index in enumerate(structure.slides):
+        max_parallel_slide_generation = 3
+        slide_generation_timeout_sec = 120
+        asset_generation_timeout_sec = 120
+        semaphore = asyncio.Semaphore(max_parallel_slide_generation)
+
+        async def generate_slide_content_task(i: int, slide_layout_index: int):
             slide_layout = layout.slides[slide_layout_index]
-
-            try:
-                slide_content = await get_slide_content_from_type_and_outline(
-                    slide_layout,
-                    outline.slides[i],
-                    presentation.language,
-                    presentation.tone,
-                    presentation.verbosity,
-                    presentation.instructions,
+            slide_start_time = time.time()
+            print(f"[{id}] PRESENTATION_STREAM_SLIDE_{i}: Started generating slide {i}")
+            async with semaphore:
+                slide_content = await asyncio.wait_for(
+                    get_slide_content_from_type_and_outline(
+                        slide_layout,
+                        outline.slides[i],
+                        presentation.language,
+                        presentation.tone,
+                        presentation.verbosity,
+                        presentation.instructions,
+                    ),
+                    timeout=slide_generation_timeout_sec,
                 )
-            except HTTPException as e:
-                yield SSEErrorResponse(detail=e.detail).to_string()
-                return
-
-            slide = SlideModel(
-                presentation=id,
-                layout_group=layout.name,
-                layout=slide_layout.id,
-                index=i,
-                speaker_note=slide_content.get("__speaker_note__", ""),
-                content=slide_content,
+            slide_end_time = time.time()
+            print(
+                f"[{id}] PRESENTATION_STREAM_SLIDE_{i}: Finished generating slide {i} in "
+                f"{slide_end_time - slide_start_time:.2f}s"
             )
-            slides.append(slide)
+            return i, slide_layout, slide_content
 
-            # This will mutate slide and add placeholder assets
-            process_slide_add_placeholder_assets(slide)
+        slide_tasks = [
+            asyncio.create_task(generate_slide_content_task(i, slide_layout_index))
+            for i, slide_layout_index in enumerate(structure.slides)
+        ]
 
-            # This will mutate slide - start task immediately so it runs in parallel with next slide LLM generation
-            async_assets_generation_tasks.append(
-                asyncio.create_task(process_slide_and_fetch_assets(image_generation_service, slide))
+        try:
+            # Keep output order stable for frontend while generating slides concurrently.
+            completed_results: dict[int, tuple] = {}
+            next_index_to_emit = 0
+            for task in asyncio.as_completed(slide_tasks):
+                i, slide_layout, slide_content = await task
+                completed_results[i] = (slide_layout, slide_content)
+                while next_index_to_emit in completed_results:
+                    slide_layout, slide_content = completed_results.pop(next_index_to_emit)
+                    i = next_index_to_emit
+                    next_index_to_emit += 1
+
+                    slide = SlideModel(
+                        presentation=id,
+                        layout_group=layout.name,
+                        layout=slide_layout.id,
+                        index=i,
+                        speaker_note=slide_content.get("__speaker_note__", ""),
+                        content=slide_content,
+                    )
+                    slides.append(slide)
+
+                    # This will mutate slide and add placeholder assets
+                    process_slide_add_placeholder_assets(slide)
+
+                    # This will mutate slide - start task immediately so it runs in parallel with next slide LLM generation
+                    async_assets_generation_tasks.append(
+                        asyncio.create_task(
+                            process_slide_and_fetch_assets(image_generation_service, slide)
+                        )
+                    )
+
+                    yield SSEResponse(
+                        event="response",
+                        data=json.dumps({"type": "chunk", "chunk": slide.model_dump_json()}),
+                    ).to_string()
+                if next_index_to_emit < len(slide_tasks):
+                    print(
+                        f"[{id}] PRESENTATION_STREAM_WAITING: waiting for slide {next_index_to_emit}"
+                    )
+        except asyncio.TimeoutError:
+            traceback.print_exc()
+            for pending_task in slide_tasks:
+                if not pending_task.done():
+                    pending_task.cancel()
+            detail = (
+                f"Slide generation timeout after {slide_generation_timeout_sec}s. "
+                "Please retry."
             )
-
-            yield SSEResponse(
-                event="response",
-                data=json.dumps({"type": "chunk", "chunk": slide.model_dump_json()}),
-            ).to_string()
+            print(f"[{id}] PRESENTATION_STREAM_ERROR: {detail}")
+            yield SSEErrorResponse(detail=detail).to_string()
+            return
+        except HTTPException as e:
+            for pending_task in slide_tasks:
+                if not pending_task.done():
+                    pending_task.cancel()
+            print(f"[{id}] PRESENTATION_STREAM_ERROR: Error generating slide: {e.detail}")
+            yield SSEErrorResponse(detail=e.detail).to_string()
+            return
 
         yield SSEResponse(
             event="response",
             data=json.dumps({"type": "chunk", "chunk": " ] }"}),
         ).to_string()
 
-        generated_assets_lists = await asyncio.gather(*async_assets_generation_tasks)
+        print(f"[{id}] PRESENTATION_STREAM_ASSETS: Waiting for {len(async_assets_generation_tasks)} asset generation tasks to finish")
+        assets_start_time = time.time()
+        
+        generated_assets_lists = await asyncio.gather(
+            *[
+                asyncio.wait_for(task, timeout=asset_generation_timeout_sec)
+                for task in async_assets_generation_tasks
+            ],
+            return_exceptions=True,
+        )
         generated_assets = []
-        for assets_list in generated_assets_lists:
+        for idx, assets_list in enumerate(generated_assets_lists):
+            if isinstance(assets_list, Exception):
+                print(
+                    f"[{id}] PRESENTATION_STREAM_ASSETS_ERROR: slide_task={idx} "
+                    f"error={assets_list}"
+                )
+                continue
             generated_assets.extend(assets_list)
+            
+        assets_end_time = time.time()
+        print(f"[{id}] PRESENTATION_STREAM_ASSETS: Finished asset generation in {assets_end_time - assets_start_time:.2f}s")
 
         # Moved this here to make sure new slides are generated before deleting the old ones
         await sql_session.execute(
@@ -354,6 +434,9 @@ async def stream_presentation(
             **presentation.model_dump(),
             slides=slides,
         )
+
+        end_time = time.time()
+        print(f"[{id}] PRESENTATION_STREAM_SUCCESS: Finished full presentation stream generation in {end_time - start_time:.2f}s")
 
         yield SSECompleteResponse(
             key="presentation",
@@ -409,7 +492,7 @@ async def update_presentation(
     )
 
 
-@PRESENTATION_ROUTER.post("/export/pptx", response_model=str)
+@PRESENTATION_ROUTER.post("/export/pptx")
 async def export_presentation_as_pptx(
     request: Request,
 ):
@@ -428,12 +511,15 @@ async def export_presentation_as_pptx(
     await pptx_creator.create_ppt()
 
     export_directory = get_exports_directory()
-    pptx_path = os.path.join(
-        export_directory, f"{pptx_model.name or uuid.uuid4()}.pptx"
-    )
+    filename = f"{pptx_model.name or uuid.uuid4()}.pptx"
+    pptx_path = os.path.join(export_directory, filename)
     pptx_creator.save(pptx_path)
 
-    return pptx_path
+    return FileResponse(
+        path=pptx_path,
+        filename=filename,
+        media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    )
 
 
 @PRESENTATION_ROUTER.post("/export", response_model=PresentationPathAndEditPath)

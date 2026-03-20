@@ -45,6 +45,14 @@ def set_anthropic_model_env(value):
     os.environ["ANTHROPIC_MODEL"] = value
 
 
+def set_doubao_api_key_env(value):
+    os.environ["DOUBAO_API_KEY"] = value
+
+
+def set_doubao_model_env(value):
+    os.environ["DOUBAO_MODEL"] = value
+
+
 def set_custom_llm_api_key_env(value):
     os.environ["CUSTOM_LLM_API_KEY"] = value
 
@@ -63,6 +71,10 @@ def set_pexels_api_key_env(value):
 
 def set_image_provider_env(value):
     os.environ["IMAGE_PROVIDER"] = value
+
+
+def set_doubao_image_model_env(value):
+    os.environ["DOUBAO_IMAGE_MODEL"] = value
 
 
 def set_pixabay_api_key_env(value):

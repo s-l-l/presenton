@@ -43,6 +43,14 @@ export const hasValidLLMConfig = (llmConfig: LLMConfig) => {
     llmConfig.ANTHROPIC_API_KEY !== null &&
     llmConfig.ANTHROPIC_API_KEY !== undefined;
 
+  const isDoubaoConfigValid =
+    llmConfig.DOUBAO_MODEL !== "" &&
+    llmConfig.DOUBAO_MODEL !== null &&
+    llmConfig.DOUBAO_MODEL !== undefined &&
+    llmConfig.DOUBAO_API_KEY !== "" &&
+    llmConfig.DOUBAO_API_KEY !== null &&
+    llmConfig.DOUBAO_API_KEY !== undefined;
+
   const isOllamaConfigValid =
     llmConfig.OLLAMA_MODEL !== "" &&
     llmConfig.OLLAMA_MODEL !== null &&
@@ -83,6 +91,13 @@ export const hasValidLLMConfig = (llmConfig: LLMConfig) => {
         return llmConfig.GOOGLE_API_KEY && llmConfig.GOOGLE_API_KEY !== "";
       case "nanobanana_pro":
         return llmConfig.GOOGLE_API_KEY && llmConfig.GOOGLE_API_KEY !== "";
+      case "doubao":
+        return (
+          llmConfig.DOUBAO_API_KEY &&
+          llmConfig.DOUBAO_API_KEY !== "" &&
+          llmConfig.DOUBAO_IMAGE_MODEL &&
+          llmConfig.DOUBAO_IMAGE_MODEL !== ""
+        );
       case "comfyui":
         return llmConfig.COMFYUI_URL && llmConfig.COMFYUI_URL !== "";
       default:
@@ -97,6 +112,8 @@ export const hasValidLLMConfig = (llmConfig: LLMConfig) => {
       ? isGoogleConfigValid
       : llmConfig.LLM === "anthropic"
       ? isAnthropicConfigValid
+      : llmConfig.LLM === "doubao"
+      ? isDoubaoConfigValid
       : llmConfig.LLM === "ollama"
       ? isOllamaConfigValid
       : llmConfig.LLM === "custom"

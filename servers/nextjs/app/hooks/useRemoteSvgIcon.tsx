@@ -144,8 +144,15 @@ export function useRemoteSvgIcon(url?: string, options: RemoteSvgOptions = {}) {
         return;
       }
       try {
+        // If URL starts with /static/, proxy it through FastAPI
+        let fetchUrl = url;
+        if (url.startsWith('/static/')) {
+          // 在 Web 端，由于存在 Next.js 的 rewrites 代理，
+          // 可以直接请求同源的相对路径，不需要额外拼接 getFastAPIUrl()
+          fetchUrl = url;
+        }
        
-        const res = await fetch(url);
+        const res = await fetch(fetchUrl);
         if (!res.ok) {
           throw new Error(`HTTP ${res.status}`);
         }

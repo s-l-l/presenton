@@ -74,8 +74,8 @@ const SupportingDoc = ({
     const handleValidate = (filesToReview: File[]) => {
         const disallowed = filesToReview.filter((file) => !isAllowedFile(file))
         if (disallowed.length > 0) {
-            toast.error('Some files are not supported', {
-                description: 'Only PDF, TXT, PPTX, and DOCX files are allowed.',
+            toast.error('部分文件不受支持', {
+                description: '仅支持 PDF, TXT, PPTX 和 DOCX 文件。',
             })
         }
     }
@@ -90,8 +90,8 @@ const SupportingDoc = ({
         onFilesChange(allowedFiles)
         handleValidate(nextFiles)
         if (allowedFiles.length > files.length) {
-            toast.success('Files selected', {
-                description: `${allowedFiles.length - files.length} file(s) have been added`,
+            toast.success('已选择文件', {
+                description: `已添加 ${allowedFiles.length - files.length} 个文件`,
             })
         }
         e.currentTarget.value = ''
@@ -140,7 +140,7 @@ const SupportingDoc = ({
         <div className="space-y-2" data-testid="attachments-uploader">
             <div className="flex items-center justify-between">
                 <p className="text-sm text-gray-600 font-syne">
-                    {hasFiles ? `${filteredFiles.length} attachment${filteredFiles.length > 1 ? 's' : ''}` : 'No attachments yet'}
+                    {hasFiles ? `${filteredFiles.length} 个附件` : '暂无附件'}
                 </p>
                 <button
                     type="button"
@@ -150,7 +150,7 @@ const SupportingDoc = ({
                     data-testid="attachments-clear-button"
                     aria-disabled={!hasFiles}
                 >
-                    Clear all
+                    全部清除
                 </button>
             </div>
 
@@ -171,7 +171,7 @@ const SupportingDoc = ({
                 <div className="flex flex-col items-center gap-2">
                     <Paperclip className="h-6 w-6 text-[#5146E5]" />
                     <p className="text-sm font-medium text-gray-800 font-syne">
-                        Drag and drop PDF, TXT, PPTX, DOCX, or <span className="text-[#5146E5]">click to browse</span>
+                        拖拽 PDF, TXT, PPTX, DOCX 文件至此，或 <span className="text-[#5146E5]">点击浏览</span>
                     </p>
                 </div>
             </label>
@@ -214,7 +214,7 @@ const SupportingDoc = ({
                     </ul>
                     {filteredFiles.length !== files.length && (
                         <p className="mt-2 text-xs text-amber-600 font-syne">
-                            Some files were skipped. Only PDF, TXT, PPTX, and DOCX files are supported.
+                            部分文件被跳过。仅支持 PDF, TXT, PPTX 和 DOCX 格式。
                         </p>
                     )}
                 </div>

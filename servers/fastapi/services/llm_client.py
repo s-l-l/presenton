@@ -1,6 +1,7 @@
 import asyncio
 import dirtyjson
 import json
+import re
 from typing import AsyncGenerator, List, Optional, Dict, Any
 from fastapi import HTTPException
 from openai import APIStatusError, AsyncOpenAI, OpenAIError
@@ -51,6 +52,7 @@ from utils.get_env import (
     get_custom_llm_api_key_env,
     get_custom_llm_url_env,
     get_disable_thinking_env,
+    get_doubao_api_key_env,
     get_google_api_key_env,
     get_ollama_url_env,
     get_openai_api_key_env,
@@ -108,6 +110,9 @@ class LLMClient:
                 return self._get_google_client()
             case LLMProvider.ANTHROPIC:
                 return self._get_anthropic_client()
+            case LLMProvider.DOUBAO:
+                from services.doubao_adapter import DoubaoAdapter
+                return DoubaoAdapter(self)
             case LLMProvider.OLLAMA:
                 return self._get_ollama_client()
             case LLMProvider.CUSTOM:
@@ -117,7 +122,7 @@ class LLMClient:
             case _:
                 raise HTTPException(
                     status_code=400,
-                    detail="LLM Provider must be either openai, google, anthropic, ollama, custom, or codex",
+                    detail="LLM Provider must be either openai, google, anthropic, doubao, ollama, custom, or codex",
                 )
 
     def _get_openai_client(self):
@@ -663,6 +668,10 @@ class LLMClient:
                     max_tokens=max_tokens,
                     tools=parsed_tools,
                 )
+            case LLMProvider.DOUBAO:
+                content = await self._client.generate(
+                    model=model, messages=messages, max_tokens=max_tokens, tools=parsed_tools
+                )
             case LLMProvider.OLLAMA:
                 content = await self._generate_ollama(
                     model=model, messages=messages, max_tokens=max_tokens
@@ -676,6 +685,34 @@ class LLMClient:
                 status_code=400,
                 detail="LLM did not return any content",
             )
+        if isinstance(content, str):
+            parsed = None
+            candidates: list[str] = [content]
+            fence_match = re.search(
+                r"```(?:json)?\s*([\s\S]*?)```", content, flags=re.IGNORECASE
+            )
+            if fence_match:
+                candidates.append(fence_match.group(1))
+            start = content.find("{")
+            if start >= 0:
+                candidates.append(content[start:])
+            for candidate in candidates:
+                try:
+                    maybe = dirtyjson.loads(candidate)
+                    if isinstance(maybe, dict):
+                        parsed = dict(maybe)
+                        break
+                except Exception:
+                    continue
+            if parsed is None:
+                raise HTTPException(
+                    status_code=502,
+                    detail=(
+                        "Structured generation returned non-JSON text. "
+                        "Please retry."
+                    ),
+                )
+            content = parsed
         return content
 
     # ? Generate Structured Content
@@ -1092,6 +1129,16 @@ class LLMClient:
                     response_format=response_format,
                     tools=parsed_tools,
                     max_tokens=max_tokens,
+                )
+            case LLMProvider.DOUBAO:
+                print(f"LLMClient.generate_structured: Routing to DoubaoAdapter")
+                content = await self._client.generate_structured(
+                    model=model,
+                    messages=messages,
+                    response_format=response_format,
+                    strict=strict,
+                    max_tokens=max_tokens,
+                    tools=parsed_tools,
                 )
             case LLMProvider.OLLAMA:
                 content = await self._generate_ollama_structured(
@@ -1565,6 +1612,10 @@ class LLMClient:
                     messages=messages,
                     max_tokens=max_tokens,
                     tools=parsed_tools,
+                )
+            case LLMProvider.DOUBAO:
+                return self._client.stream(
+                    model=model, messages=messages, max_tokens=max_tokens, tools=parsed_tools
                 )
             case LLMProvider.OLLAMA:
                 return self._stream_ollama(
@@ -2276,6 +2327,16 @@ class LLMClient:
                     response_format=response_format,
                     tools=parsed_tools,
                     max_tokens=max_tokens,
+                )
+            case LLMProvider.DOUBAO:
+                print(f"LLMClient.stream_structured: Routing to DoubaoAdapter")
+                return self._client.stream_structured(
+                    model=model,
+                    messages=messages,
+                    response_format=response_format,
+                    strict=strict,
+                    max_tokens=max_tokens,
+                    tools=parsed_tools,
                 )
             case LLMProvider.OLLAMA:
                 return self._stream_ollama_structured(

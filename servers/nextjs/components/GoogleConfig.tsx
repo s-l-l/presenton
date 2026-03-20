@@ -37,8 +37,7 @@ export default function GoogleConfig({
   useEffect(() => {
     setAvailableModels([]);
     setModelsChecked(false);
-    onInputChange("", "google_model");
-  }, [apiKey]);
+  }, []);
 
   const onApiKeyChange = (value: string) => {
     setApiKey(value);

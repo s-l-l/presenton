@@ -29,14 +29,20 @@ OUTLINES_ROUTER = APIRouter(prefix="/outlines", tags=["Outlines"])
 async def stream_outlines(
     id: uuid.UUID, sql_session: AsyncSession = Depends(get_async_session)
 ):
+    print(f"[{id}] OUTLINES_STREAM_START: Handling outline stream request for presentation")
     presentation = await sql_session.get(PresentationModel, id)
 
     if not presentation:
+        print(f"[{id}] OUTLINES_STREAM_ERROR: Presentation not found")
         raise HTTPException(status_code=404, detail="Presentation not found")
 
     temp_dir = TEMP_FILE_SERVICE.create_temp_dir()
 
     async def inner():
+        import time
+        start_time = time.time()
+        print(f"[{id}] OUTLINES_STREAM_GENERATING: Started generating outlines")
+        
         yield SSEStatusResponse(
             status="Generating presentation outlines..."
         ).to_string()
@@ -96,6 +102,7 @@ async def stream_outlines(
 
                 presentation_outlines_text += chunk
         except Exception as e:
+            print(f"[{id}] OUTLINES_STREAM_ERROR: Error generating outline: {str(e)}")
             traceback.print_exc()
             yield SSEErrorResponse(
                 detail=f"Error generating outline: {str(e)}"
@@ -107,6 +114,7 @@ async def stream_outlines(
                 dirtyjson.loads(presentation_outlines_text)
             )
         except Exception as e:
+            print(f"[{id}] OUTLINES_STREAM_ERROR: Failed to parse outline JSON: {str(e)}")
             traceback.print_exc()
             yield SSEErrorResponse(
                 detail=f"Failed to generate presentation outlines. Please try again. {str(e)}",
@@ -124,6 +132,9 @@ async def stream_outlines(
 
         sql_session.add(presentation)
         await sql_session.commit()
+
+        end_time = time.time()
+        print(f"[{id}] OUTLINES_STREAM_SUCCESS: Successfully generated {len(presentation_outlines.slides)} outlines in {end_time - start_time:.2f}s")
 
         yield SSECompleteResponse(
             key="presentation", value=presentation.model_dump(mode="json")

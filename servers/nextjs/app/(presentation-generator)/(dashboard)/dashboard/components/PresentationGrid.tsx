@@ -60,8 +60,8 @@ export const PresentationGrid = ({
           </defs>
         </svg>
         <div>
-          <h4 className="text-sm text-[#191919] font-semibold tracking-[0.14px]">Create New Presentation</h4>
-          <p className="text-sm text-[#808080] font-medium tracking-[0.14px] flex items-center gap-2">Get Started <ArrowRight className="w-4 h-4" /></p>
+          <h4 className="text-sm text-[#191919] font-semibold tracking-[0.14px]">创建新演示文稿</h4>
+          <p className="text-sm text-[#808080] font-medium tracking-[0.14px] flex items-center gap-2">开始创建 <ArrowRight className="w-4 h-4" /></p>
         </div>
       </div>
     </div>
@@ -97,7 +97,7 @@ export const PresentationGrid = ({
               onClick={() => window.location.reload()}
               className="text-primary hover:text-primary/80 underline"
             >
-              Try again
+              重试
             </button>
           </div>
         </div>

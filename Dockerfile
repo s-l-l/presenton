@@ -21,6 +21,7 @@ WORKDIR /app
 # Set environment variables
 ENV APP_DATA_DIRECTORY=/app_data
 ENV TEMP_DIRECTORY=/tmp/presenton
+ENV USER_CONFIG_PATH=/app_data/user-config.json
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 

@@ -53,9 +53,9 @@ export const ThemeCard: React.FC<ThemeCardProps> = ({ theme, onSelect, onDelete,
             <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mb-4">
               <AlertTriangle className="h-6 w-6 text-red-500" />
             </div>
-            <h3 className="text-lg font-semibold text-[#191919] mb-2">Delete Theme?</h3>
+            <h3 className="text-lg font-semibold text-[#191919] mb-2">删除主题？</h3>
             <p className="text-sm text-gray-500 leading-relaxed">
-              You're about to delete <span className="font-medium text-gray-700">"{theme.name}"</span>. This action cannot be undone.
+              您即将删除 <span className="font-medium text-gray-700">"{theme.name}"</span>。此操作无法撤销。
             </p>
           </div>
           <div className="flex border-t border-gray-100">
@@ -63,7 +63,7 @@ export const ThemeCard: React.FC<ThemeCardProps> = ({ theme, onSelect, onDelete,
               onClick={() => setShowDeleteDialog(false)}
               className="flex-1 px-4 py-3.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
             >
-              Cancel
+              取消
             </button>
             <button
               onClick={() => {
@@ -72,7 +72,7 @@ export const ThemeCard: React.FC<ThemeCardProps> = ({ theme, onSelect, onDelete,
               }}
               className="flex-1 px-4 py-3.5 text-sm font-medium text-red-500 hover:bg-red-50 transition-colors border-l border-gray-100"
             >
-              Delete
+              删除
             </button>
           </div>
         </div>
@@ -84,14 +84,14 @@ export const ThemeCard: React.FC<ThemeCardProps> = ({ theme, onSelect, onDelete,
 
       <img src="/card_bg.svg" alt="" className="absolute top-0 z-[1] left-0 w-[99%] h-full object-cover" />
       <div className=" absolute top-0 left-0 flex items-center justify-between gap-2  z-[2] p-2">
-        <ToolTip content='Font' >
+        <ToolTip content='字体' >
 
           <p className=" text-xs font-syne  flex gap-1 capitalize  items-center  rounded-[100px]  px-2.5 py-1 bg-[#3A3A3AF5] text-white font-semibold  z-40 ">
 
             {theme.data.fonts.textFont.name}
           </p>
         </ToolTip>
-        {theme.company_name && <ToolTip content='COMPANY'>
+        {theme.company_name && <ToolTip content='公司名称'>
 
           <p className=" text-xs font-syne  flex gap-1 capitalize  items-center  rounded-[100px]  px-2.5 py-1 bg-[#3A3A3AF5] text-white font-semibold  text-ellipsis overflow-hidden whitespace-nowrap z-40 ">
 
@@ -131,7 +131,7 @@ export const ThemeCard: React.FC<ThemeCardProps> = ({ theme, onSelect, onDelete,
                   className="mt-1 text-base font-medium leading-[1.1]  text-left truncate"
                   style={{ color: theme.data.colors['background_text'], fontFamily: `"${theme.data.fonts.textFont.name}", ui-serif, Georgia, serif` }}
                 >
-                  Choose your preferences.
+                  选择您的偏好。
                 </div>
                 <div
                   className="mt-2 h-2.5 w-16 rounded-full"
@@ -171,7 +171,7 @@ export const ThemeCard: React.FC<ThemeCardProps> = ({ theme, onSelect, onDelete,
           }
         }}
         className={copied ? "text-green-500" : "text-gray-500 hover:text-gray-700"}
-        title={copied ? "Copied!" : "Copy ID"}
+        title={copied ? "已复制！" : "复制 ID"}
       >
         {copied ? <Check className="h-5 w-5" /> : <Copy className="h-5 w-5" />}
       </button>

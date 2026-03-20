@@ -78,12 +78,12 @@ const UploadPage = () => {
    */
   const validateConfiguration = (): boolean => {
     if (!config.language || !config.slides) {
-      toast.error("Please select number of Slides & Language");
+      toast.error("请选择幻灯片数量和语言");
       return false;
     }
 
     if (!config.prompt.trim() && files.length === 0) {
-      toast.error("No Prompt or Document Provided");
+      toast.error("请提供提示词或上传文档");
       return false;
     }
     return true;
@@ -114,10 +114,10 @@ const UploadPage = () => {
   const handleDocumentProcessing = async () => {
     setLoadingState({
       isLoading: true,
-      message: "Processing documents...",
+      message: "正在处理文档...",
       showProgress: true,
       duration: 90,
-      extra_info: files.length > 0 ? "It might take a few minutes for large documents." : "",
+      extra_info: files.length > 0 ? "对于较大的文档，这可能需要几分钟的时间。" : "",
     });
 
     let documents = [];
@@ -150,7 +150,7 @@ const UploadPage = () => {
   const handleDirectPresentationGeneration = async () => {
     setLoadingState({
       isLoading: true,
-      message: "Generating outlines...",
+      message: "正在生成大纲...",
       showProgress: true,
       duration: 30,
     });
@@ -188,8 +188,8 @@ const UploadPage = () => {
       duration: 0,
       showProgress: false,
     });
-    toast.error("Error", {
-      description: error.message || "Error in upload page.",
+    toast.error("错误", {
+      description: error.message || "上传页面出错。",
     });
   };
 
@@ -205,8 +205,8 @@ const UploadPage = () => {
       <div className="rounded-2xl border border-slate-200/70 bg-white/80 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/60" >
         <div className="flex flex-col gap-4 md:items-center md:flex-row justify-between p-4">
           <div >
-            <h2 className="text-lg font-unbounded tracking-tight text-slate-900 ">Configuration</h2>
-            <p className="text-sm text-slate-500 font-syne">Choose slides, tone, and language preferences.</p>
+            <h2 className="text-lg font-unbounded tracking-tight text-slate-900 ">配置</h2>
+            <p className="text-sm text-slate-500 font-syne">选择幻灯片数量、语气和语言偏好。</p>
           </div>
           <ConfigurationSelects
             config={config}
@@ -216,7 +216,7 @@ const UploadPage = () => {
         <div className="border-t border-slate-200/70" />
 
         <div className="p-4 md:p-6">
-          <h3 className="text-base font-normal font-unbounded  text-slate-900 mb-2">Content</h3>
+          <h3 className="text-base font-normal font-unbounded  text-slate-900 mb-2">内容</h3>
           <div className="relative">
             <PromptInput
               value={config.prompt}
@@ -227,7 +227,7 @@ const UploadPage = () => {
         </div>
         <div className="border-t border-slate-200/70" />
         <div className="p-4 md:p-6">
-          <h3 className="text-base font-normal font-unbounded text-slate-900 mb-2">Attachments (optional)</h3>
+          <h3 className="text-base font-normal font-unbounded text-slate-900 mb-2">附件 (可选)</h3>
 
 
           <SupportingDoc
@@ -244,7 +244,7 @@ const UploadPage = () => {
             className="w-full rounded-[28px] flex items-center justify-center py-5 bg-[#5141e5] text-white font-syne font-semibold text-lg hover:bg-[#5141e5]/85 focus-visible:ring-2 focus-visible:ring-[#5141e5]/40"
             data-testid="next-button"
           >
-            <span>Generate Presentation</span>
+            <span>生成演示文稿</span>
             <ChevronRight className="!w-5 !h-5 ml-1.5" />
           </Button>
         </div>

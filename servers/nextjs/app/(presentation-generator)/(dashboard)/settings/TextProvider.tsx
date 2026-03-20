@@ -41,6 +41,8 @@ const TextProvider = ({
                 return 'GOOGLE_MODEL';
             case 'anthropic':
                 return 'ANTHROPIC_MODEL';
+            case 'doubao':
+                return 'DOUBAO_MODEL';
             case 'ollama':
                 return 'OLLAMA_MODEL';
             case 'custom':
@@ -58,6 +60,8 @@ const TextProvider = ({
                 return 'GOOGLE_API_KEY';
             case 'anthropic':
                 return 'ANTHROPIC_API_KEY';
+            case 'doubao':
+                return 'DOUBAO_API_KEY';
             case 'custom':
                 return 'CUSTOM_LLM_API_KEY';
             default:
@@ -80,10 +84,7 @@ const TextProvider = ({
 
         setAvailableModels([]);
         setModelsChecked(false);
-        if (currentModelField) {
-            onInputChange('', currentModelField);
-        }
-    }, [selectedProvider, currentApiKey, currentCustomUrl, currentModelField]);
+    }, [selectedProvider, currentModelField]);
 
 
 
@@ -100,9 +101,11 @@ const TextProvider = ({
                     ? 'GOOGLE_API_KEY'
                     : llm === 'anthropic'
                         ? 'ANTHROPIC_API_KEY'
-                        : llm === 'custom'
-                            ? 'CUSTOM_LLM_API_KEY'
-                            : '';
+                        : llm === 'doubao'
+                            ? 'DOUBAO_API_KEY'
+                            : llm === 'custom'
+                                ? 'CUSTOM_LLM_API_KEY'
+                                : '';
         if (keyField) {
             onInputChange(value, keyField);
         }
@@ -184,14 +187,14 @@ const TextProvider = ({
                     onInputChange(nextModel, currentModelField);
                 }
             } else {
-                console.error('Failed to fetch models');
+                console.error('获取模型失败');
                 setAvailableModels([]);
                 setModelsChecked(true);
-                toast.error(`Failed to fetch ${modelLabel} models`);
+                toast.error(`获取 ${modelLabel} 模型失败`);
             }
         } catch (error) {
-            console.error('Error fetching models:', error);
-            toast.error('Error fetching models');
+            console.error('获取模型错误:', error);
+            toast.error('获取模型错误');
             setAvailableModels([]);
             setModelsChecked(true);
         } finally {
@@ -218,9 +221,9 @@ const TextProvider = ({
                             <path d="M11.9594 26.5762H19.9324" stroke="#4C5554" strokeWidth="1.59459" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </div>
-                    <h3 className="text-xl font-normal text-[#191919] py-2.5">Text Generation Settings</h3>
+                    <h3 className="text-xl font-normal text-[#191919] py-2.5">文本生成设置</h3>
                     <p className=" text-sm  text-gray-500">
-                        Choosing where text contets come from
+                        选择文本内容的来源
                     </p>
                 </div>
                 <div>
@@ -256,7 +259,7 @@ const TextProvider = ({
                             <div className="flex flex-col justify-start ">
 
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Select Text Provider
+                                    选择文本提供商
                                 </label>
                                 <Popover
                                     open={openProviderSelect}
@@ -274,7 +277,7 @@ const TextProvider = ({
                                                     {llmConfig.LLM
                                                         ? LLM_PROVIDERS[llmConfig.LLM]
                                                             ?.label || llmConfig.LLM
-                                                        : "Select text provider"}
+                                                        : "选择文本提供商"}
                                                 </span>
                                             </div>
                                             <ChevronUp className="w-4 h-4 text-gray-500" />
@@ -286,9 +289,9 @@ const TextProvider = ({
                                         style={{ width: "var(--radix-popover-trigger-width)" }}
                                     >
                                         <Command>
-                                            <CommandInput placeholder="Search provider..." />
+                                            <CommandInput placeholder="搜索提供商..." />
                                             <CommandList>
-                                                <CommandEmpty>No provider found.</CommandEmpty>
+                                                <CommandEmpty>未找到提供商。</CommandEmpty>
                                                 <CommandGroup>
                                                     {Object.values(LLM_PROVIDERS).map(
                                                         (provider, index) => (
@@ -347,7 +350,7 @@ const TextProvider = ({
                                                 }}
                                                 className="mt-8 py-2.5 bg-[#EDEEEF] px-3.5 w-fit rounded-[48px] text-xs font-semibold text-[#101323] transition-all duration-200 border border-[#EDEEEF] hover:bg-[#E8F0FF]/90 focus:ring-2 focus:ring-blue-500/20"
                                             >
-                                                Use Ollama URL
+                                                使用自定义 Ollama URL
                                             </button>
                                         ) : (
                                             <>
@@ -371,19 +374,19 @@ const TextProvider = ({
                                                     }}
                                                     className="mt-2 text-xs font-medium text-[#4B5563] underline underline-offset-2"
                                                 >
-                                                    Use default Ollama URL
+                                                    使用默认 Ollama URL
                                                 </button>
                                             </>
                                         )}
                                     </>
                                 ) : selectedProvider === 'codex' ?
                                     <>
-                                        <button className='px-3.5 py-2.5 bg-[#EDEEEF]  mt-auto rounded-[58px] w-full  text-xs font-medium text-[#101323]'>Sign in with ChatGPT</button>
+                                        <button className='px-3.5 py-2.5 bg-[#EDEEEF]  mt-auto rounded-[58px] w-full  text-xs font-medium text-[#101323]'>使用 ChatGPT 登录</button>
                                     </>
                                     : (
                                         <>
                                             <label className="block text-sm font-medium capitalize text-gray-700 mb-2">
-                                                {selectedProvider === 'custom' ? 'Custom LLM API Key' : `${llmConfig.LLM} API Key`}
+                                                {selectedProvider === 'custom' ? '自定义 LLM API Key' : `${llmConfig.LLM} API Key`}
                                             </label>
                                             <div className="relative">
                                                 <input
@@ -391,7 +394,7 @@ const TextProvider = ({
                                                     value={currentApiKey}
                                                     onChange={(e) => onApiKeyChange(selectedProvider, e.target.value)}
                                                     className="w-full px-2 py-3 outline-none border  border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
-                                                    placeholder={`Enter your ${llmConfig.LLM} API key`}
+                                                    placeholder={`输入您的 ${llmConfig.LLM} API key`}
                                                 />
                                                 <button
                                                     type="button"
@@ -409,7 +412,7 @@ const TextProvider = ({
                                         value={currentCustomUrl}
                                         onChange={(e) => onInputChange(e.target.value, 'CUSTOM_LLM_URL')}
                                         className="w-full mt-2 px-2 py-3 outline-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
-                                        placeholder="OpenAI-compatible URL"
+                                        placeholder="兼容 OpenAI 的 URL"
                                     />
                                 )}
 
@@ -436,10 +439,10 @@ const TextProvider = ({
                                     {modelsLoading ? (
                                         <span className="flex items-center justify-center gap-2">
                                             <Loader2 className="w-4 h-4 animate-spin" />
-                                            Checking for models...
+                                            检查模型中...
                                         </span>
                                     ) : (
-                                        "Check models"
+                                        "检查模型"
                                     )}
                                 </button>
 
@@ -452,7 +455,7 @@ const TextProvider = ({
                             <div className="w-[205px]">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-3">
-                                        {selectedProvider === 'ollama' ? 'Choose a supported model' : `Select ${modelLabel} Model`}
+                                        {selectedProvider === 'ollama' ? '选择支持的模型' : `选择 ${modelLabel} 模型`}
                                     </label>
                                     <div className="w-full">
                                         <Popover
@@ -469,7 +472,7 @@ const TextProvider = ({
                                                     <span className="text-sm truncate font-medium text-gray-900">
                                                         {currentModel
                                                             ? availableModels.find(model => model === currentModel) || currentModel
-                                                            : "Select a model"}
+                                                            : "选择一个模型"}
                                                     </span>
 
                                                     <ChevronUp className="w-4 h-4 text-gray-500" />
@@ -481,9 +484,9 @@ const TextProvider = ({
                                                 style={{ width: "var(--radix-popover-trigger-width)" }}
                                             >
                                                 <Command>
-                                                    <CommandInput placeholder="Search models..." />
+                                                    <CommandInput placeholder="搜索模型..." />
                                                     <CommandList>
-                                                        <CommandEmpty>No model found.</CommandEmpty>
+                                                        <CommandEmpty>未找到模型。</CommandEmpty>
                                                         <CommandGroup>
                                                             {availableModels.map((model, index) => (
                                                                 <CommandItem

@@ -24,6 +24,7 @@ dependencies = [
     "python-pptx>=1.0.2",
     "redis>=6.2.0",
     "sqlmodel>=0.0.24",
+    "volcengine-python-sdk[ark]",
 ]
 
 [tool.uv]

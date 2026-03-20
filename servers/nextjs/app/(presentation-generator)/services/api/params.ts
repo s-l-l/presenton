@@ -6,9 +6,8 @@ export interface ImageSearch {
 }
 
 export interface ImageGenerate {
-  
-
   prompt: string;
+  count?: number;
 }
 export interface IconSearch {
  

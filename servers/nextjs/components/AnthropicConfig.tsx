@@ -40,8 +40,7 @@ export default function AnthropicConfig({
   useEffect(() => {
     setAvailableModels([]);
     setModelsChecked(false);
-    onInputChange("", "anthropic_model");
-  }, [apiKey]);
+  }, []);
 
   const onApiKeyChange = (value: string) => {
     setApiKey(value);

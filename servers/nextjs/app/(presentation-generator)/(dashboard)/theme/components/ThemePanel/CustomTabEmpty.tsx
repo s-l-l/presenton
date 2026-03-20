@@ -29,8 +29,8 @@ const CustomTabEmpty = () => {
                     <Sparkles className='w-6 h-6 text-white' />
                 </div>
                 <div>
-                    <h4 className='text-[#191919] text-sm font-semibold '>Build Theme</h4>
-                    <p className='flex text-[#808080] text-sm  font-medium items-center gap-2'>From colors <ArrowRight className='w-3 h-3' /> fonts </p>
+                    <h4 className='text-[#191919] text-sm font-semibold '>构建主题</h4>
+                    <p className='flex text-[#808080] text-sm  font-medium items-center gap-2'>从颜色到 <ArrowRight className='w-3 h-3' /> 字体 </p>
                 </div>
 
             </div>

@@ -9,15 +9,15 @@ import { useRouter } from "next/navigation";
 
 
 export const defaultNavItems = [
-    { key: "dashboard" as const, label: "Dashboard", icon: LayoutDashboard },
-    { key: "templates" as const, label: "Standard", icon: Star },
-    { key: "designs" as const, label: "Smart", icon: Brain },
+    { key: "dashboard" as const, label: "控制台", icon: LayoutDashboard },
+    { key: "templates" as const, label: "模板", icon: Star },
+    { key: "designs" as const, label: "设计", icon: Brain },
 
 
 
 ];
 export const BelongingNavItems = [
-    { key: "settings" as const, label: "Settings", icon: Settings },
+    { key: "settings" as const, label: "设置", icon: Settings },
 ]
 
 const DashboardSidebar = () => {
@@ -53,11 +53,11 @@ const DashboardSidebar = () => {
                                 "flex flex-col tex-center items-center gap-2  transition-colors",
                                 pathname === "/dashboard" ? "" : "ring-transparent",
                             ].join(" ")}
-                            aria-label="Dashboard"
-                            title="Dashboard"
+                            aria-label="控制台"
+                            title="控制台"
                         >
                             <LayoutDashboard className={["h-4 w-4", pathname === "/dashboard" ? "text-[#5146E5]" : "text-slate-600"].join(" ")} />
-                            <span className="text-[11px] text-slate-800">Dashboard</span>
+                            <span className="text-[11px] text-slate-800">控制台</span>
                         </Link>
                         <Link
                             prefetch={false}
@@ -66,12 +66,12 @@ const DashboardSidebar = () => {
                                 "flex flex-col tex-center items-center gap-2  transition-colors",
                                 pathname === "/templates" ? "" : "ring-transparent",
                             ].join(" ")}
-                            aria-label="Templates"
-                            title="Templates"
+                            aria-label="模板"
+                            title="模板"
                         >
                             <div className="flex flex-col cursor-pointer tex-center items-center gap-2  transition-colors">
                                 <Star className={`h-4 w-4 ${pathname === "/templates" ? "text-[#5146E5]" : "text-slate-600"}`} />
-                                <span className="text-[11px] text-slate-800">Templates</span>
+                                <span className="text-[11px] text-slate-800">模板</span>
                             </div>
                         </Link>
                         <Link
@@ -81,12 +81,12 @@ const DashboardSidebar = () => {
                                 "flex flex-col tex-center items-center gap-2  transition-colors",
                                 pathname === "/theme" ? "" : "ring-transparent",
                             ].join(" ")}
-                            aria-label="Theme"
-                            title="Theme"
+                            aria-label="主题"
+                            title="主题"
                         >
                             <div className="flex flex-col cursor-pointer tex-center items-center gap-2  transition-colors">
                                 <Palette className={`h-4 w-4 ${pathname === "/theme" ? "text-[#5146E5]" : "text-slate-600"}`} />
-                                <span className="text-[11px] text-slate-800">Themes</span>
+                                <span className="text-[11px] text-slate-800">主题</span>
                             </div>
                         </Link>
                     </div>

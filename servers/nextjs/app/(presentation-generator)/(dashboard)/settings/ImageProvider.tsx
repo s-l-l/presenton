@@ -57,12 +57,12 @@ const ImageProvider = ({ llmConfig, setLlmConfig }: { llmConfig: LLMConfig, setL
             return (
                 <div className="w-[205px] mr-0 ml-auto">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                        DALL·E 3 Image Quality
+                        DALL·E 3 图像质量
                     </label>
                     <div className="">
                         <Select value={llmConfig.DALL_E_3_QUALITY} onValueChange={(value) => input_field_changed(value, "DALL_E_3_QUALITY")}>
                             <SelectTrigger className="w-full h-12 px-4 py-4 outline-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors hover:border-gray-400 justify-between">
-                                <SelectValue placeholder="Select a quality" />
+                                <SelectValue placeholder="选择图像质量" />
                             </SelectTrigger>
                             <SelectContent>
                                 {DALLE_3_QUALITY_OPTIONS.map((option) => (
@@ -80,7 +80,7 @@ const ImageProvider = ({ llmConfig, setLlmConfig }: { llmConfig: LLMConfig, setL
             return (
                 <div className="w-[205px]">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                        GPT Image 1.5 Quality
+                        GPT Image 1.5 图像质量
                     </label>
                     <div className="">
                         <Select
@@ -90,7 +90,7 @@ const ImageProvider = ({ llmConfig, setLlmConfig }: { llmConfig: LLMConfig, setL
                             <SelectTrigger
 
                                 className="w-full h-12 px-4 py-4 outline-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors hover:border-gray-400 justify-between">
-                                <SelectValue placeholder="Select a quality" />
+                                <SelectValue placeholder="选择图像质量" />
                             </SelectTrigger>
                             <SelectContent>
                                 {GPT_IMAGE_1_5_QUALITY_OPTIONS.map((option) => (
@@ -114,7 +114,7 @@ const ImageProvider = ({ llmConfig, setLlmConfig }: { llmConfig: LLMConfig, setL
         <div className="space-y-6 bg-[#F9F8F8] p-7 rounded-[12px] ">
             {/* API Key Input */}
             <div className="mb-4  bg-white p-10 pt-5 rounded-[12px]">
-                <ToolTip content="Enable/Disable Image Generation" className='flex justify-end items-center'>
+                <ToolTip content="启用/禁用图像生成" className='flex justify-end items-center'>
                     <div className='flex justify-end items-center'>
                         <Switch
                             checked={!isImageGenerationDisabled}
@@ -133,9 +133,9 @@ const ImageProvider = ({ llmConfig, setLlmConfig }: { llmConfig: LLMConfig, setL
                         >
                             <img src="/image-markup.svg" className='w-full h-full object-cover' alt='image-markup' />
                         </div>
-                        <h3 className="text-xl font-normal text-[#191919] py-2.5">Image Generation Settings</h3>
+                        <h3 className="text-xl font-normal text-[#191919] py-2.5">图像生成设置</h3>
                         <p className=" text-sm  text-gray-500">
-                            Choosing where images come from
+                            选择图像内容的来源
                         </p>
                     </div>
                     <div className=' '>
@@ -147,7 +147,7 @@ const ImageProvider = ({ llmConfig, setLlmConfig }: { llmConfig: LLMConfig, setL
                                     {/* Image Provider Selection */}
                                     <div className="">
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Select Image Provider
+                                            选择图像提供商
                                         </label>
                                         <div className="w-full">
                                             <Popover
@@ -166,7 +166,7 @@ const ImageProvider = ({ llmConfig, setLlmConfig }: { llmConfig: LLMConfig, setL
                                                                 {llmConfig.IMAGE_PROVIDER
                                                                     ? IMAGE_PROVIDERS[llmConfig.IMAGE_PROVIDER]
                                                                         ?.label || llmConfig.IMAGE_PROVIDER
-                                                                    : "Select image provider"}
+                                                                    : "选择图像提供商"}
                                                             </span>
                                                         </div>
                                                         <ChevronUp className="w-4 h-4 text-gray-500" />
@@ -178,9 +178,9 @@ const ImageProvider = ({ llmConfig, setLlmConfig }: { llmConfig: LLMConfig, setL
                                                     style={{ width: "var(--radix-popover-trigger-width)" }}
                                                 >
                                                     <Command>
-                                                        <CommandInput placeholder="Search provider..." />
+                                                        <CommandInput placeholder="搜索提供商..." />
                                                         <CommandList>
-                                                            <CommandEmpty>No provider found.</CommandEmpty>
+                                                            <CommandEmpty>未找到提供商。</CommandEmpty>
                                                             <CommandGroup>
                                                                 {Object.values(IMAGE_PROVIDERS).map(
                                                                     (provider, index) => (
@@ -239,7 +239,7 @@ const ImageProvider = ({ llmConfig, setLlmConfig }: { llmConfig: LLMConfig, setL
                                                     <div className=" space-y-4">
                                                         <div className='w-[205px]'>
                                                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                                ComfyUI Server URL
+                                                                ComfyUI 服务器 URL
                                                             </label>
                                                             <div className="relative">
                                                                 <input
@@ -262,6 +262,59 @@ const ImageProvider = ({ llmConfig, setLlmConfig }: { llmConfig: LLMConfig, setL
                                                 );
                                             }
 
+                                            // Show Doubao configuration
+                                            if (provider.value === "doubao") {
+                                                return (
+                                                    <div className="flex gap-4">
+                                                        <div className="w-[205px]">
+                                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                                {provider.apiKeyFieldLabel}
+                                                            </label>
+                                                            <div className="relative">
+                                                                <input
+                                                                    type={showApiKey ? 'text' : 'password'}
+                                                                    placeholder={`输入您的 ${provider.apiKeyFieldLabel}`}
+                                                                    className="w-full px-4 py-2.5 h-12 outline-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
+                                                                    value={getFieldValue(provider.apiKeyField)}
+                                                                    onChange={(e) =>
+                                                                        input_field_changed(
+                                                                            e.target.value,
+                                                                            provider.apiKeyField
+                                                                        )
+                                                                    }
+                                                                />
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => setShowApiKey((prev) => !prev)}
+                                                                    className='absolute right-2 top-1/2 -translate-y-1/2 bg-white px-2 py-1 cursor-pointer'
+                                                                >
+                                                                    {showApiKey ? <Eye className='w-4 h-4 text-gray-500' /> : <EyeOff className='w-4 h-4 text-gray-500' />}
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="w-[205px]">
+                                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                                豆包图像模型 ID
+                                                            </label>
+                                                            <div className="relative">
+                                                                <input
+                                                                    type="text"
+                                                                    placeholder="doubao-seedream-5-0-260128"
+                                                                    className="w-full px-4 py-2.5 h-12 outline-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
+                                                                    value={llmConfig.DOUBAO_IMAGE_MODEL || ""}
+                                                                    onChange={(e) => {
+                                                                        input_field_changed(
+                                                                            e.target.value,
+                                                                            "DOUBAO_IMAGE_MODEL"
+                                                                        );
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            }
+
                                             // Show API key input for other providers
                                             return (
                                                 <div className=" w-[205px]">
@@ -271,13 +324,13 @@ const ImageProvider = ({ llmConfig, setLlmConfig }: { llmConfig: LLMConfig, setL
                                                     <div className="relative">
                                                         <input
                                                             type={showApiKey ? 'text' : 'password'}
-                                                            placeholder={`Enter your ${provider.apiKeyFieldLabel}`}
+                                                            placeholder={`输入您的 ${provider.apiKeyFieldLabel}`}
                                                             className="w-full px-4 py-2.5 h-12 outline-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
                                                             value={getFieldValue(provider.apiKeyField)}
                                                             onChange={(e) =>
-                                                                updateFieldValue(
-                                                                    provider.apiKeyField,
-                                                                    e.target.value
+                                                                input_field_changed(
+                                                                    e.target.value,
+                                                                    provider.apiKeyField
                                                                 )
                                                             }
                                                         />

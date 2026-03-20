@@ -43,12 +43,15 @@ def _get_url() -> str:
     if configured:
         return configured
 
+    from utils.get_env import get_app_data_directory
+    from dotenv import load_dotenv
+    load_dotenv()
     from utils.db_utils import get_database_url_and_connect_args
 
     url, _ = get_database_url_and_connect_args()
     return (
         url
-        .replace("sqlite+aiosqlite://", "sqlite:///")
+        .replace("sqlite+aiosqlite:///", "sqlite:///")
         .replace("postgresql+asyncpg://", "postgresql://")
         .replace("mysql+aiomysql://", "mysql://")
     )

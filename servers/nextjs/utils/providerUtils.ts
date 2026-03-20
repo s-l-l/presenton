@@ -34,6 +34,8 @@ export const updateLLMConfig = (
     google_model: "GOOGLE_MODEL",
     anthropic_api_key: "ANTHROPIC_API_KEY",
     anthropic_model: "ANTHROPIC_MODEL",
+    doubao_api_key: "DOUBAO_API_KEY",
+    doubao_model: "DOUBAO_MODEL",
     ollama_url: "OLLAMA_URL",
     ollama_model: "OLLAMA_MODEL",
     custom_llm_url: "CUSTOM_LLM_URL",
@@ -41,6 +43,7 @@ export const updateLLMConfig = (
     custom_model: "CUSTOM_MODEL",
     pexels_api_key: "PEXELS_API_KEY",
     pixabay_api_key: "PIXABAY_API_KEY",
+    doubao_image_model: "DOUBAO_IMAGE_MODEL",
     image_provider: "IMAGE_PROVIDER",
     disable_image_generation: "DISABLE_IMAGE_GENERATION",
     use_custom_url: "USE_CUSTOM_URL",
@@ -77,6 +80,8 @@ export const changeProvider = (
     newConfig.IMAGE_PROVIDER = "gpt-image-1.5";
   } else if (provider === "google") {
     newConfig.IMAGE_PROVIDER = "gemini_flash";
+  } else if (provider === "doubao") {
+    newConfig.IMAGE_PROVIDER = "doubao";
   } else {
     newConfig.IMAGE_PROVIDER = "pexels"; // default for ollama, custom, codex
   }

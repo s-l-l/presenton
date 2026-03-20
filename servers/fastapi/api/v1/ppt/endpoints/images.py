@@ -1,3 +1,4 @@
+import asyncio
 from typing import List
 from fastapi import APIRouter, Depends, File, UploadFile, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -7,7 +8,7 @@ from models.image_prompt import ImagePrompt
 from models.sql.image_asset import ImageAsset
 from services.database import get_async_session
 from services.image_generation_service import ImageGenerationService
-from utils.asset_directory_utils import get_images_directory
+from utils.asset_directory_utils import get_images_directory, to_public_image_url
 import os
 import uuid
 from utils.file_utils import get_file_name_with_random_uuid
@@ -17,31 +18,58 @@ IMAGES_ROUTER = APIRouter(prefix="/images", tags=["Images"])
 
 @IMAGES_ROUTER.get("/generate")
 async def generate_image(
-    prompt: str, sql_session: AsyncSession = Depends(get_async_session)
+    prompt: str,
+    count: int = 1,
+    presentation_id: uuid.UUID = None,
+    sql_session: AsyncSession = Depends(get_async_session),
 ):
     images_directory = get_images_directory()
-    image_prompt = ImagePrompt(prompt=prompt)
     image_generation_service = ImageGenerationService(images_directory)
+    safe_count = max(1, min(count, 8))
 
-    image = await image_generation_service.generate_image(image_prompt)
-    if not isinstance(image, ImageAsset):
-        return image
+    tasks = [
+        image_generation_service.generate_image(ImagePrompt(prompt=prompt))
+        for _ in range(safe_count)
+    ]
+    generated = await asyncio.gather(*tasks, return_exceptions=True)
 
-    sql_session.add(image)
+    results: List[str] = []
+    for item in generated:
+        if isinstance(item, Exception):
+            continue
+        if isinstance(item, ImageAsset):
+            item.presentation_id = presentation_id
+            sql_session.add(item)
+            results.append(to_public_image_url(item.path))
+        elif isinstance(item, str):
+            # 将外部 URL 也作为 ImageAsset 保存到数据库中
+            new_asset = ImageAsset(path=item, is_uploaded=False, presentation_id=presentation_id, extras={"prompt": prompt})
+            sql_session.add(new_asset)
+            results.append(to_public_image_url(item))
+
     await sql_session.commit()
-
-    return image.path
+    if safe_count == 1:
+        return results[0] if results else "/static/images/placeholder.jpg"
+    return results
 
 
 @IMAGES_ROUTER.get("/generated", response_model=List[ImageAsset])
-async def get_generated_images(sql_session: AsyncSession = Depends(get_async_session)):
+async def get_generated_images(
+    presentation_id: uuid.UUID = None,
+    sql_session: AsyncSession = Depends(get_async_session)
+):
     try:
+        query = select(ImageAsset).where(ImageAsset.is_uploaded == False)
+        if presentation_id:
+            query = query.where(ImageAsset.presentation_id == presentation_id)
+            
         images = await sql_session.scalars(
-            select(ImageAsset)
-            .where(ImageAsset.is_uploaded == False)
-            .order_by(ImageAsset.created_at.desc())
+            query.order_by(ImageAsset.created_at.desc())
         )
-        return images
+        result = list(images)
+        for image in result:
+            image.path = to_public_image_url(image.path)
+        return result
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Failed to retrieve generated images: {str(e)}"
@@ -66,6 +94,7 @@ async def upload_image(
         sql_session.add(image_asset)
         await sql_session.commit()
 
+        image_asset.path = to_public_image_url(image_asset.path)
         return image_asset
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to upload image: {str(e)}")
@@ -79,11 +108,53 @@ async def get_uploaded_images(sql_session: AsyncSession = Depends(get_async_sess
             .where(ImageAsset.is_uploaded == True)
             .order_by(ImageAsset.created_at.desc())
         )
-        return images
+        result = list(images)
+        for image in result:
+            image.path = to_public_image_url(image.path)
+        return result
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Failed to retrieve uploaded images: {str(e)}"
         )
+
+
+@IMAGES_ROUTER.get("/generate/batch")
+async def generate_images_batch(
+    prompt: str,
+    count: int = 4,
+    presentation_id: uuid.UUID = None,
+    sql_session: AsyncSession = Depends(get_async_session),
+):
+    """
+    Generate multiple images concurrently for the same prompt.
+    Returns a list of image URLs/paths that frontend can render directly.
+    """
+    safe_count = max(1, min(count, 8))
+    images_directory = get_images_directory()
+    image_generation_service = ImageGenerationService(images_directory)
+
+    tasks = [
+        image_generation_service.generate_image(ImagePrompt(prompt=prompt))
+        for _ in range(safe_count)
+    ]
+    generated = await asyncio.gather(*tasks, return_exceptions=True)
+
+    results: List[str] = []
+    for item in generated:
+        if isinstance(item, Exception):
+            continue
+        if isinstance(item, ImageAsset):
+            item.presentation_id = presentation_id
+            sql_session.add(item)
+            results.append(to_public_image_url(item.path))
+        elif isinstance(item, str):
+            # 将外部 URL 也作为 ImageAsset 保存到数据库中
+            new_asset = ImageAsset(path=item, is_uploaded=False, presentation_id=presentation_id, extras={"prompt": prompt})
+            sql_session.add(new_asset)
+            results.append(to_public_image_url(item))
+
+    await sql_session.commit()
+    return results
 
 
 @IMAGES_ROUTER.delete("/{id}", status_code=204)

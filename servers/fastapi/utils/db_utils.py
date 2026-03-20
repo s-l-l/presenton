@@ -1,13 +1,28 @@
 import os
+import platform
+from pathlib import Path
 from utils.get_env import get_app_data_directory_env, get_database_url_env
 from urllib.parse import urlsplit, urlunsplit, parse_qsl
 import ssl
 
 
 def get_database_url_and_connect_args() -> tuple[str, dict]:
-    database_url = get_database_url_env() or "sqlite:///" + os.path.join(
-        get_app_data_directory_env() or "/tmp/presenton", "fastapi.db"
-    )
+    db_url_env = get_database_url_env()
+    
+    if db_url_env:
+        database_url = db_url_env
+    else:
+        # Fallback to local sqlite db in app data directory
+        app_data_dir = get_app_data_directory_env()
+        if not app_data_dir:
+            # Cross-platform fallback directory
+            app_data_dir = os.path.join(os.environ.get("APPDATA") or os.environ.get("HOME") or os.getcwd(), ".presenton")
+            os.makedirs(app_data_dir, exist_ok=True)
+            
+        db_path = Path(app_data_dir) / "fastapi.db"
+        # Ensure correct sqlite url format for absolute paths on Windows vs Linux
+        db_path_str = str(db_path.absolute()).replace('\\', '/')
+        database_url = f"sqlite:///{db_path_str}"
 
     if database_url.startswith("sqlite://"):
         database_url = database_url.replace("sqlite://", "sqlite+aiosqlite://", 1)

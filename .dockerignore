@@ -7,5 +7,7 @@ servers/fastapi/.venv
 
 servers/nextjs/node_modules
 servers/nextjs/.next
+servers/nextjs/.env*
+.env*
 
 container.db

@@ -33,6 +33,14 @@ def get_anthropic_model_env():
     return os.getenv("ANTHROPIC_MODEL")
 
 
+def get_doubao_api_key_env():
+    return os.getenv("DOUBAO_API_KEY")
+
+
+def get_doubao_model_env():
+    return os.getenv("DOUBAO_MODEL")
+
+
 def get_ollama_url_env():
     return os.getenv("OLLAMA_URL")
 
@@ -79,6 +87,10 @@ def get_disable_image_generation_env():
 
 def get_image_provider_env():
     return os.getenv("IMAGE_PROVIDER")
+
+
+def get_doubao_image_model_env():
+    return os.getenv("DOUBAO_IMAGE_MODEL")
 
 
 def get_pixabay_api_key_env():
@@ -142,3 +154,7 @@ def get_codex_model_env():
 
 def get_migrate_database_on_startup_env():
     return os.getenv("MIGRATE_DATABASE_ON_STARTUP")
+
+
+def get_slide_to_html_model_env():
+    return os.getenv("SLIDE_TO_HTML_MODEL")

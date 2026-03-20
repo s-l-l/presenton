@@ -67,6 +67,8 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                 return 'GOOGLE_MODEL';
             case 'anthropic':
                 return 'ANTHROPIC_MODEL';
+            case 'doubao':
+                return 'DOUBAO_MODEL';
             case 'ollama':
                 return 'OLLAMA_MODEL';
             case 'custom':
@@ -83,6 +85,8 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                 return 'GOOGLE_API_KEY';
             case 'anthropic':
                 return 'ANTHROPIC_API_KEY';
+            case 'doubao':
+                return 'DOUBAO_API_KEY';
             case 'custom':
                 return 'CUSTOM_LLM_API_KEY';
             default:
@@ -106,6 +110,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
         if (llmConfig.LLM === 'openai' && !currentApiKey) return;
         if (llmConfig.LLM === 'google' && !currentApiKey) return;
         if (llmConfig.LLM === 'anthropic' && !currentApiKey) return;
+        if (llmConfig.LLM === 'doubao' && !currentApiKey) return;
         if (llmConfig.LLM === 'custom' && !llmConfig.CUSTOM_LLM_URL) return;
 
         setModelsLoading(true);
@@ -184,14 +189,14 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                     }));
                 }
             } else {
-                console.error('Failed to fetch models');
+                console.error('获取模型失败');
                 setAvailableModels([]);
                 setModelsChecked(true);
-                toast.error(`Failed to fetch ${LLM_PROVIDERS[llmConfig.LLM!]?.label} models`);
+                toast.error(`获取 ${LLM_PROVIDERS[llmConfig.LLM!]?.label} 模型失败`);
             }
         } catch (error) {
-            console.error('Error fetching models:', error);
-            toast.error('Error fetching models');
+            console.error('获取模型错误:', error);
+            toast.error('获取模型错误');
             setAvailableModels([]);
             setModelsChecked(true);
         } finally {
@@ -290,13 +295,13 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                     await handleModelDownload();
                 }
             }
-            toast.info("Configuration saved successfully");
+            toast.info("配置保存成功");
             // Track navigation from -> to
             trackEvent(MixpanelEvent.Navigation, { from: pathname, to: "/final onboarding step" });
             setStep(3)
             // router.push("/upload");
         } catch (error) {
-            toast.info(error instanceof Error ? error.message : "Failed to save configuration");
+            toast.info(error instanceof Error ? error.message : "保存配置失败");
 
         }
         finally {
@@ -322,8 +327,8 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
             <p className='px-2.5 py-0.5 w-fit text-[#7A5AF8] rounded-[50px]  border border-[#EDEEEF] text-[10px] font-medium mb-5 font-syne'>PRESENTON</p>
             <div className='mb-[54px]'>
 
-                <h2 className='mb-4 text-black text-[26px] font-normal font-unbounded '>Choose your content providers</h2>
-                <p className='text-[#000000CC] text-xl font-normal font-syne'>Select the AI engines that will generate your slide text and visuals.</p>
+                <h2 className='mb-4 text-black text-[26px] font-normal font-unbounded '>选择您的内容提供商</h2>
+                <p className='text-[#000000CC] text-xl font-normal font-syne'>选择将生成幻灯片文本和视觉内容的 AI 引擎。</p>
             </div>
             {/* Text Provider */}
             <div className='p-3 border border-[#EDEEEF] rounded-[11px] '>
@@ -339,9 +344,9 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                     </div>
                     <div className='w-full'>
 
-                        <h3 className="text-xl font-normal text-[#191919] pb-1.5">Text Generation Settings</h3>
+                        <h3 className="text-xl font-normal text-[#191919] pb-1.5">文本生成设置</h3>
                         <p className=" text-sm  text-gray-500">
-                            Choosing where text contets come from
+                            选择文本内容的来源
                         </p>
                     </div>
                 </div>
@@ -349,7 +354,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                     <div className="flex flex-col justify-start w-full ">
 
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Select Text Provider
+                            选择文本提供商
                         </label>
                         <Popover
                             open={openProviderSelect}
@@ -367,7 +372,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                                             {llmConfig.LLM
                                                 ? LLM_PROVIDERS[llmConfig.LLM]
                                                     ?.label || llmConfig.LLM
-                                                : "Select text provider"}
+                                                : "选择文本提供商"}
                                         </span>
                                     </div>
                                     <ChevronUp className="w-4 h-4 text-gray-500" />
@@ -379,9 +384,9 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
 
                             >
                                 <Command>
-                                    <CommandInput placeholder="Search provider..." />
+                                    <CommandInput placeholder="搜索提供商..." />
                                     <CommandList className='hide-scrollbar'>
-                                        <CommandEmpty>No provider found.</CommandEmpty>
+                                        <CommandEmpty>未找到提供商。</CommandEmpty>
                                         <CommandGroup >
                                             {Object.values(LLM_PROVIDERS).map(
                                                 (provider, index) => (
@@ -433,7 +438,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                                             }))}
                                             className="mt-8 py-2.5 bg-[#EDEEEF] px-3.5 w-fit rounded-[48px] text-xs font-semibold text-[#101323] transition-all duration-200 border border-[#EDEEEF] hover:bg-[#E8F0FF]/90 focus:ring-2 focus:ring-blue-500/20"
                                         >
-                                            Use Ollama URL
+                                            使用自定义 Ollama URL
                                         </button>
                                     ) : (
                                         <>
@@ -461,7 +466,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                                                 }))}
                                                 className="mt-2 text-xs font-medium text-[#4B5563] underline underline-offset-2"
                                             >
-                                                Use default Ollama URL
+                                                使用默认 Ollama URL
                                             </button>
                                         </>
                                     )}
@@ -469,7 +474,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                             ) : (
                                 <>
                                     <label className="block text-sm font-medium capitalize text-gray-700 mb-2">
-                                        {llmConfig.LLM === 'custom' ? 'Custom LLM API Key' : `${llmConfig.LLM} API Key`}
+                                        {llmConfig.LLM === 'custom' ? '自定义 LLM API Key' : `${llmConfig.LLM} API Key`}
                                     </label>
                                     <div className="relative">
                                         <input
@@ -480,7 +485,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                                                 [currentApiKeyField]: e.target.value
                                             }))}
                                             className="w-full px-2 py-3 outline-none border  border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
-                                            placeholder={`Enter your ${llmConfig.LLM} API key`}
+                                            placeholder={`输入您的 ${llmConfig.LLM} API Key`}
                                         />
                                         <button
                                             type="button"
@@ -528,10 +533,10 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                                 {modelsLoading ? (
                                     <span className="flex items-center justify-center gap-2">
                                         <Loader2 className="w-4 h-4 animate-spin" />
-                                        Checking for models...
+                                        检查模型中...
                                     </span>
                                 ) : (
-                                    "Check models"
+                                    "检查模型"
                                 )}
                             </button>
                         )}
@@ -546,7 +551,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                         <div className="w-full">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    {llmConfig.LLM === 'ollama' ? 'Choose a supported model' : `Select ${LLM_PROVIDERS[llmConfig.LLM!]?.label} Model`}
+                                    {llmConfig.LLM === 'ollama' ? '选择支持的模型' : `选择 ${LLM_PROVIDERS[llmConfig.LLM!]?.label} 模型`}
                                 </label>
                                 <div className="w-full">
                                     <Popover
@@ -565,7 +570,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                                                         currentModel
                                                             ? availableModels.find(model => model === currentModel) || currentModel
                                                             :
-                                                            "Select a model"
+                                                            "选择一个模型"
                                                     }
                                                 </span>
 
@@ -578,9 +583,9 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                                             style={{ width: "var(--radix-popover-trigger-width)" }}
                                         >
                                             <Command>
-                                                <CommandInput placeholder="Search models..." />
+                                                <CommandInput placeholder="搜索模型..." />
                                                 <CommandList>
-                                                    <CommandEmpty>No model found.</CommandEmpty>
+                                                    <CommandEmpty>未找到模型。</CommandEmpty>
                                                     <CommandGroup>
                                                         {availableModels.map((model, index) => (
                                                             <CommandItem
@@ -628,7 +633,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
             </div>
             {/* Image Provider */}
             <div className='p-3 border border-[#EDEEEF] rounded-[11px] mt-5'>
-                <ToolTip content="Enable/Disable Image Generation" className='flex justify-end items-center'>
+                <ToolTip content="启用/禁用图像生成" className='flex justify-end items-center'>
                     <div className='flex justify-end items-center'>
                         <Switch
                             checked={!llmConfig.DISABLE_IMAGE_GENERATION}
@@ -649,9 +654,9 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                     </div>
                     <div>
 
-                        <h3 className="text-xl font-normal text-[#191919] ">Image Generation Settings</h3>
+                        <h3 className="text-xl font-normal text-[#191919] ">图像生成设置</h3>
                         <p className=" text-sm  text-gray-500">
-                            Choosing where images come from
+                            选择图像内容的来源
                         </p>
                     </div>
                 </div>
@@ -660,7 +665,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                         {/* Image Provider Selection */}
                         <div className="w-full">
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Select Image Provider
+                                选择图像提供商
                             </label>
                             <div className="w-full">
                                 <Popover
@@ -680,7 +685,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                                                     {llmConfig.IMAGE_PROVIDER
                                                         ? IMAGE_PROVIDERS[llmConfig.IMAGE_PROVIDER]
                                                             ?.label || llmConfig.IMAGE_PROVIDER
-                                                        : 'Select Image Provider'}
+                                                        : '选择图像提供商'}
                                                 </span>
                                             </div>
                                             <ChevronUp className="w-4 h-4 text-gray-500" />
@@ -692,9 +697,9 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
 
                                     >
                                         <Command>
-                                            <CommandInput placeholder="Search provider..." />
+                                            <CommandInput placeholder="搜索提供商..." />
                                             <CommandList>
-                                                <CommandEmpty>No provider found.</CommandEmpty>
+                                                <CommandEmpty>未找到提供商。</CommandEmpty>
                                                 <CommandGroup>
                                                     {Object.values(IMAGE_PROVIDERS).map(
                                                         (provider, index) => (
@@ -756,7 +761,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                                         <div className=" space-y-4 w-full">
                                             <div className=''>
                                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                    ComfyUI Server URL
+                                                    ComfyUI 服务器 URL
                                                 </label>
                                                 <div className="relative">
                                                     <input
@@ -779,6 +784,59 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                                     );
                                 }
 
+                                // Show Doubao configuration
+                                if (provider.value === "doubao") {
+                                    return (
+                                        <div className="flex gap-4 w-full">
+                                            <div className="w-full">
+                                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                    {provider.apiKeyFieldLabel}
+                                                </label>
+                                                <div className="relative">
+                                                    <input
+                                                        type={showApiKey ? 'text' : 'password'}
+                                                        placeholder={`输入您的 ${provider.apiKeyFieldLabel}`}
+                                                        className="w-full px-4 py-2.5 h-12 outline-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
+                                                        value={getFieldValue(provider.apiKeyField)}
+                                                        onChange={(e) => {
+                                                            setLlmConfig((prev) => ({
+                                                                ...prev,
+                                                                [provider.apiKeyField as keyof LLMConfig]: e.target.value
+                                                            }))
+                                                        }}
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setShowApiKey((prev) => !prev)}
+                                                        className='absolute right-2 top-1/2 -translate-y-1/2 bg-white px-2 py-1 cursor-pointer'
+                                                    >
+                                                        {showApiKey ? <Eye className='w-4 h-4 text-gray-500' /> : <EyeOff className='w-4 h-4 text-gray-500' />}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div className="w-full">
+                                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                    豆包图像模型 ID
+                                                </label>
+                                                <div className="relative">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="doubao-seedream-5-0-260128"
+                                                        className="w-full px-4 py-2.5 h-12 outline-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
+                                                        value={llmConfig.DOUBAO_IMAGE_MODEL || ""}
+                                                        onChange={(e) => {
+                                                            setLlmConfig((prev) => ({
+                                                                ...prev,
+                                                                DOUBAO_IMAGE_MODEL: e.target.value
+                                                            }))
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                }
+
                                 // Show API key input for other providers
                                 return (
                                     <div className="w-full ">
@@ -788,7 +846,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                                         <div className="relative">
                                             <input
                                                 type={showApiKey ? 'text' : 'password'}
-                                                placeholder={`Enter your ${provider.apiKeyFieldLabel}`}
+                                                placeholder={`输入您的 ${provider.apiKeyFieldLabel}`}
                                                 className="w-full px-4 py-2.5 h-12 outline-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
                                                 value={getFieldValue(provider.apiKeyField)}
                                                 onChange={(e) => {
@@ -822,11 +880,11 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                     </div>
                     {llmConfig.IMAGE_PROVIDER === "comfyui" && <div className='w-full'>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Workflow JSON
+                            工作流 JSON (Workflow JSON)
                         </label>
                         <div className="relative">
                             <textarea
-                                placeholder='Paste your ComfyUI workflow JSON here (export via "Export (API)" in ComfyUI)'
+                                placeholder='在此粘贴您的 ComfyUI 工作流 JSON (在 ComfyUI 中通过 "Export (API)" 导出)'
                                 className="w-full px-4 py-2.5 outline-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors font-mono text-xs"
                                 rows={3}
                                 value={llmConfig.COMFYUI_WORKFLOW || ""}
@@ -857,7 +915,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                     disabled={savingConfig}
                     onClick={handleSaveConfig}
                     className='border border-[#EDEEEF] bg-[#7C51F8]  rounded-[58px] px-5 py-2.5 text-white text-xs  font-semibold'>
-                    Continue to Finish
+                    继续并完成
                 </button>
             </div>
             {/* Download Progress Modal */}
@@ -877,7 +935,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
 
                             {/* Title */}
                             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                                {downloadingModel.done ? "Download Complete!" : "Downloading Model"}
+                                {downloadingModel.done ? "下载完成！" : "正在下载模型"}
                             </h3>
 
                             {/* Model Name */}
@@ -895,7 +953,7 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                                         />
                                     </div>
                                     <p className="text-sm text-gray-600 mt-2">
-                                        {downloadProgress}% Complete
+                                        已完成 {downloadProgress}%
                                     </p>
                                 </div>
                             )}
@@ -913,9 +971,9 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                             {/* Status Message */}
                             {downloadingModel.status && downloadingModel.status !== "pulled" && (
                                 <div className="text-xs text-gray-500">
-                                    {downloadingModel.status === "downloading" && "Downloading model files..."}
-                                    {downloadingModel.status === "verifying" && "Verifying model integrity..."}
-                                    {downloadingModel.status === "pulling" && "Pulling model from registry..."}
+                                    {downloadingModel.status === "downloading" && "正在下载模型文件..."}
+                                    {downloadingModel.status === "verifying" && "正在验证模型完整性..."}
+                                    {downloadingModel.status === "pulling" && "正在从仓库拉取模型..."}
                                 </div>
                             )}
 
@@ -923,8 +981,8 @@ const PresentonMode = ({ currentStep, setStep }: { currentStep: number, setStep:
                             {downloadingModel.downloaded && downloadingModel.size && (
                                 <div className="mt-4 p-3 bg-gray-50 rounded-lg">
                                     <div className="flex justify-between text-xs text-gray-600">
-                                        <span>Downloaded: {(downloadingModel.downloaded / 1024 / 1024).toFixed(1)} MB</span>
-                                        <span>Total: {(downloadingModel.size / 1024 / 1024).toFixed(1)} MB</span>
+                                        <span>已下载: {(downloadingModel.downloaded / 1024 / 1024).toFixed(1)} MB</span>
+                                        <span>总计: {(downloadingModel.size / 1024 / 1024).toFixed(1)} MB</span>
                                     </div>
                                 </div>
                             )}

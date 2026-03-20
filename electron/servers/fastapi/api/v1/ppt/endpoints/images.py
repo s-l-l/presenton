@@ -1,3 +1,4 @@
+import asyncio
 from typing import List
 from fastapi import APIRouter, Depends, File, UploadFile, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -17,20 +18,38 @@ IMAGES_ROUTER = APIRouter(prefix="/images", tags=["Images"])
 
 @IMAGES_ROUTER.get("/generate")
 async def generate_image(
-    prompt: str, sql_session: AsyncSession = Depends(get_async_session)
+    prompt: str,
+    count: int = 1,
+    sql_session: AsyncSession = Depends(get_async_session),
 ):
     images_directory = get_images_directory()
     image_prompt = ImagePrompt(prompt=prompt)
     image_generation_service = ImageGenerationService(images_directory)
 
-    image = await image_generation_service.generate_image(image_prompt)
-    if not isinstance(image, ImageAsset):
-        return image
+    safe_count = max(1, min(count, 8))
 
-    sql_session.add(image)
-    await sql_session.commit()
+    # Generate images concurrently when count > 1 to reduce end-to-end latency.
+    generated = await asyncio.gather(
+        *[image_generation_service.generate_image(image_prompt) for _ in range(safe_count)]
+    )
 
-    return image.file_url
+    image_urls: List[str] = []
+    generated_assets: List[ImageAsset] = []
+
+    for image in generated:
+        if isinstance(image, ImageAsset):
+            generated_assets.append(image)
+            image_urls.append(image.file_url)
+        else:
+            image_urls.append(image)
+
+    if generated_assets:
+        sql_session.add_all(generated_assets)
+        await sql_session.commit()
+
+    if safe_count == 1:
+        return image_urls[0]
+    return image_urls
 
 
 @IMAGES_ROUTER.get("/generated", response_model=List[ImageAsset])

@@ -1,5 +1,5 @@
 from typing import List
-from pydantic import Field
+from pydantic import AliasChoices, Field
 from models.presentation_outline_model import (
     PresentationOutlineModel,
     SlideOutlineModel,
@@ -13,6 +13,7 @@ def get_presentation_outline_model_with_n_slides(n_slides: int):
             description="Markdown content for each slide",
             min_length=100,
             max_length=300,
+            validation_alias=AliasChoices("content", "slide_content"),
         )
 
     class PresentationOutlineModelWithNSlides(PresentationOutlineModel):

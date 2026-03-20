@@ -142,8 +142,15 @@ async def get_slide_content_from_type_and_outline(
             response_format=response_schema,
             strict=False,
         )
+        required_keys = response_schema.get("required", []) if isinstance(response_schema, dict) else []
+        response_keys = list(response.keys()) if isinstance(response, dict) else []
+        missing_required = [k for k in required_keys if k not in response_keys]
         print(
-            f"get_slide_content_from_type_and_outline: response is None={response is None} keys={list(response.keys())[:6] if isinstance(response, dict) else None}"
+            "get_slide_content_from_type_and_outline: "
+            f"response is None={response is None} "
+            f"keys={response_keys} "
+            f"required={required_keys} "
+            f"missing_required={missing_required}"
         )
         return response
 

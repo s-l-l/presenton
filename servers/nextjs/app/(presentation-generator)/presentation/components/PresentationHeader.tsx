@@ -69,7 +69,7 @@ const PresentationHeader = ({
         ]);
         setThemes([...customThemes, ...DEFAULT_THEMES]);
       } catch (e: any) {
-        toast.error(e?.message || "Failed to load themes");
+        toast.error(e?.message || "加载主题失败");
       }
     };
     if (themes.length === 0) {
@@ -95,13 +95,22 @@ const PresentationHeader = ({
     );
     const result = await (window as any).electron.exportPresentation(
       presentation_id,
-      presentationData?.title || 'presentation',
+      presentationData?.title || '演示文稿',
       format
     );
     if (!result?.success) {
-      throw new Error(result?.message || 'Export failed');
+      throw new Error(result?.message || '导出失败');
     }
     return true;
+  };
+
+  const downloadLink = (url: string, filename: string) => {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const handleExportPptx = async () => {
@@ -114,28 +123,29 @@ const PresentationHeader = ({
       await PresentationGenerationApi.updatePresentationContent(presentationData);
 
       if (await exportViaIpc("pptx")) {
-        toast.success("PPTX exported successfully!");
+        toast.success("PPTX 导出成功！");
         return;
       }
 
       trackEvent(MixpanelEvent.Header_GetPptxModel_API_Call);
       const pptx_model = await get_presentation_pptx_model(presentation_id);
       if (!pptx_model) {
-        throw new Error("Failed to get presentation PPTX model");
+        throw new Error("获取演示文稿 PPTX 模型失败");
       }
       trackEvent(MixpanelEvent.Header_ExportAsPPTX_API_Call);
-      const pptx_path = await PresentationGenerationApi.exportAsPPTX(pptx_model);
-      if (pptx_path) {
-        // window.open(pptx_path, '_self');
-        downloadLink(pptx_path);
+      const blob = await PresentationGenerationApi.exportAsPPTX(pptx_model);
+      if (blob) {
+        const url = window.URL.createObjectURL(blob);
+        downloadLink(url, `${presentationData?.title || '演示文稿'}.pptx`);
+        window.URL.revokeObjectURL(url);
       } else {
-        throw new Error("No path returned from export");
+        throw new Error("导出未返回有效数据");
       }
     } catch (error) {
       console.error("Export failed:", error);
-      toast.error("Having trouble exporting!", {
+      toast.error("导出遇到问题！", {
         description:
-          "We are having trouble exporting your presentation. Please try again.",
+          "导出您的演示文稿时遇到问题。请重试。",
       });
     } finally {
       setIsExporting(false);
@@ -153,7 +163,7 @@ const PresentationHeader = ({
 
       trackEvent(MixpanelEvent.Header_ExportAsPDF_API_Call);
       if (await exportViaIpc("pdf")) {
-        toast.success("PDF exported successfully!");
+        toast.success("PDF 导出成功！");
         return;
       }
       const response = await fetch('/api/export-as-pdf', {
@@ -165,18 +175,19 @@ const PresentationHeader = ({
       });
 
       if (response.ok) {
-        const { path: pdfPath } = await response.json();
-        // window.open(pdfPath, '_blank');
-        downloadLink(pdfPath);
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        downloadLink(url, `${presentationData?.title || '演示文稿'}.pdf`);
+        window.URL.revokeObjectURL(url);
       } else {
-        throw new Error("Failed to export PDF");
+        throw new Error("导出 PDF 失败");
       }
 
     } catch (err) {
       console.error(err);
-      toast.error("Having trouble exporting!", {
+      toast.error("导出遇到问题！", {
         description:
-          "We are having trouble exporting your presentation. Please try again.",
+          "导出您的演示文稿时遇到问题。请重试。",
       });
     } finally {
       setIsExporting(false);
@@ -188,22 +199,10 @@ const PresentationHeader = ({
     trackEvent(MixpanelEvent.Header_ReGenerate_Button_Clicked, { pathname });
     router.push(`/presentation?id=${presentation_id}&stream=true`);
   };
-  const downloadLink = (path: string) => {
-    // if we have popup access give direct download if not redirect to the path
-    if (window.opener) {
-      window.open(path, '_blank');
-    } else {
-      const link = document.createElement('a');
-      link.href = path;
-      link.download = path.split('/').pop() || 'download';
-      document.body.appendChild(link);
-      link.click();
-    }
-  };
 
   const ExportOptions = ({ mobile }: { mobile: boolean }) => (
     <div className={` rounded-[18px] max-md:mt-4 ${mobile ? "" : "bg-white"}  p-5`}>
-      <p className="text-sm font-medium text-[#19001F]">Export as</p>
+      <p className="text-sm font-medium text-[#19001F]">导出为</p>
       <div className="my-[18px] h-[1px] bg-[#E8E8E8]" />
       <div className="space-y-3">
 
@@ -244,7 +243,7 @@ const PresentationHeader = ({
   return (
     <>
       <div className="py-7 sticky top-0 bg-white z-50 mb-[17px]  font-syne flex justify-between items-center">
-        <h2 className="text-lg text-[#101323] font-unbounded "><MarkdownRenderer content={presentationData?.title || "Presentation"} className="mb-0  w-[600px] truncate text-sm text-[#101323] " /></h2>
+        <h2 className="text-lg text-[#101323] font-unbounded "><MarkdownRenderer content={presentationData?.title || "演示文稿"} className="mb-0  w-[600px] truncate text-sm text-[#101323] " /></h2>
         <div className="flex items-center gap-2.5">
 
           {isPresentationSaving && <div className="flex items-center gap-2">
@@ -254,13 +253,13 @@ const PresentationHeader = ({
 
           <div className="flex items-center gap-2 bg-[#F6F6F9] px-3.5 h-[38px] border border-[#EDECEC] rounded-[80px]">
 
-            <ToolTip content="Regenerate Presentation">
+            <ToolTip content="重新生成">
               <button onClick={handleReGenerate} className="group">
                 <RotateCcw className="w-3.5 h-3.5 text-[#101323] group-hover:text-[#5141e5] duration-300" />
               </button>
             </ToolTip>
             <Separator orientation="vertical" className="h-4" />
-            <ToolTip content="Undo">
+            <ToolTip content="撤销">
               <button disabled={!canUndo} className=" disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer group" onClick={() => {
                 onUndo();
               }}>
@@ -270,7 +269,7 @@ const PresentationHeader = ({
               </button>
             </ToolTip>
             <Separator orientation="vertical" className="h-4" />
-            <ToolTip content="Redo">
+            <ToolTip content="重做">
 
               <button disabled={!canRedo} className=" disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer group" onClick={() => {
 
@@ -281,7 +280,7 @@ const PresentationHeader = ({
               </button>
             </ToolTip>
             <Separator orientation="vertical" className="h-4 w-[2px]" />
-            <ToolTip content="Present">
+            <ToolTip content="演示">
               <button
                 onClick={() => {
                   const to = `?id=${presentation_id}&mode=present&slide=${currentSlide || 0}`;
@@ -302,7 +301,7 @@ const PresentationHeader = ({
                 }}
                 disabled={isExporting}
               >
-                {isExporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Export"} <ArrowRightFromLine className="w-3.5 h-3.5" />
+                {isExporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "导出"} <ArrowRightFromLine className="w-3.5 h-3.5" />
               </button>
             </PopoverTrigger>
             <PopoverContent align="end" className="w-[200px] rounded-[18px] space-y-2 p-0  ">

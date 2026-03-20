@@ -6,6 +6,7 @@ import AnthropicConfig from "./AnthropicConfig";
 import OllamaConfig from "./OllamaConfig";
 import CustomConfig from "./CustomConfig";
 import CodexConfig from "./CodexConfig";
+import DoubaoConfig from "./DoubaoConfig";
 import {
   updateLLMConfig,
   changeProvider as changeProviderUtil,
@@ -55,12 +56,14 @@ export default function LLMProviderSelection({
       (llmConfig.LLM === "google" && !llmConfig.GOOGLE_MODEL) ||
       (llmConfig.LLM === "ollama" && !llmConfig.OLLAMA_MODEL) ||
       (llmConfig.LLM === "custom" && !llmConfig.CUSTOM_MODEL) ||
+      (llmConfig.LLM === "doubao" && !llmConfig.DOUBAO_MODEL) ||
       (llmConfig.LLM === "anthropic" && !llmConfig.ANTHROPIC_MODEL) ||
       (llmConfig.LLM === "codex" && !llmConfig.CODEX_MODEL);
 
     const needsProviderApiKey =
       (llmConfig.LLM === "openai" && !llmConfig.OPENAI_API_KEY) ||
       (llmConfig.LLM === "google" && !llmConfig.GOOGLE_API_KEY) ||
+      (llmConfig.LLM === "doubao" && !llmConfig.DOUBAO_API_KEY) ||
       (llmConfig.LLM === "anthropic" && !llmConfig.ANTHROPIC_API_KEY);
 
     const needsImageProviderApiKey =
@@ -72,6 +75,7 @@ export default function LLMProviderSelection({
           !llmConfig.GOOGLE_API_KEY) ||
         (llmConfig.IMAGE_PROVIDER === "nanobanana_pro" &&
           !llmConfig.GOOGLE_API_KEY) ||
+        (llmConfig.IMAGE_PROVIDER === "doubao" && !llmConfig.DOUBAO_API_KEY) ||
         (llmConfig.IMAGE_PROVIDER === "pexels" && !llmConfig.PEXELS_API_KEY) ||
         (llmConfig.IMAGE_PROVIDER === "pixabay" && !llmConfig.PIXABAY_API_KEY));
 
@@ -117,6 +121,8 @@ export default function LLMProviderSelection({
         return llmConfig.GOOGLE_API_KEY || "";
       case "ANTHROPIC_API_KEY":
         return llmConfig.ANTHROPIC_API_KEY || "";
+      case "DOUBAO_API_KEY":
+        return llmConfig.DOUBAO_API_KEY || "";
       case "PEXELS_API_KEY":
         return llmConfig.PEXELS_API_KEY || "";
       case "PIXABAY_API_KEY":
@@ -229,8 +235,9 @@ export default function LLMProviderSelection({
           <TabsList className="grid w-full grid-cols-6 bg-transparent h-10">
             <TabsTrigger value="openai">OpenAI</TabsTrigger>
             <TabsTrigger value="google">Google</TabsTrigger>
-            <TabsTrigger value="anthropic">Anthropic</TabsTrigger>
-            <TabsTrigger value="ollama">Ollama</TabsTrigger>
+              <TabsTrigger value="anthropic">Anthropic</TabsTrigger>
+              <TabsTrigger value="doubao">Doubao</TabsTrigger>
+              <TabsTrigger value="ollama">Ollama</TabsTrigger>
             <TabsTrigger value="custom">Custom</TabsTrigger>
             <TabsTrigger value="codex">ChatGPT</TabsTrigger>
           </TabsList>
@@ -275,6 +282,18 @@ export default function LLMProviderSelection({
               onInputChange={input_field_changed}
             />
           </TabsContent>
+
+          {/* Doubao Content */}
+           <TabsContent value="doubao" className="mt-6">
+             <DoubaoConfig
+               doubaoApiKey={llmConfig.DOUBAO_API_KEY || ""}
+               doubaoModel={llmConfig.DOUBAO_MODEL || ""}
+               webGrounding={llmConfig.WEB_GROUNDING}
+               disableThinking={llmConfig.DISABLE_THINKING || false}
+               onInputChange={input_field_changed}
+               llmConfig={llmConfig}
+             />
+           </TabsContent>
 
           {/* Ollama Content */}
           <TabsContent value="ollama" className="mt-6">

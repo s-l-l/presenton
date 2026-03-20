@@ -10,6 +10,7 @@ from utils.get_env import (
     get_anthropic_model_env,
     get_codex_model_env,
     get_custom_model_env,
+    get_doubao_model_env,
     get_google_model_env,
     get_llm_provider_env,
     get_ollama_model_env,
@@ -26,8 +27,12 @@ def get_llm_provider():
         print(f"ERROR: Failed to parse LLM provider: {e}")
         raise HTTPException(
             status_code=500,
-            detail=f"Invalid LLM provider: '{provider}'. Please select one of: openai, google, anthropic, ollama, custom, codex",
+            detail=f"Invalid LLM provider: '{provider}'. Please select one of: openai, google, anthropic, doubao, ollama, custom, codex",
         )
+
+
+def is_doubao_selected():
+    return get_llm_provider() == LLMProvider.DOUBAO
 
 
 def is_openai_selected():
@@ -62,6 +67,8 @@ def get_model():
         return get_google_model_env() or DEFAULT_GOOGLE_MODEL
     elif selected_llm == LLMProvider.ANTHROPIC:
         return get_anthropic_model_env() or DEFAULT_ANTHROPIC_MODEL
+    elif selected_llm == LLMProvider.DOUBAO:
+        return get_doubao_model_env()
     elif selected_llm == LLMProvider.OLLAMA:
         return get_ollama_model_env()
     elif selected_llm == LLMProvider.CUSTOM:
@@ -71,5 +78,5 @@ def get_model():
     else:
         raise HTTPException(
             status_code=500,
-            detail=f"Invalid LLM provider. Please select one of: openai, google, anthropic, ollama, custom, codex",
+            detail=f"Invalid LLM provider. Please select one of: openai, google, anthropic, doubao, ollama, custom, codex",
         )

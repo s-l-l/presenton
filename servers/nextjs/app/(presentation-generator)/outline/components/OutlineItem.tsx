@@ -146,7 +146,7 @@ export function OutlineItem({
 
 
                 <div id={`outline-item-${index}`} className="flex flex-col basis-full gap-2">
-                    <p className="text-black w-fit text-[10px] font-medium  bg-white border border-[#EDEEEF] rounded-[80px] px-2.5">slide {index}</p>
+                    <p className="text-black w-fit text-[10px] font-medium  bg-white border border-[#EDEEEF] rounded-[80px] px-2.5">第 {index} 页</p>
                     {/* Editable Markdown Content */}
                     {isStreaming ? (
                         isActiveStreaming ? (
@@ -175,7 +175,7 @@ export function OutlineItem({
 
                 <div className="hidden group-hover:flex absolute -top-3 -right-3 gap-1 sm:gap-2 items-center">
 
-                    <ToolTip content="Delete Slide">
+                    <ToolTip content="删除幻灯片">
                         <button
                             onClick={handleSlideDelete}
                             className="p-1.5 sm:p-2 bg-white shadow-md  rounded-full transition-colors"

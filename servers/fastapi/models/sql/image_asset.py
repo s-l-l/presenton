@@ -6,6 +6,7 @@ from sqlalchemy import JSON, Column, DateTime
 from sqlmodel import Field, SQLModel
 
 from utils.datetime_utils import get_current_utc_datetime
+from utils.asset_directory_utils import to_public_image_url
 
 
 class ImageAsset(SQLModel, table=True):
@@ -18,6 +19,7 @@ class ImageAsset(SQLModel, table=True):
     is_uploaded: bool = Field(default=False)
     path: str
     extras: Optional[dict] = Field(sa_column=Column(JSON), default=None)
+    presentation_id: Optional[uuid.UUID] = Field(default=None, index=True)
 
     @property
     def file_url(self) -> str:
@@ -26,4 +28,4 @@ class ImageAsset(SQLModel, table=True):
         For now this simply returns the stored path, allowing frontends to use
         `image.file_url or image.path` without breaking development workflows.
         """
-        return self.path
+        return to_public_image_url(self.path)

@@ -168,10 +168,15 @@ export class PresentationGenerationApi {
   // IMAGE AND ICON SEARCH
   
   
-  static async generateImage(imageGenerate: ImageGenerate) {
+  static async generateImage(imageGenerate: ImageGenerate, presentationId?: string): Promise<string | string[]> {
+    const count = imageGenerate.count ?? 1;
+    let url = `/api/v1/ppt/images/generate?prompt=${encodeURIComponent(imageGenerate.prompt)}&count=${count}`;
+    if (presentationId) {
+      url += `&presentation_id=${presentationId}`;
+    }
     try {
       const response = await fetch(
-        `/api/v1/ppt/images/generate?prompt=${imageGenerate.prompt}`,
+        url,
         {
           method: "GET",
           headers: getHeader(),
@@ -186,10 +191,14 @@ export class PresentationGenerationApi {
     }
   }
 
-  static getPreviousGeneratedImages = async (): Promise<PreviousGeneratedImagesResponse[]> => {
+  static getPreviousGeneratedImages = async (presentationId?: string): Promise<PreviousGeneratedImagesResponse[]> => {
+    let url = `/api/v1/ppt/images/generated`;
+    if (presentationId) {
+      url += `?presentation_id=${presentationId}`;
+    }
     try {
       const response = await fetch(
-        `/api/v1/ppt/images/generated`,
+        url,
         {
           method: "GET",
           headers: getHeader(),
@@ -235,7 +244,11 @@ export class PresentationGenerationApi {
           cache: "no-cache",
         }
       );
-      return await ApiResponseHandler.handleResponse(response, "Failed to export as PowerPoint");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.detail || "Failed to export as PowerPoint");
+      }
+      return await response.blob();
     } catch (error) {
       console.error("error in pptx export", error);
       throw error;

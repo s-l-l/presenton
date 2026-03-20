@@ -96,8 +96,11 @@ export async function POST(req: NextRequest) {
   await fs.promises.mkdir(path.dirname(destinationPath), { recursive: true });
   await fs.promises.writeFile(destinationPath, pdfBuffer);
 
-  return NextResponse.json({
-    success: true,
-    path: destinationPath,
+  return new NextResponse(pdfBuffer, {
+    status: 200,
+    headers: {
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `attachment; filename="${sanitizedTitle}.pdf"`,
+    },
   });
 }

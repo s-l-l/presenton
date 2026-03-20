@@ -141,7 +141,7 @@ const SidePanel = ({
           className="w-full h-[calc(100vh-120px)]   hide-scrollbar overflow-hidden slide-theme "
         >
 
-          <p className="text-xl font-normal pb-3.5 text-[#000000]">Slides</p>
+          <p className="text-xl font-normal pb-3.5 text-[#000000]">幻灯片</p>
 
           <DndContext
             sensors={sensors}
@@ -197,7 +197,7 @@ const SidePanel = ({
             className="pt-6 gap-2 flex flex-col py-2 duration-300 items-center justify-center rounded-lg cursor-pointer mx-auto"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span className="text-[11px] font-normal text-[#000000]">Add Slide</span>
+            <span className="text-[11px] font-normal text-[#000000]">添加幻灯片</span>
           </button>
         </div>
       </div>

@@ -5,10 +5,10 @@ interface StepIndicatorProps {
 }
 
 const steps = [
-  { step: 1, label: 'Brand' },
-  { step: 2, label: 'Palette' },
-  { step: 3, label: 'Fonts' },
-  { step: 4, label: 'Logo' },
+  { step: 1, label: '品牌' },
+  { step: 2, label: '调色板' },
+  { step: 3, label: '字体' },
+  { step: 4, label: '徽标' },
 ]
 
 export const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep }) => (
@@ -23,7 +23,7 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep }) => 
               : 'bg-white text-[#404348] border border-[#EDEEEF]'
               }`}
           >
-            Step-{step}
+            第 {step} 步
           </span>
           <span className="text-[11px] font-normal text-black">{label}</span>
         </div>

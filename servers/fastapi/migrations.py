@@ -9,7 +9,9 @@ from utils.get_env import get_migrate_database_on_startup_env
 
 
 async def migrate_database_on_startup() -> None:
-    if get_migrate_database_on_startup_env() not in ["true", "True"]:
+    # 默认开启自动迁移，如果显式设置为 "false" 才跳过
+    if get_migrate_database_on_startup_env() in ["false", "False", "0"]:
+        print("Skipping database migrations as MIGRATE_DATABASE_ON_STARTUP is disabled.")
         return
 
     try:

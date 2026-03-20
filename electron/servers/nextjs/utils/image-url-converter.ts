@@ -24,7 +24,7 @@ function toFastApiStaticUrl(fileSrc: string): string {
   }
 }
 
-function normalizeImageSrc(src: string): string {
+export function normalizeImageSrc(src: string): string {
   // If already an absolute HTTP(S) URL, prefer FastAPI origin for /app_data and /static
   if (/^https?:\/\//.test(src)) {
     try {

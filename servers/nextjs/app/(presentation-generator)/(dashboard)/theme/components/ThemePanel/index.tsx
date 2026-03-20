@@ -419,10 +419,10 @@ const ThemePanel: React.FC = () => {
 
 
       window.history.pushState({}, '', '/theme')
-      toast.success('Theme saved')
+      toast.success('主题已保存')
     } catch (error: any) {
       console.error('Failed to save theme', error)
-      toast.error(error?.message || 'Failed to save theme')
+      toast.error(error?.message || '保存主题失败')
     }
   }
 
@@ -432,7 +432,7 @@ const ThemePanel: React.FC = () => {
   const handleDelete = async (themeId: string) => {
     await ThemeApi.deleteTheme(themeId)
     setCustomThemes(customThemes.filter(theme => theme.id !== themeId))
-    toast.success("Theme deleted successfully")
+    toast.success("主题已成功删除")
   }
   const handleCustomFontChange = async (fontFile: File) => {
     try {
@@ -450,10 +450,10 @@ const ThemePanel: React.FC = () => {
           fonts: [...prev.fonts, { name, url }]
         }))
       }
-      toast.success(`Font "${name}" uploaded successfully`)
+      toast.success(`字体 "${name}" 上传成功`)
     } catch (error: any) {
       console.error('Failed to upload font', error)
-      toast.error(error?.message || 'Failed to upload font')
+      toast.error(error?.message || '上传字体失败')
     } finally {
       setIsFontUploading(false)
     }
@@ -466,7 +466,7 @@ const ThemePanel: React.FC = () => {
     >
       <Label className="flex text-xl font-medium text-[#191919] items-center gap-2 pb-5">
 
-        {step === 1 ? 'Brand Colors' : 'Palette'}
+        {step === 1 ? '品牌颜色' : '调色板'}
         <RefreshCcw onClick={() => refeshTheme(step === 1 ? {
 
         } : {
@@ -479,7 +479,7 @@ const ThemePanel: React.FC = () => {
 
         <div>
 
-          {step === 2 && <p className="text-xs text-[#4C4C4C] font-medium rounded-lg text-end pb-1.5">Brand Colors</p>}
+          {step === 2 && <p className="text-xs text-[#4C4C4C] font-medium rounded-lg text-end pb-1.5">品牌颜色</p>}
           <div className="space-y-4"
             style={{
               padding: step === 2 ? '10px' : '0px',
@@ -488,7 +488,7 @@ const ThemePanel: React.FC = () => {
           >
             <ColorPickerComponent
               colorKey="primary"
-              label="Primary Color"
+              label="主色调"
               currentColor={customColors['primary']}
               onColorChange={handleColorChange}
               showColorPicker={showColorPicker}
@@ -496,7 +496,7 @@ const ThemePanel: React.FC = () => {
             />
             <ColorPickerComponent
               colorKey="background"
-              label="Background Color"
+              label="背景颜色"
               currentColor={customColors['background']}
               onColorChange={handleColorChange}
               showColorPicker={showColorPicker}
@@ -505,7 +505,7 @@ const ThemePanel: React.FC = () => {
           </div>
         </div>
         {step === 2 && <div>
-          <p className="text-xs text-[#4C4C4C] font-medium text-end pb-1.5">Text Colors</p>
+          <p className="text-xs text-[#4C4C4C] font-medium text-end pb-1.5">文本颜色</p>
           <div className="space-y-4"
             style={{
               padding: step === 2 ? '10px' : '0px',
@@ -514,7 +514,7 @@ const ThemePanel: React.FC = () => {
           >
             <ColorPickerComponent
               colorKey="background_text"
-              label="Background Text"
+              label="背景文本"
               currentColor={customColors['background_text']}
               onColorChange={handleColorChange}
               showColorPicker={showColorPicker}
@@ -522,7 +522,7 @@ const ThemePanel: React.FC = () => {
             />
             <ColorPickerComponent
               colorKey="primary_text"
-              label="Primary Text"
+              label="主文本"
               currentColor={customColors['primary_text']}
               onColorChange={handleColorChange}
               showColorPicker={showColorPicker}
@@ -533,7 +533,7 @@ const ThemePanel: React.FC = () => {
         {step === 2 && <div className='px-2.5'>
           <ColorPickerComponent
             colorKey="card"
-            label="Card Color"
+            label="卡片颜色"
             currentColor={customColors['card']}
             onColorChange={handleColorChange}
             showColorPicker={showColorPicker}
@@ -541,7 +541,7 @@ const ThemePanel: React.FC = () => {
           />
         </div>}
         {step === 2 && <div>
-          <p className="text-xs text-[#4C4C4C] font-medium text-end pb-1.5">Graph/Chart Colors</p>
+          <p className="text-xs text-[#4C4C4C] font-medium text-end pb-1.5">图表颜色</p>
           <div className="space-y-4"
             style={{
               padding: step === 2 ? '10px' : '0px',
@@ -644,7 +644,7 @@ const ThemePanel: React.FC = () => {
       }}
     >
       <Label className="flex text-xl font-medium text-[#191919] items-center gap-2 px-2.5">
-        Typography
+        字体排版
       </Label>
 
 
@@ -652,7 +652,7 @@ const ThemePanel: React.FC = () => {
 
       {/* Upload Custom Font */}
       <div className="px-2.5">
-        <p className='text-xs text-[#4C4C4C] font-medium text-end pb-1.5'>Upload Custom Font</p>
+        <p className='text-xs text-[#4C4C4C] font-medium text-end pb-1.5'>上传自定义字体</p>
         <div
           className={`p-3 rounded-xl border-2 border-dashed transition-all duration-200 cursor-pointer group
             ${isFontUploading
@@ -673,8 +673,8 @@ const ThemePanel: React.FC = () => {
                 <Loader2 className='w-5 h-5 text-[#7A5AF8] animate-spin' />
               </div>
               <div className='flex-1'>
-                <p className='text-sm font-medium text-[#7A5AF8]'>Uploading font...</p>
-                <p className='text-xs text-[#888]'>Please wait</p>
+                <p className='text-sm font-medium text-[#7A5AF8]'>正在上传字体...</p>
+                <p className='text-xs text-[#888]'>请稍候</p>
               </div>
             </div>
           ) : (
@@ -683,7 +683,7 @@ const ThemePanel: React.FC = () => {
                 <Plus className='w-5 h-5 text-[#7A5AF8]' />
               </div>
               <div className='flex-1'>
-                <p className='text-sm font-medium text-[#151515]'>Upload Font File</p>
+                <p className='text-sm font-medium text-[#151515]'>上传字体文件</p>
                 <p className='text-xs text-[#888]'>.ttf, .otf, .woff, .woff2</p>
               </div>
               <ChevronRight className='w-4 h-4 text-[#999] group-hover:text-[#7A5AF8] transition-colors' />
@@ -707,7 +707,7 @@ const ThemePanel: React.FC = () => {
       {/* User's Uploaded Fonts */}
       {userFonts.fonts.length > 0 && (
         <div className="px-2.5">
-          <p className='text-xs text-[#4C4C4C] font-medium text-end pb-1.5'>Your Uploaded Fonts</p>
+          <p className='text-xs text-[#4C4C4C] font-medium text-end pb-1.5'>您上传的字体</p>
           <div className='grid grid-cols-2 gap-2'>
             {userFonts.fonts?.map((font) => (
               <FontCard
@@ -726,7 +726,7 @@ const ThemePanel: React.FC = () => {
 
       {/* Preset Fonts */}
       <div className='px-2.5'>
-        <p className='text-xs text-[#4C4C4C] font-medium text-end pb-1.5'>Pre-Sets</p>
+        <p className='text-xs text-[#4C4C4C] font-medium text-end pb-1.5'>预设字体</p>
         <div className="grid grid-cols-2 gap-2 overflow-y-auto custom_scrollbar">
           {FONT_OPTIONS.map((font) => (
             <FontCard
@@ -745,23 +745,23 @@ const ThemePanel: React.FC = () => {
     <div className="space-y-4 px-5">
       <Label className="flex text-xl font-medium text-[#191919] items-center gap-2">
 
-        Logo
+        徽标 (Logo)
         {/* <RefreshCcw className='w-5 h-5 text-[#808080] hover:text-[#191919] duration-300 transition-all cursor-pointer' /> */}
       </Label>
       <div className="space-y-2">
         <Label className="flex text-base items-center gap-2">
 
-          Company Name
+          公司名称
         </Label>
         <Input
           defaultValue={themeCompanyName}
-          placeholder="Enter company name"
+          placeholder="输入公司名称"
           onBlur={(e) => setThemeCompanyName(e.target.value)}
         />
       </div>
       <Label className="flex text-base items-center gap-2">
 
-        Brand Logo
+        品牌徽标
       </Label>
 
       <div className="space-y-2 bg-[#F6F6F9] rounded-md p-1 cursor-pointer"
@@ -779,13 +779,13 @@ const ThemePanel: React.FC = () => {
           {isLogoUploading ? (
             <div className="flex flex-col items-center justify-center py-6 text-gray-500">
               <Loader2 className="h-6 w-6 animate-spin mb-2" />
-              <p className="text-sm">Uploading logo...</p>
+              <p className="text-sm">正在上传徽标...</p>
             </div>
           ) : customBrandLogo ? (
             <div className="space-y-2">
               <img
                 src={customBrandLogo}
-                alt="Brand Logo"
+                alt="品牌徽标"
                 className="mx-auto h-16 w-auto object-contain"
               />
               <Button
@@ -797,7 +797,7 @@ const ThemePanel: React.FC = () => {
                   setCustomBrandLogoId('')
                 }}
               >
-                Remove Logo
+                移除徽标
               </Button>
             </div>
           ) : (
@@ -809,8 +809,8 @@ const ThemePanel: React.FC = () => {
               </div>
               <div className="mt-2">
                 <label htmlFor="logo-upload" className="cursor-pointer">
-                  <span className="text-blue-600 hover:text-blue-500">Click to upload</span>
-                  <span className="text-gray-500"> or drag and drop</span>
+                  <span className="text-blue-600 hover:text-blue-500">点击上传</span>
+                  <span className="text-gray-500"> 或拖拽文件到此处</span>
                 </label>
                 <input
                   id="logo-upload"
@@ -849,20 +849,20 @@ const ThemePanel: React.FC = () => {
       <div className='py-[28px] flex justify-between'>
 
         <h3 className=" text-[28px]  tracking-[-0.84px] font-unbounded font-normal text-[#101828] flex items-center gap-2">
-          Themes
+          主题
         </h3>
         <Link
           href="/theme?tab=new-theme"
           className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-black text-sm font-semibold font-syne shadow-sm hover:shadow-md"
-          aria-label="Create new theme"
+          aria-label="创建新主题"
           style={{
             borderRadius: "48px",
             background: "linear-gradient(270deg, #D5CAFC 2.4%, #E3D2EB 27.88%, #F4DCD3 69.23%, #FDE4C2 100%)",
           }}
         >
 
-          <span className="hidden md:inline">New Theme</span>
-          <span className="md:hidden">New</span>
+          <span className="hidden md:inline">新建主题</span>
+          <span className="md:hidden">新建</span>
           <ChevronRight className="w-4 h-4" />
         </Link>
       </div>
@@ -873,7 +873,7 @@ const ThemePanel: React.FC = () => {
           style={{
             background: tab === 'custom' ? 'linear-gradient(270deg, #D5CAFC 2.4%, #E3D2EB 27.88%, #F4DCD3 69.23%, #FDE4C2 100%)' : 'transparent'
           }}
-        >Custom</button>
+        >自定义</button>
         <svg xmlns="http://www.w3.org/2000/svg" className='mx-1' width="2" height="17" viewBox="0 0 2 17" fill="none">
           <path d="M1 0V16.5" stroke="#EDECEC" strokeWidth="2" />
         </svg>
@@ -882,7 +882,7 @@ const ThemePanel: React.FC = () => {
           style={{
             background: tab === 'default' ? 'linear-gradient(270deg, #D5CAFC 2.4%, #E3D2EB 27.88%, #F4DCD3 69.23%, #FDE4C2 100%)' : 'transparent'
           }}
-        >Built-in</button>
+        >内置</button>
       </div>
       {/* Built-in Themes */}
 
@@ -954,7 +954,7 @@ const ThemePanel: React.FC = () => {
 
                         className='px-3.5 py-2.5 bg-[#F7F6F9] rounded-[48px] text-xs font-semibold text-[#101323]'
                         onClick={() => setCurrentStep(currentStep - 1)}
-                      >Back</button>}
+                      >上一步</button>}
 
                       <button className='px-7 py-2.5 flex items-center gap-1 rounded-[48px] text-xs font-semibold text-[#101323] '
 
@@ -980,7 +980,7 @@ const ThemePanel: React.FC = () => {
                           background: 'linear-gradient(270deg, #D5CAFC 2.4%, #E3D2EB 27.88%, #F4DCD3 69.23%, #FDE4C2 100%)'
                         }}
                       >
-                        {currentStep === 1 ? 'Generate theme palette' : currentStep === 2 ? 'Continue to Fonts' : currentStep === 3 ? 'Continue to Design' : 'Save as Custom Theme'}
+                        {currentStep === 1 ? '生成主题调色板' : currentStep === 2 ? '继续设置字体' : currentStep === 3 ? '继续设置徽标' : '保存为自定义主题'}
                         <ChevronRight className='w-4 h-4' />
                       </button>
                     </div>

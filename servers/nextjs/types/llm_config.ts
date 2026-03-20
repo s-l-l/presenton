@@ -13,6 +13,10 @@ export interface LLMConfig {
   ANTHROPIC_API_KEY?: string;
   ANTHROPIC_MODEL?: string;
 
+  // Doubao
+  DOUBAO_API_KEY?: string;
+  DOUBAO_MODEL?: string;
+
   // Ollama
   OLLAMA_URL?: string;
   OLLAMA_MODEL?: string;
@@ -25,6 +29,7 @@ export interface LLMConfig {
   // Image providers
   DISABLE_IMAGE_GENERATION?: boolean;
   IMAGE_PROVIDER?: string;
+  DOUBAO_IMAGE_MODEL?: string;
   PEXELS_API_KEY?: string;
   PIXABAY_API_KEY?: string;
 

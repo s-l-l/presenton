@@ -129,7 +129,7 @@ const dynamicSlideLayout: React.FC<{ data: Partial<z.infer<typeof Schema>> }> = 
                             <YAxis {...axisProps} tickFormatter={formatComma} />
                             <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
                             {chartData?.columns?.map((column, index) => (
-                                <Line type="monotone" dataKey={column} name={column} stroke={graphColors(index)} strokeWidth={3} dot={{ r: 5, strokeWidth: 0 }} activeDot={{ r: 7 }} />
+                                <Line key={`line-${column}-${index}`} type="monotone" dataKey={column} name={column} stroke={graphColors(index)} strokeWidth={3} dot={{ r: 5, strokeWidth: 0 }} activeDot={{ r: 7 }} />
                             ))}
                         </LineChart>
                     </ResponsiveContainer>
@@ -160,7 +160,7 @@ const dynamicSlideLayout: React.FC<{ data: Partial<z.infer<typeof Schema>> }> = 
                             <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
                             <Legend />
                             {chartData?.columns?.map((column, index) => (
-                                <Bar dataKey={column} name={column} fill={graphColors(index)} radius={[4, 4, 0, 0]}>
+                                <Bar key={`bar-grouped-v-${column}-${index}`} dataKey={column} name={column} fill={graphColors(index)} radius={[4, 4, 0, 0]}>
                                     <LabelList dataKey={column} position="top" fill="var(--background-text, #4B5563)" style={{ fontSize: '10px', fontWeight: 600 }} />
                                 </Bar>
                             ))}
@@ -178,7 +178,7 @@ const dynamicSlideLayout: React.FC<{ data: Partial<z.infer<typeof Schema>> }> = 
                             <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
                             <Legend />
                             {chartData?.columns?.map((column, index) => (
-                                <Bar dataKey={column} name={column} fill={graphColors(index)} radius={[0, 4, 4, 0]} />
+                                <Bar key={`bar-grouped-h-${column}-${index}`} dataKey={column} name={column} fill={graphColors(index)} radius={[0, 4, 4, 0]} />
                             ))}
                         </BarChart>
                     </ResponsiveContainer>
@@ -224,7 +224,7 @@ const dynamicSlideLayout: React.FC<{ data: Partial<z.infer<typeof Schema>> }> = 
                             <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
                             <Legend />
                             {chartData?.columns?.map((column, index) => (
-                                <Bar dataKey={column} name={column} fill={graphColors(index)} radius={[4, 4, 0, 0]} barSize={30}>
+                                <Bar key={`bar-clustered-${column}-${index}`} dataKey={column} name={column} fill={graphColors(index)} radius={[4, 4, 0, 0]} barSize={30}>
                                     <LabelList dataKey={column} position="top" fill="var(--background-text, #4B5563)" style={{ fontSize: '9px', fontWeight: 600 }} />
                                 </Bar>
                             ))}
@@ -248,7 +248,7 @@ const dynamicSlideLayout: React.FC<{ data: Partial<z.infer<typeof Schema>> }> = 
                             <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
                             <Legend />
                             {chartData?.columns?.map((column, index) => (
-                                <Bar dataKey="positive" name={column} fill={graphColors(index)} stackId="stack" radius={[0, 4, 4, 0]} />
+                                <Bar key={`bar-diverging-${column}-${index}`} dataKey="positive" name={column} fill={graphColors(index)} stackId="stack" radius={[0, 4, 4, 0]} />
 
                             ))}
                         </BarChart>
@@ -273,7 +273,7 @@ const dynamicSlideLayout: React.FC<{ data: Partial<z.infer<typeof Schema>> }> = 
                                 ))}
                             </defs>
                             {chartData?.columns?.map((column, index) => (
-                                <Area type="monotone" dataKey={column} name={column} stroke={graphColors(index)} strokeWidth={2} fill={`url(#metricsArea${index})`} />
+                                <Area key={`area-${column}-${index}`} type="monotone" dataKey={column} name={column} stroke={graphColors(index)} strokeWidth={2} fill={`url(#metricsArea-${index})`} />
                             ))}
                         </AreaChart>
                     </ResponsiveContainer>
@@ -289,7 +289,7 @@ const dynamicSlideLayout: React.FC<{ data: Partial<z.infer<typeof Schema>> }> = 
                             <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
                             <Legend />
                             {chartData?.columns?.map((column, index) => (
-                                <Area type="monotone" dataKey={column} name={column} stackId="1" stroke={graphColors(index)} fill={graphColors(index)} fillOpacity={0.5} />
+                                <Area key={`area-stacked-${column}-${index}`} type="monotone" dataKey={column} name={column} stackId="1" stroke={graphColors(index)} fill={graphColors(index)} fillOpacity={0.5} />
                             ))}
                         </AreaChart>
                     </ResponsiveContainer>

@@ -81,6 +81,15 @@ export const IMAGE_PROVIDERS: Record<string, ImageProviderOption> = {
     apiKeyField: "GOOGLE_API_KEY",
     apiKeyFieldLabel: "Google API Key",
   },
+  doubao: {
+    value: "doubao",
+    label: "Doubao Image",
+    description: "Doubao's high-quality image generation model",
+    icon: "/icons/doubao.png",
+    requiresApiKey: true,
+    apiKeyField: "DOUBAO_API_KEY",
+    apiKeyFieldLabel: "Doubao API Key",
+  },
   comfyui: {
     value: "comfyui",
     label: "ComfyUI",
@@ -113,6 +122,13 @@ export const LLM_PROVIDERS: Record<string, LLMProviderOption> = {
     description: "Anthropic's Claude models",
     url: "https://api.anthropic.com/v1",
     icon: "/icons/anthropic.png",
+  },
+  doubao: {
+    value: "doubao",
+    label: "Doubao",
+    description: "Doubao's primary text generation model",
+    url: "https://ark.cn-beijing.volces.com/api/v3",
+    icon: "/icons/doubao.png",
   },
   ollama: {
     value: "ollama",

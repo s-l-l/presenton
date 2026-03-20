@@ -57,6 +57,9 @@ export async function POST(request: Request) {
       userConfig.ANTHROPIC_API_KEY || existingConfig.ANTHROPIC_API_KEY,
     ANTHROPIC_MODEL:
       userConfig.ANTHROPIC_MODEL || existingConfig.ANTHROPIC_MODEL,
+    DOUBAO_API_KEY: userConfig.DOUBAO_API_KEY || existingConfig.DOUBAO_API_KEY,
+    DOUBAO_MODEL: userConfig.DOUBAO_MODEL || existingConfig.DOUBAO_MODEL,
+    DOUBAO_IMAGE_MODEL: userConfig.DOUBAO_IMAGE_MODEL || existingConfig.DOUBAO_IMAGE_MODEL,
     OLLAMA_URL: userConfig.OLLAMA_URL || existingConfig.OLLAMA_URL,
     OLLAMA_MODEL: userConfig.OLLAMA_MODEL || existingConfig.OLLAMA_MODEL,
     CUSTOM_LLM_URL: userConfig.CUSTOM_LLM_URL || existingConfig.CUSTOM_LLM_URL,

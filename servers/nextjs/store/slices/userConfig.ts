@@ -8,7 +8,7 @@ interface UserConfigState {
 
 const initialState: UserConfigState = {
   llm_config: {
-    LLM: "openai",
+    LLM: "doubao",
     IMAGE_PROVIDER: "gpt-image-1.5",
 
   },
