@@ -121,6 +121,26 @@ def get_comfyui_workflow_env():
     return os.getenv("COMFYUI_WORKFLOW")
 
 
+def get_nextjs_api_base_url_env():
+    return os.getenv("NEXTJS_API_BASE_URL")
+
+
+def get_template_source_env():
+    return os.getenv("TEMPLATE_SOURCE")
+
+
+def get_template_remote_fallback_env():
+    return os.getenv("TEMPLATE_REMOTE_FALLBACK")
+
+
+def get_template_preload_env():
+    return os.getenv("TEMPLATE_CACHE_PRELOAD")
+
+
+def get_template_local_dir_env():
+    return os.getenv("TEMPLATE_LOCAL_DIR")
+
+
 # Dalle 3 Quality
 def get_dall_e_3_quality_env():
     return os.getenv("DALL_E_3_QUALITY")

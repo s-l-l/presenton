@@ -1,0 +1,3927 @@
+{
+  "version": "v1",
+  "name": "neo-general",
+  "ordered": false,
+  "slides": [
+    {
+      "id": "neo-general:title-side-insight-slide",
+      "name": "Split Title With Text Card",
+      "description": "A balanced two-section layout with bold title and accent bar on the left, paired with a white card on the right containing accent-colored heading and description text.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Key Insights & Learnings",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 25
+          },
+          "insightTitle": {
+            "default": "CONTENT + PAID SOCIAL COMBINATION DRIVES HIGHEST QUALITY LEADS",
+            "description": "Heading for the highlighted card",
+            "type": "string",
+            "maxLength": 63
+          },
+          "insightDescription": {
+            "default": "Leads from integrated campaigns had 47% faster time-to-close and 28% higher average contract value.",
+            "description": "Description text for the highlighted card",
+            "type": "string",
+            "maxLength": 99
+          }
+        },
+        "required": [
+          "title",
+          "insightTitle",
+          "insightDescription"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:title-six-card-grid-slide-layout",
+      "name": "Title With Six Text Cards Grid",
+      "description": "A layout featuring left-aligned bold title with accent bar, followed by a 3x2 grid of up to 6 cards. Each card contains an accent-colored heading and description text.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Key Insights & Learnings",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 25
+          },
+          "cards": {
+            "default": [
+              {
+                "heading": "ENTERPRISE ABM DELIVERS 3.2X HIGHER CONVERSION RATES",
+                "description": "Account-based campaigns targeting enterprises."
+              },
+              {
+                "heading": "CONTENT + PAID SOCIAL COMBINATION DRIVES HIGHEST",
+                "description": "Leads from integrated campaigns had 47% faster."
+              },
+              {
+                "heading": "MOBILE OPTIMIZATION INCREASED MOBILE",
+                "description": "Landing page redesign focused on mobile."
+              },
+              {
+                "heading": "ENTERPRISE ABM DELIVERS 3.2X HIGHER CONVERSION RATES",
+                "description": "Account-based campaigns targeting enterprises."
+              },
+              {
+                "heading": "CONTENT + PAID SOCIAL COMBINATION DRIVES HIGHEST",
+                "description": "Leads from integrated campaigns had 47% faster."
+              },
+              {
+                "heading": "MOBILE OPTIMIZATION INCREASED MOBILE",
+                "description": "Landing page redesign focused on mobile."
+              }
+            ],
+            "description": "Array of cards with heading and description",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "description": "Heading text for the card",
+                  "type": "string",
+                  "maxLength": 56
+                },
+                "description": {
+                  "description": "Description text for the card",
+                  "type": "string",
+                  "maxLength": 46
+                }
+              },
+              "required": [
+                "heading",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "cards"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:title-with-full-width-chart",
+      "name": "Title With Full-Width Chart",
+      "description": "A centered layout with a bold title and underline accent, followed by a full-width chart container with legend. Supports line, bar, grouped, stacked, clustered, diverging, area, pie, and donut charts.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Spend & ROI Dashbo       ard",
+            "description": "The main title of the slide",
+            "type": "string",
+            "maxLength": 30
+          },
+          "chart": {
+            "default": {
+              "title": "Revenue vs Spend",
+              "type": "bar",
+              "categories": [
+                "Jan",
+                "Feb",
+                "Mar"
+              ],
+              "series": [
+                {
+                  "name": "Revenue",
+                  "color": "#8910FA",
+                  "values": [
+                    520,
+                    660,
+                    185,
+                    200,
+                    250,
+                    300
+                  ]
+                },
+                {
+                  "name": "Spend",
+                  "color": "#457EE5",
+                  "values": [
+                    140,
+                    245,
+                    400
+                  ]
+                }
+              ]
+            },
+            "description": "Chart configuration to render on the slide",
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "maxLength": 64
+              },
+              "type": {
+                "default": "bar",
+                "type": "string",
+                "enum": [
+                  "line",
+                  "bar",
+                  "horizontalBar",
+                  "bar-grouped-vertical",
+                  "bar-grouped-horizontal",
+                  "bar-stacked-vertical",
+                  "bar-stacked-horizontal",
+                  "bar-clustered",
+                  "bar-diverging",
+                  "area",
+                  "area-stacked",
+                  "pie",
+                  "donut"
+                ]
+              },
+              "categories": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 16
+                }
+              },
+              "series": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "maxLength": 32
+                    },
+                    "color": {
+                      "type": "string"
+                    },
+                    "values": {
+                      "minItems": 1,
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "values"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "divergingData": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "positive": {
+                      "type": "number"
+                    },
+                    "negative": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "positive",
+                    "negative"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "divergingLabels": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "categories",
+              "series"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "title",
+          "chart"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:title-metrics-with-chart",
+      "name": "Chart With Sidebar Metrics",
+      "description": "A two-column layout featuring a bold title, a large chart container on the left, and up to 6 vertical metrics on the right sidebar. Supports line, bar, grouped, stacked, clustered, diverging, area, pie, and donut charts.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Spend & ROI Overview",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 21
+          },
+          "description": {
+            "default": "Focus on companies with 500+ employees in Financial Services, Healthcare, and Technology sectors. Target $3.5M in new pipeline with sub-$150 CAC through account-based marketing and content-led strategies.",
+            "description": "Supporting description text for the slide",
+            "type": "string",
+            "maxLength": 100
+          },
+          "chart": {
+            "default": {
+              "title": "Revenue vs Spend",
+              "type": "line",
+              "categories": [
+                "Jan",
+                "Feb",
+                "Mar"
+              ],
+              "series": [
+                {
+                  "name": "Revenue",
+                  "color": "#8910FA",
+                  "values": [
+                    520,
+                    660,
+                    985
+                  ]
+                },
+                {
+                  "name": "Spend",
+                  "color": "#457EE5",
+                  "values": [
+                    140,
+                    245,
+                    400
+                  ]
+                }
+              ],
+              "colorPalette": "vibrant"
+            },
+            "description": "Chart configuration to render on the slide",
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "maxLength": 64
+              },
+              "type": {
+                "default": "bar-stacked-horizontal",
+                "type": "string",
+                "enum": [
+                  "line",
+                  "bar",
+                  "horizontalBar",
+                  "bar-grouped-vertical",
+                  "bar-grouped-horizontal",
+                  "bar-stacked-vertical",
+                  "bar-stacked-horizontal",
+                  "bar-clustered",
+                  "bar-diverging",
+                  "area",
+                  "area-stacked",
+                  "pie",
+                  "donut"
+                ]
+              },
+              "categories": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 16
+                }
+              },
+              "series": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "maxLength": 32
+                    },
+                    "color": {
+                      "type": "string"
+                    },
+                    "values": {
+                      "minItems": 1,
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "values"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "divergingData": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "positive": {
+                      "type": "number"
+                    },
+                    "negative": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "positive",
+                    "negative"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "divergingLabels": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "colorPalette": {
+                "default": "vibrant",
+                "type": "string",
+                "enum": [
+                  "vibrant",
+                  "ocean",
+                  "professional"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "categories",
+              "series",
+              "colorPalette"
+            ],
+            "additionalProperties": false
+          },
+          "metrics": {
+            "default": [
+              {
+                "value": "$1,800K",
+                "label": "Total Planned"
+              },
+              {
+                "value": "$1,800K",
+                "label": "Total Actual"
+              },
+              {
+                "value": "$1,800K",
+                "label": "Total Planned"
+              },
+              {
+                "value": "$1,800K",
+                "label": "Total Actual"
+              },
+              {
+                "value": "$1,800K",
+                "label": "Total Planned"
+              },
+              {
+                "value": "$1,800K",
+                "label": "Total Actual"
+              }
+            ],
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "description": "The displayed metric value",
+                  "type": "string",
+                  "maxLength": 7
+                },
+                "label": {
+                  "description": "Label describing the metric",
+                  "type": "string",
+                  "maxLength": 13
+                }
+              },
+              "required": [
+                "value",
+                "label"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "chart",
+          "metrics"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:title-description-team-grid",
+      "name": "Title Description With Photo Row",
+      "description": "A top-aligned layout featuring split title and description sections at the top, followed by a horizontal row of up to 4 person cards. Each card shows name, designation, square photo, and brief bio.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Our Team Members",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 30
+          },
+          "description": {
+            "default": "Focus on companies with 500+ employees in Financial Services, Healthcare, and Technology sectors. Target $3.5M in new pipeline with sub-$150 CAC through account-based marketing and content-led strategies.",
+            "description": "Supporting description text for the slide",
+            "type": "string",
+            "maxLength": 400
+          },
+          "teamMembers": {
+            "default": [
+              {
+                "name": "Hannah Morales",
+                "designation": "Founder & CEO",
+                "image": {
+                  "__image_url__": "https://presenton-public-assets.s3.ap-southeast-1.amazonaws.com/replaceable_template_image.png",
+                  "__image_prompt__": "Professional headshot of a female executive"
+                },
+                "bio": "Focus on companies with 500+ employees."
+              },
+              {
+                "name": "James Wilson",
+                "designation": "Head of Sales",
+                "image": {
+                  "__image_url__": "https://presenton-public-assets.s3.ap-southeast-1.amazonaws.com/replaceable_template_image.png",
+                  "__image_prompt__": "Professional headshot of a male executive"
+                },
+                "bio": "Focus on companies with 500+ employees."
+              },
+              {
+                "name": "Helene Paquet",
+                "designation": "Chief Tech Officer",
+                "image": {
+                  "__image_url__": "https://presenton-public-assets.s3.ap-southeast-1.amazonaws.com/replaceable_template_image.png",
+                  "__image_prompt__": "Professional headshot of a female technology leader"
+                },
+                "bio": "Focus on companies with 500+ employees."
+              },
+              {
+                "name": "Marcus Chen",
+                "designation": "Creative Director",
+                "image": {
+                  "__image_url__": "https://presenton-public-assets.s3.ap-southeast-1.amazonaws.com/replaceable_template_image.png",
+                  "__image_prompt__": "Professional headshot of a male creative professional"
+                },
+                "bio": "Focus on companies with 500+ employees."
+              }
+            ],
+            "description": "List of person cards, up to 4 items",
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "Name of the person",
+                  "type": "string",
+                  "maxLength": 40
+                },
+                "designation": {
+                  "description": "Role or position title",
+                  "type": "string",
+                  "maxLength": 50
+                },
+                "image": {
+                  "description": "Profile image of the person",
+                  "type": "object",
+                  "properties": {
+                    "__image_url__": {
+                      "type": "string"
+                    },
+                    "__image_prompt__": {
+                      "type": "string",
+                      "maxLength": 100
+                    }
+                  },
+                  "required": [
+                    "__image_url__",
+                    "__image_prompt__"
+                  ],
+                  "additionalProperties": false
+                },
+                "bio": {
+                  "description": "Brief biography or description text",
+                  "type": "string",
+                  "maxLength": 100
+                }
+              },
+              "required": [
+                "name",
+                "designation",
+                "image",
+                "bio"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "teamMembers"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:title-three-column-risk-constraints-slide-layout",
+      "name": "Three Column Category Cards",
+      "description": "A layout with bold title and accent bar at top, followed by three column cards each featuring large category label, subtitle with accent dot, and detailed description.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Risks & Constraints",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 20
+          },
+          "items": {
+            "default": [
+              {
+                "bgTitle": "MARKETbaba",
+                "subtitle": "Market Saturation",
+                "description": "Increasing competition in key verticals may pressure conversion rates and CAC"
+              },
+              {
+                "bgTitle": "BUDGET",
+                "subtitle": "Budget Constraints",
+                "description": "Q1 budget reduction of 15% may limit ability to scale successful campaigns"
+              },
+              {
+                "bgTitle": "CAPACITY",
+                "subtitle": "Resource Capacity",
+                "description": "Content production team at 110% capacity; may impact content velocity"
+              }
+            ],
+            "description": "List of category items with details",
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "bgTitle": {
+                  "default": "MARKET",
+                  "description": "Large category label displayed prominently",
+                  "type": "string",
+                  "maxLength": 10
+                },
+                "subtitle": {
+                  "default": "Market Saturation",
+                  "description": "Secondary heading for the item",
+                  "type": "string",
+                  "maxLength": 20
+                },
+                "description": {
+                  "default": "Increasing competition in key verticals may pressure conversion rates and CAC",
+                  "description": "Detailed description text for the item",
+                  "type": "string",
+                  "maxLength": 70
+                }
+              },
+              "required": [
+                "bgTitle",
+                "subtitle",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "items"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:title-metricValue-metricLabel-funnelStages",
+      "name": "Metric With Funnel Bars",
+      "description": "A layout featuring title with accent bar, left-side key metric with label, and horizontal funnel visualization on the right. Each funnel stage shows labeled pill, connector line, and colored bar with value and rate.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Funnel Performance",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 30
+          },
+          "metricValue": {
+            "default": "0.24%",
+            "description": "Primary metric value displayed",
+            "type": "string",
+            "maxLength": 10
+          },
+          "metricLabel": {
+            "default": "Overall\nVisit → Customer",
+            "description": "Label describing the metric",
+            "type": "string",
+            "maxLength": 100
+          },
+          "funnelStages": {
+            "default": [
+              {
+                "label": "Visitors",
+                "value": "124,500",
+                "conversionRate": "10%"
+              },
+              {
+                "label": "Leads",
+                "value": "12,450",
+                "conversionRate": "10%"
+              },
+              {
+                "label": "Marketing Qualified",
+                "value": "4,356",
+                "conversionRate": "35%"
+              }
+            ],
+            "description": "Data points for the funnel visualization",
+            "maxItems": 5,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "description": "Label for the stage",
+                  "type": "string",
+                  "maxLength": 30
+                },
+                "value": {
+                  "description": "Value displayed for this stage",
+                  "type": "string",
+                  "maxLength": 15
+                },
+                "conversionRate": {
+                  "description": "Rate value shown for the stage",
+                  "type": "string",
+                  "maxLength": 10
+                }
+              },
+              "required": [
+                "label",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "metricValue",
+          "metricLabel",
+          "funnelStages"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:thank-you-contact-info-footer-image-slide-layout",
+      "name": "Centered Title With Contact And Footer Image",
+      "description": "A conclusion slide featuring centered title with accent bar, description text on the left, contact information (phone, email, website) aligned right, and a full-width footer image.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Thank you",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 10
+          },
+          "description": {
+            "default": "Thanks for supporting our small business! to show our love, please enjoy 20% off you next order with the code \"CODE20\"",
+            "description": "Supporting description text",
+            "type": "string",
+            "maxLength": 120
+          },
+          "contactTitle": {
+            "default": "Contact Us",
+            "description": "Heading for the contact section",
+            "type": "string",
+            "maxLength": 15
+          },
+          "phone": {
+            "default": "+977-98000000",
+            "description": "Phone number text",
+            "type": "string",
+            "maxLength": 20
+          },
+          "email": {
+            "default": "presenton@gmail.com",
+            "description": "Email address text",
+            "type": "string",
+            "maxLength": 30
+          },
+          "website": {
+            "default": "www.presenton.com",
+            "description": "Website URL text",
+            "type": "string",
+            "maxLength": 30
+          },
+          "footerImage": {
+            "default": {
+              "__image_url__": "https://presenton-public-assets.s3.ap-southeast-1.amazonaws.com/replaceable_template_image.png",
+              "__image_prompt__": "A professional aesthetic photo of business hands reviewing documents and charts"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "type": "string"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "contactTitle",
+          "phone",
+          "email",
+          "website",
+          "footerImage"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:timeline-alternating-cards-slide",
+      "name": "Horizontal Timeline With Cards",
+      "description": "A visual timeline layout featuring centered title, horizontal dashed axis line, and 2-6 milestone cards alternating above and below the axis. Each card shows a date label and description with colored accent dots.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Timeline",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 20
+          },
+          "milestones": {
+            "default": [
+              {
+                "year": "2017",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed facilisis lacinia dictum."
+              },
+              {
+                "year": "2018",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed facilisis lacinia dictum."
+              },
+              {
+                "year": "2019",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed facilisis lacinia dictum."
+              },
+              {
+                "year": "2020",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed facilisis lacinia dictum."
+              },
+              {
+                "year": "2021",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed facilisis lacinia dictum."
+              },
+              {
+                "year": "2022",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed facilisis lacinia dictum."
+              },
+              {
+                "year": "2023",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed facilisis lacinia dictum."
+              },
+              {
+                "year": "2024",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed facilisis lacinia dictum."
+              }
+            ],
+            "description": "List of milestone items for the timeline",
+            "minItems": 2,
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "year": {
+                  "description": "Time period or date label",
+                  "type": "string",
+                  "maxLength": 4
+                },
+                "description": {
+                  "description": "Description text for the milestone",
+                  "type": "string",
+                  "maxLength": 100
+                }
+              },
+              "required": [
+                "year",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "milestones"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:title-three-columns-with-labels",
+      "name": "Three Columns With Index Numbers",
+      "description": "A layout featuring bold title with accent bar, followed by three indexed columns each containing large index number, heading, and two labeled content sections.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Target Audience Breakdown",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 30
+          },
+          "columns": {
+            "default": [
+              {
+                "index": "01",
+                "heading": "C-Suite Executives",
+                "labelOne": "KEY NEED",
+                "contentOne": "Strategic growth & competitive advantage",
+                "labelTwo": "PRIMARY CHANNEL",
+                "contentTwo": "LinkedIn, executive events"
+              },
+              {
+                "index": "02",
+                "heading": "VP of Operations",
+                "labelOne": "KEY NEED",
+                "contentOne": "Efficiency & cost optimization",
+                "labelTwo": "PRIMARY CHANNEL",
+                "contentTwo": "Industry publications, webinars"
+              },
+              {
+                "index": "03",
+                "heading": "Technical Leaders",
+                "labelOne": "KEY NEED",
+                "contentOne": "Integration capabilities & security",
+                "labelTwo": "PRIMARY CHANNEL",
+                "contentTwo": "Technical content, product demos"
+              }
+            ],
+            "description": "Array of columns with indexed content",
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "index": {
+                  "default": "01",
+                  "description": "Display number or index for the column",
+                  "type": "string",
+                  "maxLength": 2
+                },
+                "heading": {
+                  "default": "C-Suite Executives",
+                  "description": "Primary heading of the column",
+                  "type": "string",
+                  "maxLength": 20
+                },
+                "labelOne": {
+                  "default": "KEY NEED",
+                  "description": "Label for the first content block",
+                  "type": "string",
+                  "maxLength": 12
+                },
+                "contentOne": {
+                  "default": "Strategic growth & competitive advantage",
+                  "description": "Content for the first block",
+                  "type": "string",
+                  "maxLength": 50
+                },
+                "labelTwo": {
+                  "default": "PRIMARY CHANNEL",
+                  "description": "Label for the second content block",
+                  "type": "string",
+                  "maxLength": 12
+                },
+                "contentTwo": {
+                  "default": "LinkedIn, executive events",
+                  "description": "Content for the second block",
+                  "type": "string",
+                  "maxLength": 50
+                }
+              },
+              "required": [
+                "index",
+                "heading",
+                "labelOne",
+                "contentOne",
+                "labelTwo",
+                "contentTwo"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "columns"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:layout-text-block-with-metric-cards",
+      "name": "Text Block With Progress Metric Cards",
+      "description": "A split layout with title, subheading, and description on the left, paired with a gray panel containing up to 5 metric cards on the right. Each card shows name, value, target comparison, and semi-circular progress indicator.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Business Objective & KPIs",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 30
+          },
+          "objectiveTitle": {
+            "default": "Accelerate enterprise customer acquisition across EMEA and North America",
+            "description": "Subheading or objective statement",
+            "type": "string",
+            "maxLength": 80
+          },
+          "description": {
+            "default": "Focus on companies with 500+ employees in Financial Services, Healthcare, and Technology sectors. Target $3.5M in new pipeline with sub-$150 CAC through account-based marketing and content-led strategies.",
+            "description": "Supporting description text",
+            "type": "string",
+            "maxLength": 300
+          },
+          "kpis": {
+            "default": [
+              {
+                "name": "Pipeline Generated",
+                "value": "$4.2M",
+                "targetValue": "$3.5M",
+                "targetLabel": "Target",
+                "progressPercentage": 85,
+                "color": "#9234EC",
+                "footerLabel": "of total"
+              },
+              {
+                "name": "Marketing Qualified Leads",
+                "value": "8,420",
+                "targetValue": "6,250",
+                "targetLabel": "Target",
+                "progressPercentage": 75,
+                "color": "#9234EC",
+                "footerLabel": "of total"
+              },
+              {
+                "name": "Return on Ad Spend",
+                "value": "4.8X",
+                "targetValue": "4.0x",
+                "targetLabel": "Target",
+                "progressPercentage": 80,
+                "color": "#FF5400",
+                "footerLabel": "of total"
+              },
+              {
+                "name": "Return on Ad Spend",
+                "value": "4.8X",
+                "targetValue": "4.0x",
+                "targetLabel": "Target",
+                "progressPercentage": 80,
+                "color": "#FF5400",
+                "footerLabel": "of total"
+              },
+              {
+                "name": "Return on Ad Spend",
+                "value": "4.8X",
+                "targetValue": "4.0x",
+                "targetLabel": "Target",
+                "progressPercentage": 80,
+                "color": "#FF5400",
+                "footerLabel": "of total"
+              }
+            ],
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "Name of the metric card",
+                  "type": "string",
+                  "maxLength": 30
+                },
+                "value": {
+                  "description": "Current value displayed",
+                  "type": "string",
+                  "maxLength": 10
+                },
+                "targetValue": {
+                  "description": "Target value displayed",
+                  "type": "string",
+                  "maxLength": 10
+                },
+                "targetLabel": {
+                  "description": "Label text for target",
+                  "type": "string",
+                  "maxLength": 15
+                },
+                "progressPercentage": {
+                  "description": "Progress percentage value",
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100
+                },
+                "color": {
+                  "description": "Color hex code for progress bar",
+                  "type": "string"
+                },
+                "footerLabel": {
+                  "description": "Footer label text",
+                  "type": "string",
+                  "maxLength": 15
+                }
+              },
+              "required": [
+                "name",
+                "value",
+                "targetValue",
+                "targetLabel",
+                "progressPercentage",
+                "color",
+                "footerLabel"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "objectiveTitle",
+          "description",
+          "kpis"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:left-align-quote",
+      "name": "Left-Aligned Text On Background Image",
+      "description": "A full-bleed background image layout featuring a left-aligned bold title with accent bar, a prominent quote in large text, and author attribution below.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Word of Wisdom",
+            "type": "string",
+            "maxLength": 20
+          },
+          "quote": {
+            "default": "\"Success is not final, failure is not fatal: it is the courage to continue that counts. The future belongs to those who believe in the beauty of their dreams.\"",
+            "type": "string",
+            "maxLength": 200
+          },
+          "backgroundImage": {
+            "default": {
+              "__image_url__": "https://images.pexels.com/photos/33508509/pexels-photo-33508509.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+              "__image_prompt__": "Inspirational mountain landscape with dramatic sky and clouds"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "default": "https://images.pexels.com/photos/33508509/pexels-photo-33508509.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+                "description": "URL of the background image",
+                "type": "string"
+              },
+              "__image_prompt__": {
+                "default": "Inspirational mountain landscape with dramatic sky and clouds",
+                "description": "Prompt description for the image",
+                "type": "string"
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          },
+          "author": {
+            "default": "-Winston Churchill",
+            "type": "string",
+            "maxLength": 30
+          }
+        },
+        "required": [
+          "title",
+          "quote",
+          "backgroundImage",
+          "author"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:title-description-three-columns-table",
+      "name": "Title Description With Three Column Table",
+      "description": "A layout featuring split title and description at the top, followed by a three-column table with colored headers and vertical bullet point sections below each.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Go-to-Market Strategy",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 50
+          },
+          "description": {
+            "default": "Focus on companies with 500+ employees in Financial Services, Healthcare, and Technology sectors. Target $3.5M in new pipeline with sub-$150 CAC through account-based marketing and content-led strategies.",
+            "description": "Supporting description text for the slide",
+            "type": "string",
+            "maxLength": 400
+          },
+          "sections": {
+            "default": [
+              {
+                "heading": "Paid Channels",
+                "bulletPoints": [
+                  {
+                    "title": "LinkedIn Ads:",
+                    "description": " ABM Retargeting"
+                  },
+                  {
+                    "title": "Google Ads:",
+                    "description": " Intent Capture"
+                  },
+                  {
+                    "title": "Display:",
+                    "description": " Brand Awareness"
+                  }
+                ]
+              },
+              {
+                "heading": "Organic Channels",
+                "bulletPoints": [
+                  {
+                    "title": "SEO:",
+                    "description": " Thought Leadership"
+                  },
+                  {
+                    "title": "Content:",
+                    "description": " Education"
+                  },
+                  {
+                    "title": "Social:",
+                    "description": " Community"
+                  }
+                ]
+              },
+              {
+                "heading": "Partnerships",
+                "bulletPoints": [
+                  {
+                    "title": "Events:",
+                    "description": " Network Building"
+                  },
+                  {
+                    "title": "Co-Marketing:",
+                    "description": " Reach Extension"
+                  },
+                  {
+                    "title": "Referrals:",
+                    "description": " Trust Building"
+                  },
+                  {
+                    "title": "Referrals:",
+                    "description": " Trust Building"
+                  },
+                  {
+                    "title": "Referrals:",
+                    "description": " Trust Building"
+                  },
+                  {
+                    "title": "Referrals:",
+                    "description": " Trust Building"
+                  }
+                ]
+              }
+            ],
+            "description": "Column sections containing bullet points",
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "description": "Heading for the column section",
+                  "type": "string",
+                  "maxLength": 15
+                },
+                "bulletPoints": {
+                  "description": "List of bullet points in the section",
+                  "maxItems": 5,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "description": "Title label for the bullet point",
+                        "type": "string",
+                        "maxLength": 10
+                      },
+                      "description": {
+                        "description": "Description text for the bullet point",
+                        "type": "string",
+                        "maxLength": 20
+                      }
+                    },
+                    "required": [
+                      "title",
+                      "description"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "heading",
+                "bulletPoints"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "sections"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:title-challenge-outcome-customer-card",
+      "name": "Two Section Text With Highlight Card",
+      "description": "A two-section layout featuring title with accent bar, first section with heading and description, numbered list in the second section on the left, and a highlight card on the right with name, subtitle, icon badge, and prominent metric.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Customer Proof / Case Snapshot",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 30
+          },
+          "challengeSectionTitle": {
+            "default": "CHALLENGE",
+            "description": "Heading for the first content section",
+            "type": "string",
+            "maxLength": 12
+          },
+          "challengeContent": {
+            "default": "Fragmented marketing operations across 12 regions leading to inefficient spend allocation and inconsistent messaging. CAC increased 43% YoY.",
+            "description": "Descriptive text for the first section",
+            "type": "string",
+            "maxLength": 140
+          },
+          "outcomeSectionTitle": {
+            "default": "OUTCOME",
+            "description": "Heading for the second content section",
+            "type": "string",
+            "maxLength": 12
+          },
+          "outcomePoints": {
+            "default": [
+              "34% reduction in CAC within 6 months",
+              "Unified operations across all regions",
+              "$4.2M additional pipeline generated"
+            ],
+            "description": "List of bullet points for the second section",
+            "minItems": 1,
+            "maxItems": 5,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 40
+            }
+          },
+          "customerName": {
+            "default": "TechCorp Global",
+            "description": "Primary name or title in the card",
+            "type": "string",
+            "maxLength": 15
+          },
+          "customerSubTitle": {
+            "default": "Fortune 500 Technology Company",
+            "description": "Subtitle or secondary text in the card",
+            "type": "string",
+            "maxLength": 26
+          },
+          "metricValue": {
+            "default": "$4.2M",
+            "description": "The primary metric or statistic value",
+            "type": "string",
+            "maxLength": 6
+          },
+          "metricLabel": {
+            "default": "incremental pipeline in Q4",
+            "description": "Label describing the metric",
+            "type": "string",
+            "maxLength": 26
+          },
+          "metricIcon": {
+            "default": {
+              "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/placeholder.svg",
+              "__icon_query__": "circle"
+            },
+            "description": "Icon displayed with the metric",
+            "type": "object",
+            "properties": {
+              "__icon_url__": {
+                "type": "string"
+              },
+              "__icon_query__": {
+                "type": "string",
+                "maxLength": 30
+              }
+            },
+            "required": [
+              "__icon_url__",
+              "__icon_query__"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "title",
+          "challengeSectionTitle",
+          "challengeContent",
+          "outcomeSectionTitle",
+          "outcomePoints",
+          "customerName",
+          "customerSubTitle",
+          "metricValue",
+          "metricLabel",
+          "metricIcon"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:performance-grid-snapshot-slide",
+      "name": "Metric Cards Grid",
+      "description": "A centered layout with bold title and accent bar, followed by a 4x2 grid of up to 8 metric cards. Each card displays a value, label, and subtext. Cards can optionally be highlighted with colored background.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Campaign Performance Snapshot",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 30
+          },
+          "cards": {
+            "default": [
+              {
+                "metric": "342 SQLs",
+                "label": "Enterprise ABM Launch",
+                "subtext": "28% CONVERSION RATE",
+                "isHighlighted": false
+              },
+              {
+                "metric": "$1.8M pipeline",
+                "label": "Product Feature Release",
+                "subtext": "4.7X ROAS",
+                "isHighlighted": false
+              },
+              {
+                "metric": "156 Deals",
+                "label": "Industry Summit Sponsorship",
+                "subtext": "42% MEETING RATE",
+                "isHighlighted": true
+              },
+              {
+                "metric": "156 Deals",
+                "label": "Industry Summit Sponsorship",
+                "subtext": "42% MEETING RATE",
+                "isHighlighted": false
+              },
+              {
+                "metric": "342 SQLs",
+                "label": "Enterprise ABM Launch",
+                "subtext": "28% CONVERSION RATE",
+                "isHighlighted": false
+              },
+              {
+                "metric": "$1.8M pipeline",
+                "label": "Product Feature Release",
+                "subtext": "4.7X ROAS",
+                "isHighlighted": false
+              }
+            ],
+            "description": "Array of metric cards for the grid",
+            "minItems": 3,
+            "maxItems": 8,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "metric": {
+                  "type": "string",
+                  "maxLength": 20
+                },
+                "label": {
+                  "type": "string",
+                  "maxLength": 30
+                },
+                "subtext": {
+                  "type": "string",
+                  "maxLength": 30
+                },
+                "isHighlighted": {
+                  "default": false,
+                  "description": "Whether the card uses highlighted styling",
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "metric",
+                "label",
+                "subtext",
+                "isHighlighted"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "cards"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:headline-text-with-stats-layout",
+      "name": "Numbered List With Side Metrics",
+      "description": "A two-column layout with bold title, accent bar, and numbered bullet point list on the left, paired with 3 large vertical metrics on the right. Each metric shows value with label and accent dot.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Executive Summary",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 30
+          },
+          "bulletPoints": {
+            "default": [
+              "Exceeded revenue target by 12% ($2.4M vs $2.1M target), driven by strong performance in paid search and email campaigns",
+              "Marketing influenced 68% of total pipeline value, up from 52% last quarter",
+              "Paid Search ROI improved to 5.8x (from 4.1x), making it our most efficient channel",
+              "Marketing influenced 68% of total pipeline value, up from 52% last quarter",
+              "Paid Search ROI improved to 5.8x (from 4.1x), making it our most efficient channel",
+              "Marketing influenced 68% of total pipeline value, up from 52% last quarter",
+              "Paid Search ROI improved to 5.8x (from 4.1x), making it our most efficient channel"
+            ],
+            "description": "List of bullet point text items",
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 160
+            }
+          },
+          "metrics": {
+            "default": [
+              {
+                "value": "8,450",
+                "label": "Leads"
+              },
+              {
+                "value": "2,680",
+                "label": "MQLS"
+              },
+              {
+                "value": "$2400",
+                "label": "Revenue"
+              }
+            ],
+            "description": "Metric items displayed on the right side",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "description": "Value displayed for the metric",
+                  "type": "string",
+                  "maxLength": 8
+                },
+                "label": {
+                  "description": "Label text for the metric",
+                  "type": "string",
+                  "maxLength": 10
+                }
+              },
+              "required": [
+                "value",
+                "label"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "bulletPoints",
+          "metrics"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:headline-description-with-image-layout",
+      "name": "Title Description With Image",
+      "description": "A minimal two-column layout featuring bold title, accent bar, and description on the left, with a single rounded image on the right.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "slideNumber": {
+            "default": "1",
+            "description": "Slide number or index",
+            "type": "string",
+            "maxLength": 2
+          },
+          "title": {
+            "default": "Executive Summary",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 30
+          },
+          "description": {
+            "default": "Focus on companies with 500+ employees in Financial Services, Healthcare, and Technology sectors. Target $3.5M in new pipeline with sub-$150 CAC through account-based marketing and content-led strategies.",
+            "description": "Supporting description text",
+            "type": "string",
+            "maxLength": 400
+          },
+          "image": {
+            "default": {
+              "__image_url__": "https://presenton-public-assets.s3.ap-southeast-1.amazonaws.com/replaceable_template_image.png",
+              "__image_prompt__": "A close-up image of a professional team joining hands in a circle, symbolizing unity and partnership."
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "type": "string"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "slideNumber",
+          "title",
+          "description",
+          "image"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:headline-description-with-double-image-layout",
+      "name": "Title Description With Two Images",
+      "description": "A clean layout with left-aligned bold title, accent bar, and description paragraph, paired with two overlapping rounded images on the right in a grid arrangement.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "slideNumber": {
+            "default": "1",
+            "description": "Slide number or index",
+            "type": "string",
+            "maxLength": 2
+          },
+          "title": {
+            "default": "Executive Summary",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 30
+          },
+          "description": {
+            "default": "Focus on companies with 500+ employees in Financial Services, Healthcare, and Technology sectors. Target $3.5M in new pipeline with sub-$150 CAC through account-based marketing and content-led strategies.",
+            "description": "Supporting description text",
+            "type": "string",
+            "maxLength": 400
+          },
+          "firstImage": {
+            "default": {
+              "__image_url__": "https://presenton-public-assets.s3.ap-southeast-1.amazonaws.com/replaceable_template_image.png",
+              "__image_prompt__": "A close-up image of a professional team joining hands in a circle, symbolizing unity and partnership."
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "type": "string"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          },
+          "secondImage": {
+            "default": {
+              "__image_url__": "https://presenton-public-assets.s3.ap-southeast-1.amazonaws.com/replaceable_template_image.png",
+              "__image_prompt__": "A close-up image of a professional team joining hands in a circle, symbolizing unity and partnership."
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "type": "string"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "slideNumber",
+          "title",
+          "description",
+          "firstImage",
+          "secondImage"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:bullet-icons-only-slide",
+      "name": "Icon Bullet Grid With Image",
+      "description": "A layout featuring a large left-aligned title with a 2-4 icon bullet point grid, each with circular icon badge, title, and optional subtitle. A rounded supporting image sits on the right.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Heading text of the slide",
+            "default": "Solutions",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "image": {
+            "description": "URL of the supporting image",
+            "default": {
+              "__image_url__": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+              "__image_prompt__": "Business professionals collaborating and discussing solutions"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          },
+          "bulletPoints": {
+            "description": "List of icon bullet points",
+            "default": [
+              {
+                "title": "Custom Software",
+                "subtitle": "We create tailored software to optimize processes and boost efficiency.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/code-bold.svg",
+                  "__icon_query__": "code software development"
+                }
+              },
+              {
+                "title": "Digital Consulting",
+                "subtitle": "Our consultants guide organizations in leveraging the latest technologies.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/users-four-bold.svg",
+                  "__icon_query__": "users consulting team"
+                }
+              },
+              {
+                "title": "Support Services",
+                "subtitle": "We provide ongoing support to help businesses adapt and maintain performance.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/headphones-bold.svg",
+                  "__icon_query__": "headphones support service"
+                }
+              },
+              {
+                "title": "Scalable Marketing",
+                "subtitle": "Our data-driven strategies help businesses expand their reach and engagement.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/code-bold.svg",
+                  "__icon_query__": "trending up marketing growth"
+                }
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "Title text for the bullet point",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 80
+                },
+                "subtitle": {
+                  "description": "Subtitle text for the bullet point",
+                  "type": "string",
+                  "minLength": 5,
+                  "maxLength": 150
+                },
+                "icon": {
+                  "type": "object",
+                  "properties": {
+                    "__icon_url__": {
+                      "description": "URL to icon",
+                      "type": "string"
+                    },
+                    "__icon_query__": {
+                      "type": "string",
+                      "minLength": 5,
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "__icon_url__",
+                    "__icon_query__"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "title",
+                "icon"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "image",
+          "bulletPoints"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:bullet-with-icons-slide",
+      "name": "Image With Icon Bullets",
+      "description": "A two-section layout with a full-width title, left-side image with decorative grid pattern, and right-side content featuring description text and 1-3 icon-enhanced bullet points. Each bullet has an icon badge, title, accent line, and description.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Heading text of the slide",
+            "default": "Problem",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "description": {
+            "description": "Supporting description text",
+            "default": "Businesses face challenges with outdated technology and rising costs, limiting efficiency and growth in competitive markets.",
+            "type": "string",
+            "maxLength": 150
+          },
+          "image": {
+            "description": "URL of the supporting image",
+            "default": {
+              "__image_url__": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+              "__image_prompt__": "Business people analyzing documents and charts in office"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          },
+          "bulletPoints": {
+            "description": "List of icon bullet points",
+            "default": [
+              {
+                "title": "Inefficiency",
+                "description": "Businesses struggle to find digital tools that meet their needs, causing operational slowdowns.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/checks-bold.svg",
+                  "__icon_query__": "warning alert inefficiency"
+                }
+              },
+              {
+                "title": "High Costs",
+                "description": "Outdated systems increase expenses, while small businesses struggle to expand their market reach.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/fediverse-logo-bold.svg",
+                  "__icon_query__": "trending up costs chart"
+                }
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "Title text for the bullet point",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 60
+                },
+                "description": {
+                  "description": "Description text for the bullet point",
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 100
+                },
+                "icon": {
+                  "type": "object",
+                  "properties": {
+                    "__icon_url__": {
+                      "description": "URL to icon",
+                      "type": "string"
+                    },
+                    "__icon_query__": {
+                      "type": "string",
+                      "minLength": 5,
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "__icon_url__",
+                    "__icon_query__"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "title",
+                "description",
+                "icon"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "image",
+          "bulletPoints"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:chart-with-bullets-slide",
+      "name": "Chart With Bullet Cards",
+      "description": "A split layout with title, description, and a versatile chart on the left, paired with 1-3 colored icon bullet cards on the right. Supports bar, grouped, stacked, clustered, diverging, line, area, pie, and scatter charts.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Market Size",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "description": {
+            "description": "Description text below the title",
+            "default": "Businesses face challenges with outdated technology and rising costs, limiting efficiency and growth in competitive markets.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 150
+          },
+          "chartData": {
+            "default": {
+              "type": "bar",
+              "data": [
+                {
+                  "name": "Q1",
+                  "value": 45
+                },
+                {
+                  "name": "Q2",
+                  "value": 72
+                },
+                {
+                  "name": "Q3",
+                  "value": 58
+                },
+                {
+                  "name": "Q4",
+                  "value": 89
+                }
+              ],
+              "colorPalette": "vibrant"
+            },
+            "type": "object",
+            "properties": {
+              "type": {
+                "default": "bar",
+                "type": "string",
+                "enum": [
+                  "bar",
+                  "bar-horizontal",
+                  "bar-grouped-vertical",
+                  "bar-grouped-horizontal",
+                  "bar-stacked-vertical",
+                  "bar-stacked-horizontal",
+                  "bar-clustered",
+                  "bar-diverging",
+                  "line",
+                  "area",
+                  "area-stacked",
+                  "pie",
+                  "donut",
+                  "scatter"
+                ]
+              },
+              "data": {
+                "default": [
+                  {
+                    "name": "Q1",
+                    "value": 45
+                  },
+                  {
+                    "name": "Q2",
+                    "value": 72
+                  },
+                  {
+                    "name": "Q3",
+                    "value": 58
+                  },
+                  {
+                    "name": "Q4",
+                    "value": 89
+                  }
+                ],
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "description": "Data point name",
+                          "type": "string"
+                        },
+                        "value": {
+                          "description": "Data point value",
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "value"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "description": "Category name",
+                          "type": "string"
+                        },
+                        "values": {
+                          "description": "Key-value pairs for each series (object with series names as keys and numbers as values)"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "values"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "description": "Category name",
+                          "type": "string"
+                        },
+                        "positive": {
+                          "description": "Positive value",
+                          "type": "number"
+                        },
+                        "negative": {
+                          "description": "Negative value",
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "positive",
+                        "negative"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "description": "X coordinate",
+                          "type": "number"
+                        },
+                        "y": {
+                          "description": "Y coordinate",
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                ]
+              },
+              "series": {
+                "description": "Series names for grouped/stacked charts",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "divergingLabels": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "colorPalette": {
+                "default": "vibrant",
+                "type": "string",
+                "enum": [
+                  "vibrant",
+                  "ocean",
+                  "professional"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "data",
+              "colorPalette"
+            ],
+            "additionalProperties": false
+          },
+          "showLegend": {
+            "description": "Whether to show chart legend",
+            "default": false,
+            "type": "boolean"
+          },
+          "showTooltip": {
+            "description": "Whether to show chart tooltip",
+            "default": true,
+            "type": "boolean"
+          },
+          "bulletPoints": {
+            "description": "List of bullet points with colored boxes and icons",
+            "default": [
+              {
+                "title": "Total Addressable Market",
+                "description": "Companies can use TAM to plan future expansion and investment.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/chart-line-up-bold.svg",
+                  "__icon_query__": "target market scope"
+                }
+              },
+              {
+                "title": "Serviceable Available Market",
+                "description": "Indicates more measurable market segments for sales efforts.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/chart-line-up-bold.svg",
+                  "__icon_query__": "pie chart analysis"
+                }
+              },
+              {
+                "title": "Serviceable Obtainable Market",
+                "description": "Help companies plan development strategies according to the market.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/chart-line-up-bold.svg",
+                  "__icon_query__": "trending up growth"
+                }
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "Bullet point title",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 80
+                },
+                "description": {
+                  "description": "Bullet point description",
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 150
+                },
+                "icon": {
+                  "type": "object",
+                  "properties": {
+                    "__icon_url__": {
+                      "description": "URL to icon",
+                      "type": "string"
+                    },
+                    "__icon_query__": {
+                      "type": "string",
+                      "minLength": 5,
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "__icon_url__",
+                    "__icon_query__"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "title",
+                "description",
+                "icon"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "chartData",
+          "showLegend",
+          "showTooltip",
+          "bulletPoints"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:metrics-with-image-slide",
+      "name": "Image With Title And Metrics",
+      "description": "A two-column layout with a large supporting image on the left and content on the right including title, description, and a 2-column metrics grid displaying up to 3 statistics with labels and values.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Heading text of the slide",
+            "default": "Competitive Advantage",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "description": {
+            "description": "Supporting description text",
+            "default": "Ginyard International Co. stands out by offering custom digital solutions tailored to client needs, alongside long-term support to ensure lasting relationships and continuous adaptation.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 150
+          },
+          "image": {
+            "description": "URL of the supporting image",
+            "default": {
+              "__image_url__": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+              "__image_prompt__": "Person holding tablet with analytics dashboard and charts"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          },
+          "metrics": {
+            "description": "List of metric items to display",
+            "default": [
+              {
+                "label": "Satisfied Clients",
+                "value": "200+"
+              },
+              {
+                "label": "Client Retention Rate",
+                "value": "95%"
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "description": "Label text for the metric",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 100
+                },
+                "value": {
+                  "description": "Value displayed for the metric",
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 20
+                }
+              },
+              "required": [
+                "label",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "image",
+          "metrics"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:numbered-bullets-slide",
+      "name": "Title Image With Numbered Points",
+      "description": "A layout featuring a large title with accent line, a supporting image in the upper right, and 1-3 numbered bullet points in a two-column grid below. Each point has a large number prefix, title, and description.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Heading text of the slide",
+            "default": "Market Validation",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "image": {
+            "description": "URL of the supporting image",
+            "default": {
+              "__image_url__": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+              "__image_prompt__": "Business people analyzing charts and data on wall"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          },
+          "bulletPoints": {
+            "description": "List of numbered bullet points",
+            "default": [
+              {
+                "title": "Customer Insights",
+                "description": "Surveys reveal that 78% of businesses are planning to invest in digital solutions, with 85% preferring customized approaches."
+              },
+              {
+                "title": "Pilot Program Success",
+                "description": "The survey revealed that 78% of businesses plan to invest in digital solutions, and 85% prefer a tailored approach."
+              },
+              {
+                "title": "Pilot Program Success",
+                "description": "The survey revealed that 78% of businesses plan to invest in digital solutions, and 85% prefer a tailored approach."
+              },
+              {
+                "title": "Pilot Program Success",
+                "description": "The survey revealed that 78% of businesses plan to invest in digital solutions, and 85% prefer a tailored approach."
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "Title text for the bullet point",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 80
+                },
+                "description": {
+                  "description": "Description text for the bullet point",
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 150
+                }
+              },
+              "required": [
+                "title",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "image",
+          "bulletPoints"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:quote-slide",
+      "name": "Centered Text On Image Overlay",
+      "description": "A full-screen layout with background image, semi-transparent overlay, centered heading with accent line, large quote icon, quote text, and author attribution with decorative lines.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "heading": {
+            "description": "Heading text of the slide",
+            "default": "Words of Wisdom",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 60
+          },
+          "quote": {
+            "description": "Quotation text displayed on the slide",
+            "default": "Success is not final, failure is not fatal: it is the courage to continue that counts. The future belongs to those who believe in the beauty of their dreams.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 200
+          },
+          "author": {
+            "description": "Attribution name for the quote",
+            "default": "Winston Churchill",
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 50
+          },
+          "backgroundImage": {
+            "description": "URL of the background image",
+            "default": {
+              "__image_url__": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80",
+              "__image_prompt__": "Inspirational mountain landscape with dramatic sky and clouds"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "heading",
+          "quote",
+          "author",
+          "backgroundImage"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:title-two-column-numbered-list",
+      "name": "Split Title With Two Column Numbered List",
+      "description": "A split layout with large title on the left and two-column numbered list on the right. Each item displays a numbered circle badge and label.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Table of Content",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 30
+          },
+          "items": {
+            "default": [
+              {
+                "number": "1",
+                "label": "Introduction"
+              },
+              {
+                "number": "2",
+                "label": "Key Findings"
+              },
+              {
+                "number": "3",
+                "label": "Data Analysis"
+              },
+              {
+                "number": "4",
+                "label": "Recommendations"
+              },
+              {
+                "number": "5",
+                "label": "Conclusion"
+              },
+              {
+                "number": "6",
+                "label": "Introduction"
+              },
+              {
+                "number": "7",
+                "label": "Key Findings"
+              },
+              {
+                "number": "8",
+                "label": "Data Analysis"
+              },
+              {
+                "number": "9",
+                "label": "Recommendations"
+              },
+              {
+                "number": "10",
+                "label": "Conclusion"
+              }
+            ],
+            "description": "List of items displayed in two columns",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "number": {
+                  "default": "1",
+                  "description": "Sequence number or index",
+                  "type": "string",
+                  "maxLength": 5
+                },
+                "label": {
+                  "default": "Introduction",
+                  "description": "Label text for the item",
+                  "type": "string",
+                  "maxLength": 40
+                }
+              },
+              "required": [
+                "number",
+                "label"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "items"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:team-slide",
+      "name": "Description With Photo Cards Grid",
+      "description": "A two-section layout with title, accent line, and description on the left, paired with a 2x2 or flexible grid of 2-4 person cards on the right. Each card displays photo, name, position, and bio.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Heading text of the slide",
+            "default": "Our Team Members",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "companyDescription": {
+            "description": "Supporting description text",
+            "default": "Ginyard International Co. is a leading provider of innovative digital solutions tailored for businesses. Our mission is to empower organizations to achieve their goals through cutting-edge technology and strategic partnerships.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 150
+          },
+          "teamMembers": {
+            "description": "List of person cards with their information",
+            "default": [
+              {
+                "name": "Juliana Silva",
+                "position": "CEO",
+                "description": "Strategic leader with 15+ years experience in digital transformation and business growth.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+                  "__image_prompt__": "Professional businesswoman CEO headshot"
+                }
+              },
+              {
+                "name": "Daniel Gallego",
+                "position": "CTO",
+                "description": "Technology expert specializing in scalable solutions and innovative software architecture.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+                  "__image_prompt__": "Professional businessman CTO headshot"
+                }
+              },
+              {
+                "name": "Ketut Susilo",
+                "position": "COO",
+                "description": "Operations leader focused on efficiency, process optimization, and team development.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+                  "__image_prompt__": "Professional businessman COO headshot"
+                }
+              },
+              {
+                "name": "Anna Robertson",
+                "position": "CMO",
+                "description": "Marketing strategist with expertise in brand development and customer engagement.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+                  "__image_prompt__": "Professional businesswoman CMO headshot"
+                }
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "Name of the person",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 50
+                },
+                "position": {
+                  "description": "Role or position title",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 50
+                },
+                "description": {
+                  "description": "Brief description text",
+                  "type": "string",
+                  "maxLength": 150
+                },
+                "image": {
+                  "type": "object",
+                  "properties": {
+                    "__image_url__": {
+                      "description": "URL to image",
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "__image_prompt__": {
+                      "type": "string",
+                      "minLength": 10,
+                      "maxLength": 50
+                    }
+                  },
+                  "required": [
+                    "__image_url__",
+                    "__image_prompt__"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "name",
+                "position",
+                "description",
+                "image"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "companyDescription",
+          "teamMembers"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:multi-chart-grid-slide",
+      "name": "Title Description With Multi-Chart Grid",
+      "description": "A flexible dashboard layout featuring a title section with description and 1-6 auto-arranged charts in a responsive grid. Supports bar (vertical, horizontal, grouped, stacked, clustered, diverging), line, area, pie, donut, and scatter charts.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Heading text of the slide",
+            "default": "Data Analytics Dashboard",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50
+          },
+          "description": {
+            "description": "Supporting description text",
+            "default": "Comprehensive overview of key metrics and performance indicators across multiple data dimensions.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 200
+          },
+          "charts": {
+            "description": "Array of chart configurations",
+            "default": [
+              {
+                "title": "Revenue by Quarter",
+                "type": "bar-vertical",
+                "data": [
+                  {
+                    "name": "Q1",
+                    "value": 125000
+                  },
+                  {
+                    "name": "Q2",
+                    "value": 158000
+                  },
+                  {
+                    "name": "Q3",
+                    "value": 142000
+                  },
+                  {
+                    "name": "Q4",
+                    "value": 189000
+                  }
+                ],
+                "colorPalette": "vibrant"
+              },
+              {
+                "title": "Market Distribution",
+                "type": "donut",
+                "data": [
+                  {
+                    "name": "North America",
+                    "value": 35
+                  },
+                  {
+                    "name": "Europe",
+                    "value": 28
+                  },
+                  {
+                    "name": "Asia Pacific",
+                    "value": 25
+                  },
+                  {
+                    "name": "Others",
+                    "value": 12
+                  }
+                ],
+                "colorPalette": "ocean"
+              },
+              {
+                "title": "Growth Trend",
+                "type": "line",
+                "data": [
+                  {
+                    "name": "Jan",
+                    "value": 30
+                  },
+                  {
+                    "name": "Feb",
+                    "value": 45
+                  },
+                  {
+                    "name": "Mar",
+                    "value": 52
+                  },
+                  {
+                    "name": "Apr",
+                    "value": 48
+                  },
+                  {
+                    "name": "May",
+                    "value": 67
+                  },
+                  {
+                    "name": "Jun",
+                    "value": 82
+                  }
+                ],
+                "colorPalette": "professional"
+              },
+              {
+                "title": "Department Performance",
+                "type": "bar-horizontal",
+                "data": [
+                  {
+                    "name": "Sales",
+                    "value": 87
+                  },
+                  {
+                    "name": "Marketing",
+                    "value": 72
+                  },
+                  {
+                    "name": "Engineering",
+                    "value": 95
+                  },
+                  {
+                    "name": "Support",
+                    "value": 68
+                  }
+                ],
+                "colorPalette": "sunset"
+              },
+              {
+                "title": "Product Comparison",
+                "type": "bar-clustered",
+                "data": [
+                  {
+                    "name": "Q1",
+                    "values": {
+                      "Product A": 45,
+                      "Product B": 62
+                    }
+                  },
+                  {
+                    "name": "Q2",
+                    "values": {
+                      "Product A": 58,
+                      "Product B": 71
+                    }
+                  },
+                  {
+                    "name": "Q3",
+                    "values": {
+                      "Product A": 72,
+                      "Product B": 65
+                    }
+                  }
+                ],
+                "series": [
+                  "Product A",
+                  "Product B"
+                ],
+                "colorPalette": "vibrant"
+              },
+              {
+                "title": "Customer Feedback",
+                "type": "bar-diverging",
+                "data": [
+                  {
+                    "name": "Quality",
+                    "positive": 78,
+                    "negative": 22
+                  },
+                  {
+                    "name": "Service",
+                    "positive": 65,
+                    "negative": 35
+                  },
+                  {
+                    "name": "Price",
+                    "positive": 42,
+                    "negative": 58
+                  }
+                ],
+                "series": [
+                  "Satisfied",
+                  "Unsatisfied"
+                ],
+                "colorPalette": "professional"
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "default": "Chart Title",
+                  "description": "Chart title",
+                  "type": "string",
+                  "maxLength": 40
+                },
+                "type": {
+                  "default": "bar-vertical",
+                  "type": "string",
+                  "enum": [
+                    "bar-vertical",
+                    "bar-horizontal",
+                    "bar-grouped-vertical",
+                    "bar-grouped-horizontal",
+                    "bar-stacked-vertical",
+                    "bar-stacked-horizontal",
+                    "bar-clustered",
+                    "bar-diverging",
+                    "line",
+                    "area",
+                    "area-stacked",
+                    "pie",
+                    "donut",
+                    "scatter"
+                  ]
+                },
+                "data": {
+                  "default": [
+                    {
+                      "name": "Q1",
+                      "value": 45
+                    },
+                    {
+                      "name": "Q2",
+                      "value": 72
+                    },
+                    {
+                      "name": "Q3",
+                      "value": 58
+                    },
+                    {
+                      "name": "Q4",
+                      "value": 89
+                    }
+                  ],
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "values": {
+                            "description": "Object with series names as keys and numbers as values (e.g., { 'Product A': 45, 'Product B': 62 })"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "values"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "positive": {
+                            "type": "number"
+                          },
+                          "negative": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "positive",
+                          "negative"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "x": {
+                            "type": "number"
+                          },
+                          "y": {
+                            "type": "number"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "x",
+                          "y"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  ]
+                },
+                "series": {
+                  "description": "Series names for grouped/stacked charts",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "colorPalette": {
+                  "default": "vibrant",
+                  "type": "string",
+                  "enum": [
+                    "vibrant",
+                    "ocean",
+                    "forest",
+                    "sunset",
+                    "professional"
+                  ]
+                }
+              },
+              "required": [
+                "title",
+                "type",
+                "data",
+                "colorPalette"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "showLegend": {
+            "description": "Whether to display chart legends",
+            "default": true,
+            "type": "boolean"
+          },
+          "showGrid": {
+            "description": "Whether to display grid lines",
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "charts",
+          "showLegend",
+          "showGrid"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:title-description-multi-chart-grid-metrics",
+      "name": "Title Description With Multi-Chart Grid + Metrics",
+      "description": "A dashboard layout featuring a title and description, up to 4 KPI metrics, and 1-6 auto-arranged charts in a responsive grid. Supports bar (vertical, horizontal, grouped, stacked, clustered, diverging), line, area, pie, donut, and scatter charts. Ideal for analytics overviews, KPI summaries, and performance dashboards.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Data Analytics Dashboard",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50
+          },
+          "description": {
+            "description": "Description text below the title",
+            "default": "Comprehensive overview of key metrics and performance indicators across multiple data dimensions.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 200
+          },
+          "metrics": {
+            "description": "Array of up to 4 KPI metrics",
+            "default": [
+              {
+                "value": "$3.5M",
+                "label": "Pipeline"
+              },
+              {
+                "value": "28%",
+                "label": "Conversion"
+              },
+              {
+                "value": "1.9x",
+                "label": "ROI"
+              },
+              {
+                "value": "42",
+                "label": "Accounts"
+              }
+            ],
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "description": "The metric value",
+                  "type": "string",
+                  "maxLength": 12
+                },
+                "label": {
+                  "description": "The metric label",
+                  "type": "string",
+                  "maxLength": 24
+                }
+              },
+              "required": [
+                "value",
+                "label"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "charts": {
+            "description": "Array of charts to display (1-6 charts)",
+            "default": [
+              {
+                "title": "Revenue by Quarter",
+                "type": "bar-vertical",
+                "data": [
+                  {
+                    "name": "Q1",
+                    "value": 125000
+                  },
+                  {
+                    "name": "Q2",
+                    "value": 158000
+                  },
+                  {
+                    "name": "Q3",
+                    "value": 142000
+                  },
+                  {
+                    "name": "Q4",
+                    "value": 189000
+                  }
+                ],
+                "colorPalette": "vibrant"
+              },
+              {
+                "title": "Market Distribution",
+                "type": "donut",
+                "data": [
+                  {
+                    "name": "North America",
+                    "value": 35
+                  },
+                  {
+                    "name": "Europe",
+                    "value": 28
+                  },
+                  {
+                    "name": "Asia Pacific",
+                    "value": 25
+                  },
+                  {
+                    "name": "Others",
+                    "value": 12
+                  }
+                ],
+                "colorPalette": "ocean"
+              },
+              {
+                "title": "Growth Trend",
+                "type": "line",
+                "data": [
+                  {
+                    "name": "Jan",
+                    "value": 30
+                  },
+                  {
+                    "name": "Feb",
+                    "value": 45
+                  },
+                  {
+                    "name": "Mar",
+                    "value": 52
+                  },
+                  {
+                    "name": "Apr",
+                    "value": 48
+                  },
+                  {
+                    "name": "May",
+                    "value": 67
+                  },
+                  {
+                    "name": "Jun",
+                    "value": 82
+                  }
+                ],
+                "colorPalette": "professional"
+              },
+              {
+                "title": "Department Performance",
+                "type": "bar-horizontal",
+                "data": [
+                  {
+                    "name": "Sales",
+                    "value": 87
+                  },
+                  {
+                    "name": "Marketing",
+                    "value": 72
+                  },
+                  {
+                    "name": "Engineering",
+                    "value": 95
+                  },
+                  {
+                    "name": "Support",
+                    "value": 68
+                  }
+                ],
+                "colorPalette": "sunset"
+              },
+              {
+                "title": "Product Comparison",
+                "type": "bar-clustered",
+                "data": [
+                  {
+                    "name": "Q1",
+                    "values": {
+                      "Product A": 45,
+                      "Product B": 62
+                    }
+                  },
+                  {
+                    "name": "Q2",
+                    "values": {
+                      "Product A": 58,
+                      "Product B": 71
+                    }
+                  },
+                  {
+                    "name": "Q3",
+                    "values": {
+                      "Product A": 72,
+                      "Product B": 65
+                    }
+                  }
+                ],
+                "series": [
+                  "Product A",
+                  "Product B"
+                ],
+                "colorPalette": "vibrant"
+              },
+              {
+                "title": "Customer Feedback",
+                "type": "bar-diverging",
+                "data": [
+                  {
+                    "name": "Quality",
+                    "positive": 78,
+                    "negative": 22
+                  },
+                  {
+                    "name": "Service",
+                    "positive": 65,
+                    "negative": 35
+                  },
+                  {
+                    "name": "Price",
+                    "positive": 42,
+                    "negative": 58
+                  }
+                ],
+                "series": [
+                  "Satisfied",
+                  "Unsatisfied"
+                ],
+                "colorPalette": "professional"
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "default": "Chart Title",
+                  "description": "Chart title",
+                  "type": "string",
+                  "maxLength": 40
+                },
+                "type": {
+                  "default": "bar-vertical",
+                  "type": "string",
+                  "enum": [
+                    "bar-vertical",
+                    "bar-horizontal",
+                    "bar-grouped-vertical",
+                    "bar-grouped-horizontal",
+                    "bar-stacked-vertical",
+                    "bar-stacked-horizontal",
+                    "bar-clustered",
+                    "bar-diverging",
+                    "line",
+                    "area",
+                    "area-stacked",
+                    "pie",
+                    "donut",
+                    "scatter"
+                  ]
+                },
+                "data": {
+                  "default": [
+                    {
+                      "name": "Q1",
+                      "value": 45
+                    },
+                    {
+                      "name": "Q2",
+                      "value": 72
+                    },
+                    {
+                      "name": "Q3",
+                      "value": 58
+                    },
+                    {
+                      "name": "Q4",
+                      "value": 89
+                    }
+                  ],
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "values": {
+                            "description": "Object with series names as keys and numbers as values (e.g., { 'Product A': 45, 'Product B': 62 })"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "values"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "positive": {
+                            "type": "number"
+                          },
+                          "negative": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "positive",
+                          "negative"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "x": {
+                            "type": "number"
+                          },
+                          "y": {
+                            "type": "number"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "x",
+                          "y"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  ]
+                },
+                "series": {
+                  "description": "Series names for grouped/stacked charts",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "colorPalette": {
+                  "default": "vibrant",
+                  "type": "string",
+                  "enum": [
+                    "vibrant",
+                    "ocean",
+                    "forest",
+                    "sunset",
+                    "professional"
+                  ]
+                }
+              },
+              "required": [
+                "title",
+                "type",
+                "data",
+                "colorPalette"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "showLegend": {
+            "description": "Whether to show chart legends",
+            "default": true,
+            "type": "boolean"
+          },
+          "showGrid": {
+            "description": "Whether to show chart grid lines",
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "metrics",
+          "charts",
+          "showLegend",
+          "showGrid"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-general:title-description-multi-chart-grid-bullets",
+      "name": "Title Description With Multi-Chart Grid + Bullets",
+      "description": "A dashboard layout featuring a title and description, up to 4 bullet points, and 1-4 auto-arranged charts in a responsive grid. Supports bar (vertical, horizontal, grouped, stacked, clustered, diverging), line, area, pie, donut, and scatter charts.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Data Analytics Dashboard",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50
+          },
+          "description": {
+            "description": "Description text below the title",
+            "default": "Comprehensive overview of key metrics and performance indicators across multiple data dimensions.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 200
+          },
+          "bullets": {
+            "description": "Up to 6 bullet points to highlight key takeaways",
+            "default": [
+              "Pipeline coverage above 3x target lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+              "CAC payback under 6 months",
+              "Enterprise conversion improved QoQ",
+              "Expansion revenue driving growth",
+              "Retention above 95% across cohorts",
+              "Forecast accuracy improved this quarter"
+            ],
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 80
+            }
+          },
+          "charts": {
+            "description": "Array of charts to display (1-4 charts)",
+            "default": [
+              {
+                "title": "Revenue by Quarter",
+                "type": "bar-vertical",
+                "data": [
+                  {
+                    "name": "Q1",
+                    "value": 125000
+                  },
+                  {
+                    "name": "Q2",
+                    "value": 158000
+                  },
+                  {
+                    "name": "Q3",
+                    "value": 142000
+                  },
+                  {
+                    "name": "Q4",
+                    "value": 189000
+                  }
+                ],
+                "colorPalette": "vibrant"
+              },
+              {
+                "title": "Market Distribution",
+                "type": "donut",
+                "data": [
+                  {
+                    "name": "North America",
+                    "value": 35
+                  },
+                  {
+                    "name": "Europe",
+                    "value": 28
+                  },
+                  {
+                    "name": "Asia Pacific",
+                    "value": 25
+                  },
+                  {
+                    "name": "Others",
+                    "value": 12
+                  }
+                ],
+                "colorPalette": "ocean"
+              },
+              {
+                "title": "Growth Trend",
+                "type": "line",
+                "data": [
+                  {
+                    "name": "Jan",
+                    "value": 30
+                  },
+                  {
+                    "name": "Feb",
+                    "value": 45
+                  },
+                  {
+                    "name": "Mar",
+                    "value": 52
+                  },
+                  {
+                    "name": "Apr",
+                    "value": 48
+                  },
+                  {
+                    "name": "May",
+                    "value": 67
+                  },
+                  {
+                    "name": "Jun",
+                    "value": 82
+                  }
+                ],
+                "colorPalette": "professional"
+              },
+              {
+                "title": "Department Performance",
+                "type": "bar-horizontal",
+                "data": [
+                  {
+                    "name": "Sales",
+                    "value": 87
+                  },
+                  {
+                    "name": "Marketing",
+                    "value": 72
+                  },
+                  {
+                    "name": "Engineering",
+                    "value": 95
+                  },
+                  {
+                    "name": "Support",
+                    "value": 68
+                  }
+                ],
+                "colorPalette": "sunset"
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "default": "Chart Title",
+                  "description": "Chart title",
+                  "type": "string",
+                  "maxLength": 40
+                },
+                "type": {
+                  "default": "bar-vertical",
+                  "type": "string",
+                  "enum": [
+                    "bar-vertical",
+                    "bar-horizontal",
+                    "bar-grouped-vertical",
+                    "bar-grouped-horizontal",
+                    "bar-stacked-vertical",
+                    "bar-stacked-horizontal",
+                    "bar-clustered",
+                    "bar-diverging",
+                    "line",
+                    "area",
+                    "area-stacked",
+                    "pie",
+                    "donut",
+                    "scatter"
+                  ]
+                },
+                "data": {
+                  "default": [
+                    {
+                      "name": "Q1",
+                      "value": 45
+                    },
+                    {
+                      "name": "Q2",
+                      "value": 72
+                    },
+                    {
+                      "name": "Q3",
+                      "value": 58
+                    },
+                    {
+                      "name": "Q4",
+                      "value": 89
+                    }
+                  ],
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "values": {
+                            "description": "Object with series names as keys and numbers as values (e.g., { 'Product A': 45, 'Product B': 62 })"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "values"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "positive": {
+                            "type": "number"
+                          },
+                          "negative": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "positive",
+                          "negative"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "x": {
+                            "type": "number"
+                          },
+                          "y": {
+                            "type": "number"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "x",
+                          "y"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  ]
+                },
+                "series": {
+                  "description": "Series names for grouped/stacked charts",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "colorPalette": {
+                  "default": "vibrant",
+                  "type": "string",
+                  "enum": [
+                    "vibrant",
+                    "ocean",
+                    "forest",
+                    "sunset",
+                    "professional"
+                  ]
+                }
+              },
+              "required": [
+                "title",
+                "type",
+                "data",
+                "colorPalette"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "showLegend": {
+            "description": "Whether to show chart legends",
+            "default": true,
+            "type": "boolean"
+          },
+          "showGrid": {
+            "description": "Whether to show chart grid lines",
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "bullets",
+          "charts",
+          "showLegend",
+          "showGrid"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

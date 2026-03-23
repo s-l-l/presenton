@@ -1,0 +1,2342 @@
+{
+  "version": "v1",
+  "name": "neo-swift",
+  "ordered": false,
+  "slides": [
+    {
+      "id": "neo-swift:title-centered-chart",
+      "name": "Title Centered Chart",
+      "description": "A clean slide layout with a large centered title and a prominent chart (bar, grouped bar, stacked bar, clustered bar, diverging bar, horizontal bar, line, area, pie, donut, or scatter) within a grey container. Ideal for showcasing distribution data, single-metric trends, or category breakdowns in a visually impactful way.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Spend & ROI",
+            "description": "The main title of the slide",
+            "type": "string",
+            "maxLength": 20
+          },
+          "chartType": {
+            "default": "horizontalBar",
+            "description": "Type of chart to display",
+            "type": "string",
+            "enum": [
+              "bar",
+              "horizontalBar",
+              "bar-grouped-vertical",
+              "bar-grouped-horizontal",
+              "bar-stacked-vertical",
+              "bar-stacked-horizontal",
+              "bar-clustered",
+              "bar-diverging",
+              "line",
+              "area",
+              "area-stacked",
+              "pie",
+              "donut",
+              "scatter"
+            ]
+          },
+          "graph": {
+            "default": {
+              "columns": [
+                "Label",
+                "Value"
+              ],
+              "rows": [
+                {
+                  "label": "Jan",
+                  "value": 24
+                },
+                {
+                  "label": "Feb",
+                  "value": 30.9
+                },
+                {
+                  "label": "Mar",
+                  "value": 45.2
+                }
+              ]
+            },
+            "description": "Chart data",
+            "type": "object",
+            "properties": {
+              "columns": {
+                "description": "Columns for the chart data",
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 10
+                }
+              },
+              "rows": {
+                "description": "Rows of data for the chart",
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "description": "Label for the data segment",
+                      "type": "string",
+                      "maxLength": 10
+                    },
+                    "value": {
+                      "description": "Numerical value for the data segment",
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "columns",
+              "rows"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "title",
+          "chartType",
+          "graph"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-swift:title-chart-metrics-sidebar",
+      "name": "Title Chart Metrics Sidebar",
+      "description": "A professional slide featuring a prominent chart (bar, grouped bar, stacked bar, clustered bar, diverging bar, horizontal bar, line, area, pie, donut, or scatter) on the left displaying trend data, and a vertical stack of metric cards on the right. Ideal for presenting performance metrics, financial trends, or KPI comparisons with supporting data points.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Spend & ROI",
+            "description": "The main title of the slide",
+            "type": "string",
+            "maxLength": 15
+          },
+          "chartType": {
+            "default": "bar",
+            "description": "Type of chart to display",
+            "type": "string",
+            "enum": [
+              "bar",
+              "horizontalBar",
+              "bar-grouped-vertical",
+              "bar-grouped-horizontal",
+              "bar-stacked-vertical",
+              "bar-stacked-horizontal",
+              "bar-clustered",
+              "bar-diverging",
+              "line",
+              "area",
+              "area-stacked",
+              "pie",
+              "donut",
+              "scatter"
+            ]
+          },
+          "chart": {
+            "description": "Configuration and data for the chart",
+            "default": {
+              "columns": [
+                "Revenue",
+                "Spend"
+              ],
+              "rows": [
+                {
+                  "label": "Jan",
+                  "value": 520,
+                  "value2": 140
+                },
+                {
+                  "label": "Feb",
+                  "value": 670,
+                  "value2": 250
+                },
+                {
+                  "label": "Mar",
+                  "value": 980,
+                  "value2": 400
+                }
+              ]
+            },
+            "type": "object",
+            "properties": {
+              "columns": {
+                "default": [
+                  "Revenue",
+                  "Spend"
+                ],
+                "description": "The labels for the data series, e.g., Revenue and Spend",
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "rows": {
+                "description": "The data points for the graph",
+                "maxItems": 3,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "default": "Jan",
+                      "description": "The X-axis label, e.g., Month names",
+                      "type": "string",
+                      "maxLength": 3
+                    },
+                    "value": {
+                      "default": 520,
+                      "description": "The primary metric value for this label",
+                      "type": "number"
+                    },
+                    "value2": {
+                      "description": "The secondary metric value for this label",
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "columns",
+              "rows"
+            ],
+            "additionalProperties": false
+          },
+          "metrics": {
+            "default": [
+              {
+                "heading": "Research",
+                "value": "8,450",
+                "description": "Main Challenge: Delayed Client"
+              },
+              {
+                "heading": "Research",
+                "value": "8,450",
+                "description": "Main Challenge: Delayed Client"
+              },
+              {
+                "heading": "Research",
+                "value": "8,450",
+                "description": "Main Challenge: Delayed Client"
+              },
+              {
+                "heading": "Research",
+                "value": "8,450",
+                "description": "Main Challenge: Delayed Client"
+              }
+            ],
+            "description": "List of metric cards shown on the right side",
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "description": "Top label of the metric card",
+                  "type": "string",
+                  "maxLength": 15
+                },
+                "value": {
+                  "default": "8,450",
+                  "description": "Main numerical value of the metric",
+                  "type": "string",
+                  "maxLength": 10
+                },
+                "description": {
+                  "default": "Main Challenge: Delayed Client",
+                  "description": "Bottom description or challenge text",
+                  "type": "string",
+                  "maxLength": 35
+                }
+              },
+              "required": [
+                "heading",
+                "value",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "chartType",
+          "chart",
+          "metrics"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-swift:title-description-bullet-list",
+      "name": "Title Description Bullet List",
+      "description": "A clean two-column layout with a main title and description on the left, and up to 5 bullet points on the right. Each bullet has a heading and a short description. Ideal for key takeaways, feature highlights, or structured lists with context.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Key Takeaways",
+            "description": "The main title of the slide",
+            "type": "string",
+            "maxLength": 30
+          },
+          "description": {
+            "default": "Focus on companies with 500+ employees in Financial Services, Healthcare, and Technology sectors. Target $3.5M in new pipeline with sub-$150 CAC through account-based marketing and content-led strategies.",
+            "description": "The main paragraph description on the slide",
+            "type": "string",
+            "maxLength": 300
+          },
+          "bullets": {
+            "default": [
+              {
+                "heading": "Market expansion",
+                "description": "Prioritize high-growth verticals and geographic regions with strong demand."
+              },
+              {
+                "heading": "Customer retention",
+                "description": "Reduce churn through proactive support and tailored success programs."
+              },
+              {
+                "heading": "Product innovation",
+                "description": "Ship features that align with top customer requests and usage data."
+              },
+              {
+                "heading": "Operational efficiency",
+                "description": "Automate repetitive workflows to free capacity for strategic work."
+              },
+              {
+                "heading": "Team enablement",
+                "description": "Invest in training and tools so teams can execute at scale."
+              }
+            ],
+            "description": "A list of up to 5 bullet points, each with a heading and description",
+            "maxItems": 5,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "description": "The heading for this bullet point",
+                  "type": "string",
+                  "maxLength": 40
+                },
+                "description": {
+                  "description": "The description for this bullet point",
+                  "type": "string",
+                  "maxLength": 120
+                }
+              },
+              "required": [
+                "heading",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "footerWebsite": {
+            "default": "www.hello.com",
+            "description": "The website URL displayed in the footer",
+            "type": "string",
+            "maxLength": 30
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "bullets",
+          "footerWebsite"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-swift:title-description-three-column-table",
+      "name": "Title Description Three Column Table",
+      "description": "A structured data presentation slide featuring a large header title on the left and a descriptive paragraph on the right, followed by a three-column table with a colored header row. Each table cell supports multi-line text. Ideal for presenting structured comparisons, problem-solution matrices, feature breakdowns, or any tabular data that benefits from visual organization.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "TABLE",
+            "description": "The main title of the slide displayed at the top left",
+            "type": "string",
+            "maxLength": 12
+          },
+          "description": {
+            "default": "Focus on companies with 500+ employees in Financial Services, Healthcare, and Technology sectors. Target $3.5M in new pipeline with sub-$150 CAC through account-based marketing and content-led strategies.",
+            "description": "The overview description paragraph displayed at the top right",
+            "type": "string",
+            "maxLength": 180
+          },
+          "table": {
+            "default": {
+              "columns": [
+                "Problem",
+                "Description",
+                "Solution"
+              ],
+              "rows": [
+                [
+                  "Self-motivation\nReference: Book and Inspirational Videos",
+                  "Self-motivation\nReference: Book and Inspirational Videos",
+                  "Self-motivation\nReference: Book and Inspirational Videos"
+                ],
+                [
+                  "Self-motivation\nReference: Book and Inspirational Videos",
+                  "Self-motivation\nReference: Book and Inspirational Videos",
+                  "Self-motivation\nReference: Book and Inspirational Videos"
+                ],
+                [
+                  "Self-motivation\nReference: Book and Inspirational Videos",
+                  "Self-motivation\nReference: Book and Inspirational Videos",
+                  "Self-motivation\nReference: Book and Inspirational Videos"
+                ]
+              ]
+            },
+            "description": "The main table content with headings and cell data",
+            "type": "object",
+            "properties": {
+              "columns": {
+                "description": "The headers for the table columns",
+                "maxItems": 3,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 15
+                }
+              },
+              "rows": {
+                "description": "The data rows for the table with max 3 cells per row",
+                "maxItems": 3,
+                "type": "array",
+                "items": {
+                  "maxItems": 3,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 60
+                  }
+                }
+              }
+            },
+            "required": [
+              "columns",
+              "rows"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "table"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-swift:title-description-large-image-right",
+      "name": "Title Description Large Image Right",
+      "description": "A balanced two-column layout with a title and descriptive text on the left, and a large prominent image on the right. The footer includes a website link and a decorative line. Ideal for introducing topics, highlighting concepts with strong visual support, or presenting narratives that benefit from an impactful image.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Executive Summary",
+            "description": "The main title of the slide",
+            "type": "string",
+            "maxLength": 20
+          },
+          "description": {
+            "default": "Focus on companies with 500+ employees in Financial Services, Healthcare, and Technology sectors. Target $3.5M in new pipeline with sub-$150 CAC through account-based marketing and content-led strategies.",
+            "description": "The main descriptive text",
+            "type": "string",
+            "maxLength": 250
+          },
+          "image": {
+            "default": {
+              "__image_url__": "https://presenton-public-assets.s3.ap-southeast-1.amazonaws.com/replaceable_template_image.png",
+              "__image_prompt__": "A diverse team of professionals in business suits stacking their hands together in the center for a team huddle, symbolizing unity and partnership."
+            },
+            "description": "The primary image on the right side of the slide",
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "type": "string"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "image"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-swift:title-description-eight-metrics-grid",
+      "name": "Title Description Eight Metrics Grid",
+      "description": "A data-centric slide with a centered title and description at the top, followed by a 4x2 grid of metric cards. Each card displays a label, a prominent value, and a supporting description. Ideal for presenting KPIs, dashboards, performance snapshots, or comparative statistics in a clean, scannable format.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Executive Summary",
+            "description": "The main heading of the slide",
+            "type": "string"
+          },
+          "description": {
+            "default": "Focus on companies with 500+ employees in Financial Services, Healthcare, and Technology sectors. Target $3.5M in new pipeline with sub-$150 CAC through account-based marketing and content-led strategies.",
+            "description": "A brief summary or descriptive paragraph",
+            "type": "string"
+          },
+          "metrics": {
+            "default": [
+              {
+                "label": "Research",
+                "value": "8,450",
+                "description": "Main Challenge: Delayed Client"
+              },
+              {
+                "label": "Research",
+                "value": "8,450",
+                "description": "Main Challenge: Delayed Client"
+              },
+              {
+                "label": "Research",
+                "value": "8,450",
+                "description": "Main Challenge: Delayed Client"
+              },
+              {
+                "label": "Research",
+                "value": "8,450",
+                "description": "Main Challenge: Delayed Client"
+              },
+              {
+                "label": "Research",
+                "value": "8,450",
+                "description": "Main Challenge: Delayed Client"
+              },
+              {
+                "label": "Research",
+                "value": "8,450",
+                "description": "Main Challenge: Delayed Client"
+              },
+              {
+                "label": "Research",
+                "value": "8,450",
+                "description": "Main Challenge: Delayed Client"
+              },
+              {
+                "label": "Research",
+                "value": "8,450",
+                "description": "Main Challenge: Delayed Client"
+              }
+            ],
+            "description": "A list of up to 8 cards showing key metrics",
+            "maxItems": 8,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "maxLength": 20
+                },
+                "value": {
+                  "type": "string",
+                  "maxLength": 15
+                },
+                "description": {
+                  "type": "string",
+                  "maxLength": 50
+                }
+              },
+              "required": [
+                "label",
+                "value",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "metrics"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-swift:title-description-metrics-grid-large-image",
+      "name": "Title Description Metrics Grid Large Image",
+      "description": "A versatile slide layout combining text, metrics, and imagery. Features a title and description on the left with a 2x2 grid of icon-enhanced metric cards, and a large vertical image on the right. Each metric card includes an icon, label, value, and supporting text. Perfect for executive summaries, project overviews, or reports where key data points need visual context.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Image with Description & Metrix",
+            "description": "The main title of the slide",
+            "type": "string",
+            "maxLength": 25
+          },
+          "description": {
+            "default": "Focus on companies with 500+ employees in Financial Services, Healthcare, and Technology sectors. Target $3.5M.",
+            "description": "A brief description or context for the slide content",
+            "type": "string",
+            "maxLength": 120
+          },
+          "metrics": {
+            "default": [
+              {
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/placeholder.svg",
+                  "__icon_query__": "search"
+                },
+                "label": "Research",
+                "value": "8,450",
+                "subText": "Main Challenge: Delayed Client"
+              },
+              {
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/placeholder.svg",
+                  "__icon_query__": "search"
+                },
+                "label": "Research",
+                "value": "8,450",
+                "subText": "Main Challenge: Delayed Client"
+              },
+              {
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/placeholder.svg",
+                  "__icon_query__": "search"
+                },
+                "label": "Research",
+                "value": "8,450",
+                "subText": "Main Challenge: Delayed Client"
+              },
+              {
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/placeholder.svg",
+                  "__icon_query__": "search"
+                },
+                "label": "Research",
+                "value": "8,450",
+                "subText": "Main Challenge: Delayed Client"
+              }
+            ],
+            "description": "A list of up to 4 metric items",
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "icon": {
+                  "description": "Icon representing the metric",
+                  "type": "object",
+                  "properties": {
+                    "__icon_url__": {
+                      "type": "string"
+                    },
+                    "__icon_query__": {
+                      "type": "string",
+                      "maxLength": 30
+                    }
+                  },
+                  "required": [
+                    "__icon_url__",
+                    "__icon_query__"
+                  ],
+                  "additionalProperties": false
+                },
+                "label": {
+                  "description": "The category or label of the metric",
+                  "type": "string",
+                  "maxLength": 12
+                },
+                "value": {
+                  "description": "The numerical or statistical value",
+                  "type": "string",
+                  "maxLength": 6
+                },
+                "subText": {
+                  "description": "Additional detail or challenge related to the metric",
+                  "type": "string",
+                  "maxLength": 12
+                }
+              },
+              "required": [
+                "icon",
+                "label",
+                "value",
+                "subText"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "mainImage": {
+            "default": {
+              "__image_url__": "https://presenton-public-assets.s3.ap-southeast-1.amazonaws.com/replaceable_template_image.png",
+              "__image_prompt__": "Hands of business people stacked together in unity"
+            },
+            "description": "The primary visual image on the right",
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "type": "string"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "metrics",
+          "mainImage"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-swift:title-dual-comparison-blocks-numbered",
+      "name": "Title Dual Comparison Blocks Numbered",
+      "description": "A comparison slide featuring a centered title and two side-by-side content blocks with circular numbered indicators. Each block has a heading and descriptive text with alternating highlight colors. Ideal for presenting problem/solution pairs, before/after scenarios, pros/cons lists, or any two-part comparison narrative.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Text Comparison",
+            "description": "The main title of the slide",
+            "type": "string",
+            "maxLength": 20
+          },
+          "comparisonBlocks": {
+            "default": [
+              {
+                "index": "1",
+                "heading": "Problem",
+                "description": "Presentation are communication tools that can be used as demontrations, lectures, reports, and more. it is mostly presented before an audience."
+              },
+              {
+                "index": "2",
+                "heading": "Solution",
+                "description": "Presentation are communication tools that can be used as demontrations, lectures, reports, and more. it is mostly presented before an audience."
+              }
+            ],
+            "description": "List of items",
+            "maxItems": 2,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "index": {
+                  "description": "The sequence number or index of the block",
+                  "type": "string",
+                  "maxLength": 2
+                },
+                "heading": {
+                  "description": "The title of item",
+                  "type": "string",
+                  "maxLength": 20
+                },
+                "description": {
+                  "description": "The descriptive text of item",
+                  "type": "string",
+                  "maxLength": 200
+                }
+              },
+              "required": [
+                "index",
+                "heading",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "comparisonBlocks"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-swift:title-label-description-cascading-stats",
+      "name": "Title Label Description Cascading Stats",
+      "description": "An executive summary slide featuring a bold title and descriptive paragraph on the left, paired with three cascading statistic cards on the right. The cards progressively decrease in width, creating a visually dynamic layout. Ideal for presenting key metrics, achievements, or highlights alongside context-setting narrative text.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Executive Summary",
+            "description": "The main heading of the slide",
+            "type": "string",
+            "maxLength": 17
+          },
+          "label": {
+            "default": "Leads",
+            "description": "A short subtitle or category label",
+            "type": "string",
+            "maxLength": 5
+          },
+          "description": {
+            "default": "Focus on companies with 500+ employees in Financial Services, Healthcare, and Technology sectors. Target $3.5M in new pipeline with sub-$150 CAC through account-based marketing and content-led strategies.",
+            "description": "The primary body text explaining the summary",
+            "type": "string",
+            "maxLength": 205
+          },
+          "stats": {
+            "default": [
+              {
+                "value": "10K",
+                "heading": "USERS",
+                "content": "Active users across multiple industries"
+              },
+              {
+                "value": "90%",
+                "heading": "REVENUE GROWTH",
+                "content": "Year-over-year revenue growth"
+              },
+              {
+                "value": "150%",
+                "heading": "CUSTOMER SATISFACTION",
+                "content": "Retention rate with an average rating of 4.8/5"
+              }
+            ],
+            "description": "A list of 3 statistics cards",
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "description": "The numerical or percentage value",
+                  "type": "string",
+                  "maxLength": 4
+                },
+                "heading": {
+                  "description": "The title of the statistic",
+                  "type": "string",
+                  "maxLength": 21
+                },
+                "content": {
+                  "description": "The descriptive text for the statistic",
+                  "type": "string",
+                  "maxLength": 45
+                }
+              },
+              "required": [
+                "value",
+                "heading",
+                "content"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "label",
+          "description",
+          "stats"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-swift:title-subtitle-four-team-member-cards",
+      "name": "Title Subtitle Four Team Member Cards",
+      "description": "A professional team showcase slide featuring a centered title and descriptive subtitle at the top, followed by four horizontal team member cards. Each card displays the member's name, designation, profile image, and a brief summary. Ideal for introducing leadership teams, project members, advisory boards, or key personnel with their roles and focus areas.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Our Team Members",
+            "description": "The main heading of the slide",
+            "type": "string"
+          },
+          "subtitle": {
+            "default": "Focus on companies with 500+ employees in Financial Services, Healthcare, and Technology sectors. Target $3.5M in new pipeline with sub-$150 CAC through account-based marketing and content-led strategies.",
+            "description": "A descriptive sub-heading explaining the team's focus",
+            "type": "string",
+            "maxLength": 300
+          },
+          "teamMembers": {
+            "default": [
+              {
+                "name": "Hannah Morales",
+                "designation": "Founder & CEO",
+                "image": {
+                  "__image_url__": "https://presenton-public-assets.s3.ap-southeast-1.amazonaws.com/replaceable_template_image.png",
+                  "__image_prompt__": "Professional headshot of a female executive smiling"
+                },
+                "summary": "Focus on companies with 500+ employees."
+              },
+              {
+                "name": "Hannah Morales",
+                "designation": "Founder & CEO",
+                "image": {
+                  "__image_url__": "https://presenton-public-assets.s3.ap-southeast-1.amazonaws.com/replaceable_template_image.png",
+                  "__image_prompt__": "Professional headshot of a female executive smiling"
+                },
+                "summary": "Focus on companies with 500+ employees."
+              },
+              {
+                "name": "Hannah Morales",
+                "designation": "Founder & CEO",
+                "image": {
+                  "__image_url__": "https://presenton-public-assets.s3.ap-southeast-1.amazonaws.com/replaceable_template_image.png",
+                  "__image_prompt__": "Professional headshot of a female executive smiling"
+                },
+                "summary": "Focus on companies with 500+ employees."
+              },
+              {
+                "name": "Hannah Morales",
+                "designation": "Founder & CEO",
+                "image": {
+                  "__image_url__": "https://presenton-public-assets.s3.ap-southeast-1.amazonaws.com/replaceable_template_image.png",
+                  "__image_prompt__": "Professional headshot of a female executive smiling"
+                },
+                "summary": "Focus on companies with 500+ employees."
+              }
+            ],
+            "description": "List of team members",
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "Name of the team member",
+                  "type": "string",
+                  "maxLength": 30
+                },
+                "designation": {
+                  "description": "Job title or role of the team member",
+                  "type": "string",
+                  "maxLength": 40
+                },
+                "image": {
+                  "description": "Profile picture of the team member",
+                  "type": "object",
+                  "properties": {
+                    "__image_url__": {
+                      "type": "string"
+                    },
+                    "__image_prompt__": {
+                      "type": "string",
+                      "maxLength": 100
+                    }
+                  },
+                  "required": [
+                    "__image_url__",
+                    "__image_prompt__"
+                  ],
+                  "additionalProperties": false
+                },
+                "summary": {
+                  "description": "Short summary or focus area of the team member",
+                  "type": "string",
+                  "maxLength": 100
+                }
+              },
+              "required": [
+                "name",
+                "designation",
+                "image",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "subtitle",
+          "teamMembers"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-swift:title-tagline-description-numbered-steps",
+      "name": "Title Tagline Description Numbered Steps",
+      "description": "A clean two-column layout featuring a main title, tagline, and descriptive paragraph on the left, with a numbered step-by-step vertical list on the right. Each step has a circular number indicator, a heading, and a description. Ideal for outlining processes, workflows, methodologies, or sequential instructions.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Simple Bullet Points",
+            "description": "The main title of the slide",
+            "type": "string",
+            "maxLength": 30
+          },
+          "tagline": {
+            "default": "Leads",
+            "description": "A short tagline or label displayed with a bullet",
+            "type": "string",
+            "maxLength": 15
+          },
+          "description": {
+            "default": "Focus on companies with 500+ employees in Financial Services, Healthcare, and Technology sectors. Target $3.5M in new pipeline with sub-$150 CAC through account-based marketing and content-led strategies.",
+            "description": "The main paragraph description on the left side of the slide",
+            "type": "string",
+            "maxLength": 300
+          },
+          "steps": {
+            "default": [
+              {
+                "title": "Order Placement",
+                "description": "Customers choose products and confirm purchase online."
+              },
+              {
+                "title": "Payment Process",
+                "description": "Payment is made through card, bank transfer, or e-wallet."
+              },
+              {
+                "title": "Order Verification",
+                "description": "The system validates transaction details before processing."
+              },
+              {
+                "title": "Packaging Stage",
+                "description": "Items are packed securely to prepare for shipping."
+              }
+            ],
+            "description": "A list of up to 4 numbered steps with titles and descriptions",
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "The title for this step",
+                  "type": "string",
+                  "maxLength": 30
+                },
+                "description": {
+                  "description": "The detailed description for this step",
+                  "type": "string",
+                  "maxLength": 100
+                }
+              },
+              "required": [
+                "title",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "tagline",
+          "description",
+          "steps"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-swift:title-three-by-three-metrics-grid",
+      "name": "Title 3x3 Metrics Comparison Grid",
+      "description": "A comprehensive metrics slide featuring a main title and a responsive grid of metric cards (1-9 items) arranged in up to three columns with row dividers. Cards can be highlighted for emphasis. Each card displays a label, a prominent value, and a detail description. Ideal for comparing multiple KPIs, benchmark data, or performance metrics across categories.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Comparision Snapshot",
+            "description": "The main title of the slide",
+            "type": "string",
+            "maxLength": 40
+          },
+          "items": {
+            "default": [
+              {
+                "label": "Research",
+                "value": "8,450",
+                "detail": "Main Challenge: Delayed Client",
+                "isHighlighted": false
+              },
+              {
+                "label": "Research",
+                "value": "8,450",
+                "detail": "Main Challenge: Delayed Client",
+                "isHighlighted": false
+              },
+              {
+                "label": "Research",
+                "value": "8,450",
+                "detail": "Main Challenge: Delayed Client",
+                "isHighlighted": false
+              },
+              {
+                "label": "Research",
+                "value": "8,450",
+                "detail": "Main Challenge: Delayed Client",
+                "isHighlighted": false
+              },
+              {
+                "label": "Research",
+                "value": "8,450",
+                "detail": "Main Challenge: Delayed Client",
+                "isHighlighted": true
+              },
+              {
+                "label": "Research",
+                "value": "8,450",
+                "detail": "Main Challenge: Delayed Client",
+                "isHighlighted": false
+              },
+              {
+                "label": "Research",
+                "value": "8,450",
+                "detail": "Main Challenge: Delayed Client",
+                "isHighlighted": false
+              },
+              {
+                "label": "Research",
+                "value": "8,450",
+                "detail": "Main Challenge: Delayed Client",
+                "isHighlighted": false
+              },
+              {
+                "label": "Research",
+                "value": "8,450",
+                "detail": "Main Challenge: Delayed Client",
+                "isHighlighted": false
+              }
+            ],
+            "description": "A list of 1-9 comparison metrics",
+            "maxItems": 9,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "description": "The small label at the top of the card",
+                  "type": "string",
+                  "maxLength": 12
+                },
+                "value": {
+                  "description": "The large central value or metric",
+                  "type": "string",
+                  "maxLength": 10
+                },
+                "detail": {
+                  "description": "A short description or challenge detail",
+                  "type": "string",
+                  "maxLength": 25
+                },
+                "isHighlighted": {
+                  "default": false,
+                  "description": "Whether the card should be highlighted",
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "label",
+                "value",
+                "detail",
+                "isHighlighted"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "items"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-swift:title-description-six-charts-grid",
+      "name": "Title Description Six Charts Grid",
+      "description": "Neo Swift layout with a title, description, and a responsive grid of up to 6 charts (bar, line, area, pie, donut, scatter, etc.). Ideal for dashboards and data overviews.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Data Analytics Dashboard",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50
+          },
+          "description": {
+            "description": "Description text below the title",
+            "default": "Comprehensive overview of key metrics and performance indicators across multiple data dimensions.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 200
+          },
+          "charts": {
+            "description": "Array of 1–6 charts",
+            "default": [
+              {
+                "title": "Revenue by Quarter",
+                "type": "bar-vertical",
+                "data": [
+                  {
+                    "name": "Q1",
+                    "value": 125000
+                  },
+                  {
+                    "name": "Q2",
+                    "value": 158000
+                  },
+                  {
+                    "name": "Q3",
+                    "value": 142000
+                  },
+                  {
+                    "name": "Q4",
+                    "value": 189000
+                  }
+                ],
+                "colorPalette": "vibrant"
+              },
+              {
+                "title": "Market Distribution",
+                "type": "donut",
+                "data": [
+                  {
+                    "name": "North America",
+                    "value": 35
+                  },
+                  {
+                    "name": "Europe",
+                    "value": 28
+                  },
+                  {
+                    "name": "Asia Pacific",
+                    "value": 25
+                  },
+                  {
+                    "name": "Others",
+                    "value": 12
+                  }
+                ],
+                "colorPalette": "ocean"
+              },
+              {
+                "title": "Growth Trend",
+                "type": "line",
+                "data": [
+                  {
+                    "name": "Jan",
+                    "value": 30
+                  },
+                  {
+                    "name": "Feb",
+                    "value": 45
+                  },
+                  {
+                    "name": "Mar",
+                    "value": 52
+                  },
+                  {
+                    "name": "Apr",
+                    "value": 48
+                  },
+                  {
+                    "name": "May",
+                    "value": 67
+                  },
+                  {
+                    "name": "Jun",
+                    "value": 82
+                  }
+                ],
+                "colorPalette": "professional"
+              },
+              {
+                "title": "Department Performance",
+                "type": "bar-horizontal",
+                "data": [
+                  {
+                    "name": "Sales",
+                    "value": 87
+                  },
+                  {
+                    "name": "Marketing",
+                    "value": 72
+                  },
+                  {
+                    "name": "Engineering",
+                    "value": 95
+                  },
+                  {
+                    "name": "Support",
+                    "value": 68
+                  }
+                ],
+                "colorPalette": "sunset"
+              },
+              {
+                "title": "Product Comparison",
+                "type": "bar-clustered",
+                "data": [
+                  {
+                    "name": "Q1",
+                    "values": {
+                      "Product A": 45,
+                      "Product B": 62
+                    }
+                  },
+                  {
+                    "name": "Q2",
+                    "values": {
+                      "Product A": 58,
+                      "Product B": 71
+                    }
+                  },
+                  {
+                    "name": "Q3",
+                    "values": {
+                      "Product A": 72,
+                      "Product B": 65
+                    }
+                  }
+                ],
+                "series": [
+                  "Product A",
+                  "Product B"
+                ],
+                "colorPalette": "vibrant"
+              },
+              {
+                "title": "Customer Feedback",
+                "type": "bar-diverging",
+                "data": [
+                  {
+                    "name": "Quality",
+                    "positive": 78,
+                    "negative": 22
+                  },
+                  {
+                    "name": "Service",
+                    "positive": 65,
+                    "negative": 35
+                  },
+                  {
+                    "name": "Price",
+                    "positive": 42,
+                    "negative": 58
+                  }
+                ],
+                "series": [
+                  "Satisfied",
+                  "Unsatisfied"
+                ],
+                "colorPalette": "professional"
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "default": "Chart Title",
+                  "description": "Chart title",
+                  "type": "string",
+                  "maxLength": 40
+                },
+                "type": {
+                  "default": "bar-vertical",
+                  "type": "string",
+                  "enum": [
+                    "bar-vertical",
+                    "bar-horizontal",
+                    "bar-grouped-vertical",
+                    "bar-grouped-horizontal",
+                    "bar-stacked-vertical",
+                    "bar-stacked-horizontal",
+                    "bar-clustered",
+                    "bar-diverging",
+                    "line",
+                    "area",
+                    "area-stacked",
+                    "pie",
+                    "donut",
+                    "scatter"
+                  ]
+                },
+                "data": {
+                  "default": [
+                    {
+                      "name": "Q1",
+                      "value": 45
+                    },
+                    {
+                      "name": "Q2",
+                      "value": 72
+                    },
+                    {
+                      "name": "Q3",
+                      "value": 58
+                    },
+                    {
+                      "name": "Q4",
+                      "value": 89
+                    }
+                  ],
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "values": {
+                            "description": "Object with series names as keys and numbers as values"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "values"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "positive": {
+                            "type": "number"
+                          },
+                          "negative": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "positive",
+                          "negative"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "x": {
+                            "type": "number"
+                          },
+                          "y": {
+                            "type": "number"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "x",
+                          "y"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  ]
+                },
+                "series": {
+                  "description": "Series names for grouped/stacked charts",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "colorPalette": {
+                  "default": "vibrant",
+                  "type": "string",
+                  "enum": [
+                    "vibrant",
+                    "ocean",
+                    "forest",
+                    "sunset",
+                    "professional"
+                  ]
+                }
+              },
+              "required": [
+                "title",
+                "type",
+                "data",
+                "colorPalette"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "showLegend": {
+            "description": "Whether to show chart legends",
+            "default": true,
+            "type": "boolean"
+          },
+          "showGrid": {
+            "description": "Whether to show chart grid lines",
+            "default": true,
+            "type": "boolean"
+          },
+          "footerWebsite": {
+            "description": "Footer website URL",
+            "default": "www.hello.com",
+            "type": "string",
+            "maxLength": 30
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "charts",
+          "showLegend",
+          "showGrid",
+          "footerWebsite"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-swift:title-description-six-charts-four-metrics",
+      "name": "Title Description Six Charts Four Metrics",
+      "description": "Neo Swift layout with title, description, 4 KPI metric cards, and a responsive grid of up to 6 charts. Ideal for analytics overviews and performance dashboards.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Data Analytics Dashboard",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50
+          },
+          "description": {
+            "description": "Description text below the title",
+            "default": "Comprehensive overview of key metrics and performance indicators across multiple data dimensions.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 200
+          },
+          "metrics": {
+            "description": "Up to 4 KPI metrics",
+            "default": [
+              {
+                "value": "$3.5M",
+                "label": "Pipeline"
+              },
+              {
+                "value": "28%",
+                "label": "Conversion"
+              },
+              {
+                "value": "1.9x",
+                "label": "ROI"
+              },
+              {
+                "value": "42",
+                "label": "Accounts"
+              }
+            ],
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "description": "The metric value",
+                  "type": "string",
+                  "maxLength": 12
+                },
+                "label": {
+                  "description": "The metric label",
+                  "type": "string",
+                  "maxLength": 24
+                }
+              },
+              "required": [
+                "value",
+                "label"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "charts": {
+            "description": "Array of 1–6 charts",
+            "default": [
+              {
+                "title": "Revenue by Quarter",
+                "type": "bar-vertical",
+                "data": [
+                  {
+                    "name": "Q1",
+                    "value": 125000
+                  },
+                  {
+                    "name": "Q2",
+                    "value": 158000
+                  },
+                  {
+                    "name": "Q3",
+                    "value": 142000
+                  },
+                  {
+                    "name": "Q4",
+                    "value": 189000
+                  }
+                ],
+                "colorPalette": "vibrant"
+              },
+              {
+                "title": "Market Distribution",
+                "type": "donut",
+                "data": [
+                  {
+                    "name": "North America",
+                    "value": 35
+                  },
+                  {
+                    "name": "Europe",
+                    "value": 28
+                  },
+                  {
+                    "name": "Asia Pacific",
+                    "value": 25
+                  },
+                  {
+                    "name": "Others",
+                    "value": 12
+                  }
+                ],
+                "colorPalette": "ocean"
+              },
+              {
+                "title": "Growth Trend",
+                "type": "line",
+                "data": [
+                  {
+                    "name": "Jan",
+                    "value": 30
+                  },
+                  {
+                    "name": "Feb",
+                    "value": 45
+                  },
+                  {
+                    "name": "Mar",
+                    "value": 52
+                  },
+                  {
+                    "name": "Apr",
+                    "value": 48
+                  },
+                  {
+                    "name": "May",
+                    "value": 67
+                  },
+                  {
+                    "name": "Jun",
+                    "value": 82
+                  }
+                ],
+                "colorPalette": "professional"
+              },
+              {
+                "title": "Department Performance",
+                "type": "bar-horizontal",
+                "data": [
+                  {
+                    "name": "Sales",
+                    "value": 87
+                  },
+                  {
+                    "name": "Marketing",
+                    "value": 72
+                  },
+                  {
+                    "name": "Engineering",
+                    "value": 95
+                  },
+                  {
+                    "name": "Support",
+                    "value": 68
+                  }
+                ],
+                "colorPalette": "sunset"
+              },
+              {
+                "title": "Product Comparison",
+                "type": "bar-clustered",
+                "data": [
+                  {
+                    "name": "Q1",
+                    "values": {
+                      "Product A": 45,
+                      "Product B": 62
+                    }
+                  },
+                  {
+                    "name": "Q2",
+                    "values": {
+                      "Product A": 58,
+                      "Product B": 71
+                    }
+                  },
+                  {
+                    "name": "Q3",
+                    "values": {
+                      "Product A": 72,
+                      "Product B": 65
+                    }
+                  }
+                ],
+                "series": [
+                  "Product A",
+                  "Product B"
+                ],
+                "colorPalette": "vibrant"
+              },
+              {
+                "title": "Customer Feedback",
+                "type": "bar-diverging",
+                "data": [
+                  {
+                    "name": "Quality",
+                    "positive": 78,
+                    "negative": 22
+                  },
+                  {
+                    "name": "Service",
+                    "positive": 65,
+                    "negative": 35
+                  },
+                  {
+                    "name": "Price",
+                    "positive": 42,
+                    "negative": 58
+                  }
+                ],
+                "series": [
+                  "Satisfied",
+                  "Unsatisfied"
+                ],
+                "colorPalette": "professional"
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "default": "Chart Title",
+                  "description": "Chart title",
+                  "type": "string",
+                  "maxLength": 40
+                },
+                "type": {
+                  "default": "bar-vertical",
+                  "type": "string",
+                  "enum": [
+                    "bar-vertical",
+                    "bar-horizontal",
+                    "bar-grouped-vertical",
+                    "bar-grouped-horizontal",
+                    "bar-stacked-vertical",
+                    "bar-stacked-horizontal",
+                    "bar-clustered",
+                    "bar-diverging",
+                    "line",
+                    "area",
+                    "area-stacked",
+                    "pie",
+                    "donut",
+                    "scatter"
+                  ]
+                },
+                "data": {
+                  "default": [
+                    {
+                      "name": "Q1",
+                      "value": 45
+                    },
+                    {
+                      "name": "Q2",
+                      "value": 72
+                    },
+                    {
+                      "name": "Q3",
+                      "value": 58
+                    },
+                    {
+                      "name": "Q4",
+                      "value": 89
+                    }
+                  ],
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "values": {
+                            "description": "Object with series names as keys and numbers as values"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "values"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "positive": {
+                            "type": "number"
+                          },
+                          "negative": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "positive",
+                          "negative"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "x": {
+                            "type": "number"
+                          },
+                          "y": {
+                            "type": "number"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "x",
+                          "y"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  ]
+                },
+                "series": {
+                  "description": "Series names for grouped/stacked charts",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "colorPalette": {
+                  "default": "vibrant",
+                  "type": "string",
+                  "enum": [
+                    "vibrant",
+                    "ocean",
+                    "forest",
+                    "sunset",
+                    "professional"
+                  ]
+                }
+              },
+              "required": [
+                "title",
+                "type",
+                "data",
+                "colorPalette"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "showLegend": {
+            "description": "Whether to show chart legends",
+            "default": true,
+            "type": "boolean"
+          },
+          "showGrid": {
+            "description": "Whether to show chart grid lines",
+            "default": true,
+            "type": "boolean"
+          },
+          "footerWebsite": {
+            "description": "Footer website URL",
+            "default": "www.hello.com",
+            "type": "string",
+            "maxLength": 30
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "metrics",
+          "charts",
+          "showLegend",
+          "showGrid",
+          "footerWebsite"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "neo-swift:title-description-four-charts-six-bullets",
+      "name": "Title Description Four Charts Six Bullets",
+      "description": "Neo Swift layout with title, description, a grid of up to 4 charts, and up to 6 bullet points in a sidebar. Ideal for data plus key takeaways, like neo-general Chart Grid + Bullets.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Data Analytics Dashboard",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50
+          },
+          "description": {
+            "description": "Description text below the title",
+            "default": "Comprehensive overview of key metrics and performance indicators across multiple data dimensions.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 200
+          },
+          "bullets": {
+            "description": "Up to 6 bullet points",
+            "default": [
+              "Pipeline coverage above 3x target with strong enterprise adoption.",
+              "CAC payback under 6 months across segments.",
+              "Enterprise conversion improved quarter over quarter.",
+              "Expansion revenue driving overall growth.",
+              "Retention above 95% across key cohorts.",
+              "Forecast accuracy improved this quarter."
+            ],
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 80
+            }
+          },
+          "charts": {
+            "description": "Array of 1–4 charts",
+            "default": [
+              {
+                "title": "Revenue by Quarter",
+                "type": "bar-vertical",
+                "data": [
+                  {
+                    "name": "Q1",
+                    "value": 125000
+                  },
+                  {
+                    "name": "Q2",
+                    "value": 158000
+                  },
+                  {
+                    "name": "Q3",
+                    "value": 142000
+                  },
+                  {
+                    "name": "Q4",
+                    "value": 189000
+                  }
+                ],
+                "colorPalette": "vibrant"
+              },
+              {
+                "title": "Market Distribution",
+                "type": "donut",
+                "data": [
+                  {
+                    "name": "North America",
+                    "value": 35
+                  },
+                  {
+                    "name": "Europe",
+                    "value": 28
+                  },
+                  {
+                    "name": "Asia Pacific",
+                    "value": 25
+                  },
+                  {
+                    "name": "Others",
+                    "value": 12
+                  }
+                ],
+                "colorPalette": "ocean"
+              },
+              {
+                "title": "Growth Trend",
+                "type": "line",
+                "data": [
+                  {
+                    "name": "Jan",
+                    "value": 30
+                  },
+                  {
+                    "name": "Feb",
+                    "value": 45
+                  },
+                  {
+                    "name": "Mar",
+                    "value": 52
+                  },
+                  {
+                    "name": "Apr",
+                    "value": 48
+                  },
+                  {
+                    "name": "May",
+                    "value": 67
+                  },
+                  {
+                    "name": "Jun",
+                    "value": 82
+                  }
+                ],
+                "colorPalette": "professional"
+              },
+              {
+                "title": "Department Performance",
+                "type": "bar-horizontal",
+                "data": [
+                  {
+                    "name": "Sales",
+                    "value": 87
+                  },
+                  {
+                    "name": "Marketing",
+                    "value": 72
+                  },
+                  {
+                    "name": "Engineering",
+                    "value": 95
+                  },
+                  {
+                    "name": "Support",
+                    "value": 68
+                  }
+                ],
+                "colorPalette": "sunset"
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "default": "Chart Title",
+                  "description": "Chart title",
+                  "type": "string",
+                  "maxLength": 40
+                },
+                "type": {
+                  "default": "bar-vertical",
+                  "type": "string",
+                  "enum": [
+                    "bar-vertical",
+                    "bar-horizontal",
+                    "bar-grouped-vertical",
+                    "bar-grouped-horizontal",
+                    "bar-stacked-vertical",
+                    "bar-stacked-horizontal",
+                    "bar-clustered",
+                    "bar-diverging",
+                    "line",
+                    "area",
+                    "area-stacked",
+                    "pie",
+                    "donut",
+                    "scatter"
+                  ]
+                },
+                "data": {
+                  "default": [
+                    {
+                      "name": "Q1",
+                      "value": 45
+                    },
+                    {
+                      "name": "Q2",
+                      "value": 72
+                    },
+                    {
+                      "name": "Q3",
+                      "value": 58
+                    },
+                    {
+                      "name": "Q4",
+                      "value": 89
+                    }
+                  ],
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "values": {
+                            "description": "Object with series names as keys and numbers as values"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "values"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "positive": {
+                            "type": "number"
+                          },
+                          "negative": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "positive",
+                          "negative"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "x": {
+                            "type": "number"
+                          },
+                          "y": {
+                            "type": "number"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "x",
+                          "y"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  ]
+                },
+                "series": {
+                  "description": "Series names for grouped/stacked charts",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "colorPalette": {
+                  "default": "vibrant",
+                  "type": "string",
+                  "enum": [
+                    "vibrant",
+                    "ocean",
+                    "forest",
+                    "sunset",
+                    "professional"
+                  ]
+                }
+              },
+              "required": [
+                "title",
+                "type",
+                "data",
+                "colorPalette"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "showLegend": {
+            "description": "Whether to show chart legends",
+            "default": true,
+            "type": "boolean"
+          },
+          "showGrid": {
+            "description": "Whether to show chart grid lines",
+            "default": true,
+            "type": "boolean"
+          },
+          "footerWebsite": {
+            "description": "Footer website URL",
+            "default": "www.hello.com",
+            "type": "string",
+            "maxLength": 30
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "bullets",
+          "charts",
+          "showLegend",
+          "showGrid",
+          "footerWebsite"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

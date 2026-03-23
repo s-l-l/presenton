@@ -1,10 +1,12 @@
 {
   "permissions": {
+    "allow": [
+      "Bash(find D:/codeWorkspase/dataAgent -name *.java -path */controller/*)",
+      "Bash(ls:*)",
+      "Bash(find D:codeWorkspasepresenton -name *presentation_service* -type f)"
+    ],
     "additionalDirectories": [
       "D:\\codeWorkspase\\dataAgent"
-    ],
-    "allow": [
-      "Bash(find D:/codeWorkspase/dataAgent -name *.java -path */controller/*)"
     ]
   }
 }

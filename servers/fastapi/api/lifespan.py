@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from migrations import migrate_database_on_startup
 from services.database import create_db_and_tables
 from utils.get_env import get_app_data_directory_env
+from utils.get_layout_by_name import preload_layout_cache
 from utils.model_availability import (
     check_llm_and_image_provider_api_or_model_availability,
 )
@@ -24,5 +25,6 @@ async def app_lifespan(_: FastAPI):
         os.makedirs(app_data_dir, exist_ok=True)
     await migrate_database_on_startup()
     await create_db_and_tables()
+    preload_layout_cache()
     await check_llm_and_image_provider_api_or_model_availability()
     yield

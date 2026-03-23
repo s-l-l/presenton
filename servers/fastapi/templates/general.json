@@ -1,0 +1,1269 @@
+{
+  "version": "v1",
+  "name": "general",
+  "ordered": false,
+  "slides": [
+    {
+      "id": "general:general-intro-slide",
+      "name": "Intro Slide",
+      "description": "A clean slide layout with title, description text, presenter info, and a supporting image.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Product Overview",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "description": {
+            "description": "Main description text content",
+            "default": "Our product offers customizable dashboards for real-time reporting and data-driven decisions. It integrates with third-party tools to enhance operations and scales with business growth for improved efficiency.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 150
+          },
+          "presenterName": {
+            "description": "Name of the presenter",
+            "default": "John Doe",
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 50
+          },
+          "presentationDate": {
+            "description": "Date of the presentation must be the latest date like today's date",
+            "default": "December 2025",
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 50
+          },
+          "image": {
+            "description": "Supporting image for the slide",
+            "default": {
+              "__image_url__": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+              "__image_prompt__": "Business team in meeting room discussing product features and solutions"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "presenterName",
+          "presentationDate",
+          "image"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "general:basic-info-slide",
+      "name": "Basic Info",
+      "description": "A clean slide layout with title, description text, and a supporting image.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Product Overview",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "description": {
+            "description": "Main description text content",
+            "default": "Our product offers customizable dashboards for real-time reporting and data-driven decisions. It integrates with third-party tools to enhance operations and scales with business growth for improved efficiency.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 150
+          },
+          "image": {
+            "description": "Supporting image for the slide",
+            "default": {
+              "__image_url__": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+              "__image_prompt__": "Business team in meeting room discussing product features and solutions"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "image"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "general:bullet-icons-only-slide",
+      "name": "Bullet Icons Only",
+      "description": "A slide layout with title, grid of bullet points (title and description) with icons, and a supporting image.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Solutions",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "image": {
+            "description": "Supporting image for the slide",
+            "default": {
+              "__image_url__": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+              "__image_prompt__": "Business professionals collaborating and discussing solutions"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          },
+          "bulletPoints": {
+            "description": "List of bullet points with icons and optional subtitles",
+            "default": [
+              {
+                "title": "Custom Software",
+                "subtitle": "We create tailored software to optimize processes and boost efficiency.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/code-bold.svg",
+                  "__icon_query__": "code software development"
+                }
+              },
+              {
+                "title": "Digital Consulting",
+                "subtitle": "Our consultants guide organizations in leveraging the latest technologies.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/users-four-bold.svg",
+                  "__icon_query__": "users consulting team"
+                }
+              },
+              {
+                "title": "Support Services",
+                "subtitle": "We provide ongoing support to help businesses adapt and maintain performance.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/headphones-bold.svg",
+                  "__icon_query__": "headphones support service"
+                }
+              },
+              {
+                "title": "Scalable Marketing",
+                "subtitle": "Our data-driven strategies help businesses expand their reach and engagement.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/code-bold.svg",
+                  "__icon_query__": "trending up marketing growth"
+                }
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "Bullet point title",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 80
+                },
+                "subtitle": {
+                  "description": "Optional short subtitle or brief explanation",
+                  "type": "string",
+                  "minLength": 5,
+                  "maxLength": 150
+                },
+                "icon": {
+                  "type": "object",
+                  "properties": {
+                    "__icon_url__": {
+                      "description": "URL to icon",
+                      "type": "string"
+                    },
+                    "__icon_query__": {
+                      "type": "string",
+                      "minLength": 5,
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "__icon_url__",
+                    "__icon_query__"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "title",
+                "icon"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "image",
+          "bulletPoints"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "general:bullet-with-icons-slide",
+      "name": "Bullet with Icons",
+      "description": "A bullets style slide with main content, supporting image, and bullet points with icons and descriptions.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Problem",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "description": {
+            "description": "Main description text explaining the problem or topic",
+            "default": "Businesses face challenges with outdated technology and rising costs, limiting efficiency and growth in competitive markets.",
+            "type": "string",
+            "maxLength": 150
+          },
+          "image": {
+            "description": "Supporting image for the slide",
+            "default": {
+              "__image_url__": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+              "__image_prompt__": "Business people analyzing documents and charts in office"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          },
+          "bulletPoints": {
+            "description": "List of bullet points with icons and descriptions",
+            "default": [
+              {
+                "title": "Inefficiency",
+                "description": "Businesses struggle to find digital tools that meet their needs, causing operational slowdowns.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/checks-bold.svg",
+                  "__icon_query__": "warning alert inefficiency"
+                }
+              },
+              {
+                "title": "High Costs",
+                "description": "Outdated systems increase expenses, while small businesses struggle to expand their market reach.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/fediverse-logo-bold.svg",
+                  "__icon_query__": "trending up costs chart"
+                }
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "Bullet point title",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 60
+                },
+                "description": {
+                  "description": "Bullet point description",
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 100
+                },
+                "icon": {
+                  "type": "object",
+                  "properties": {
+                    "__icon_url__": {
+                      "description": "URL to icon",
+                      "type": "string"
+                    },
+                    "__icon_query__": {
+                      "type": "string",
+                      "minLength": 5,
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "__icon_url__",
+                    "__icon_query__"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "title",
+                "description",
+                "icon"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "image",
+          "bulletPoints"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "general:chart-with-bullets-slide",
+      "name": "Chart with Bullet Boxes",
+      "description": "A slide layout with title, description, chart on the left and colored bullet boxes with icons on the right. Only choose this if data is available.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Market Size",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "description": {
+            "description": "Description text below the title",
+            "default": "Businesses face challenges with outdated technology and rising costs, limiting efficiency and growth in competitive markets.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 150
+          },
+          "chartData": {
+            "default": {
+              "type": "bar",
+              "data": [
+                {
+                  "name": "Q1",
+                  "value": 5
+                },
+                {
+                  "name": "Q1",
+                  "value": 5
+                },
+                {
+                  "name": "Q1",
+                  "value": 5
+                }
+              ]
+            },
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "const": "bar"
+                      },
+                      {
+                        "type": "string",
+                        "const": "pie"
+                      },
+                      {
+                        "type": "string",
+                        "const": "line"
+                      },
+                      {
+                        "type": "string",
+                        "const": "area"
+                      }
+                    ]
+                  },
+                  "data": {
+                    "minItems": 2,
+                    "maxItems": 5,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "description": "Data point name",
+                          "type": "string"
+                        },
+                        "value": {
+                          "description": "Data point value",
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "value"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "type",
+                  "data"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "scatter"
+                  },
+                  "data": {
+                    "minItems": 2,
+                    "maxItems": 20,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "description": "X coordinate",
+                          "type": "number"
+                        },
+                        "y": {
+                          "description": "Y coordinate",
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "type",
+                  "data"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "showLegend": {
+            "description": "Whether to show chart legend",
+            "default": false,
+            "type": "boolean"
+          },
+          "showTooltip": {
+            "description": "Whether to show chart tooltip",
+            "default": true,
+            "type": "boolean"
+          },
+          "bulletPoints": {
+            "description": "List of bullet points with colored boxes and icons",
+            "default": [
+              {
+                "title": "Total Addressable Market",
+                "description": "Companies can use TAM to plan future expansion and investment.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/chart-line-up-bold.svg",
+                  "__icon_query__": "target market scope"
+                }
+              },
+              {
+                "title": "Serviceable Available Market",
+                "description": "Indicates more measurable market segments for sales efforts.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/chart-line-up-bold.svg",
+                  "__icon_query__": "pie chart analysis"
+                }
+              },
+              {
+                "title": "Serviceable Obtainable Market",
+                "description": "Help companies plan development strategies according to the market.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/chart-line-up-bold.svg",
+                  "__icon_query__": "trending up growth"
+                }
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "Bullet point title",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 80
+                },
+                "description": {
+                  "description": "Bullet point description",
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 150
+                },
+                "icon": {
+                  "type": "object",
+                  "properties": {
+                    "__icon_url__": {
+                      "description": "URL to icon",
+                      "type": "string"
+                    },
+                    "__icon_query__": {
+                      "type": "string",
+                      "minLength": 5,
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "__icon_url__",
+                    "__icon_query__"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "title",
+                "description",
+                "icon"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "chartData",
+          "showLegend",
+          "showTooltip",
+          "bulletPoints"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "general:metrics-slide",
+      "name": "Metrics",
+      "description": "A slide layout for showcasing key business metrics with large numbers and descriptive text boxes. This should only be used with metrics and numbers.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Company Traction",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 100
+          },
+          "metrics": {
+            "description": "List of key business metrics to display",
+            "default": [
+              {
+                "value": "150+",
+                "label": "Clients Onboarded",
+                "description": "Larana Inc. has successfully built a diverse client base, gaining trust across industries."
+              },
+              {
+                "value": "200+",
+                "label": "projects completed.",
+                "description": "Delivering over 200 projects, Larana Inc. consistently meets evolving client needs."
+              },
+              {
+                "value": "95%",
+                "label": "client satisfaction.",
+                "description": "With a strong focus on customer success, Larana Inc. has a 95% satisfaction rate."
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "description": "Metric label/title",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 50
+                },
+                "value": {
+                  "description": "Metric value (e.g., 150+, 95%, $2M). No long values. Keep simple number.",
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 10
+                },
+                "description": {
+                  "description": "Detailed description of the metric. Explanation of the metric.",
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 150
+                }
+              },
+              "required": [
+                "label",
+                "value",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "metrics"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "general:metrics-with-image-slide",
+      "name": "Metrics with Image",
+      "description": "A slide layout with supporting image on the left and title, description, and metrics grid on the right. Can be used alternatively with MetricSlide.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Competitive Advantage",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "description": {
+            "description": "Description text below the title",
+            "default": "Ginyard International Co. stands out by offering custom digital solutions tailored to client needs, alongside long-term support to ensure lasting relationships and continuous adaptation.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 150
+          },
+          "image": {
+            "description": "Supporting image for the slide",
+            "default": {
+              "__image_url__": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+              "__image_prompt__": "Person holding tablet with analytics dashboard and charts"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          },
+          "metrics": {
+            "description": "List of key business metrics to display",
+            "default": [
+              {
+                "label": "Satisfied Clients",
+                "value": "200+"
+              },
+              {
+                "label": "Client Retention Rate",
+                "value": "95%"
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "description": "Metric label/title",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 100
+                },
+                "value": {
+                  "description": "Metric value (e.g., 200+, 95%, 50%)",
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 20
+                }
+              },
+              "required": [
+                "label",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "image",
+          "metrics"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "general:numbered-bullets-slide",
+      "name": "Numbered Bullets",
+      "description": "A slide layout with large title, supporting image, and numbered bullet points with descriptions.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Market Validation",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "image": {
+            "description": "Supporting image for the slide",
+            "default": {
+              "__image_url__": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+              "__image_prompt__": "Business people analyzing charts and data on wall"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          },
+          "bulletPoints": {
+            "description": "List of numbered bullet points with descriptions",
+            "default": [
+              {
+                "title": "Customer Insights",
+                "description": "Surveys reveal that 78% of businesses are planning to invest in digital solutions, with 85% preferring customized approaches."
+              },
+              {
+                "title": "Pilot Program Success",
+                "description": "The survey revealed that 78% of businesses plan to invest in digital solutions, and 85% prefer a tailored approach."
+              },
+              {
+                "title": "Pilot Program Success",
+                "description": "The survey revealed that 78% of businesses plan to invest in digital solutions, and 85% prefer a tailored approach."
+              },
+              {
+                "title": "Pilot Program Success",
+                "description": "The survey revealed that 78% of businesses plan to invest in digital solutions, and 85% prefer a tailored approach."
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "Bullet point title",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 80
+                },
+                "description": {
+                  "description": "Bullet point description",
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 150
+                }
+              },
+              "required": [
+                "title",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "image",
+          "bulletPoints"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "general:quote-slide",
+      "name": "Quote",
+      "description": "A slide layout with a heading, inspirational quote, and background image with overlay for text visibility.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "heading": {
+            "description": "Main heading of the slide",
+            "default": "Words of Wisdom",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 60
+          },
+          "quote": {
+            "description": "The main quote text content",
+            "default": "Success is not final, failure is not fatal: it is the courage to continue that counts. The future belongs to those who believe in the beauty of their dreams.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 200
+          },
+          "author": {
+            "description": "Author of the quote",
+            "default": "Winston Churchill",
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 50
+          },
+          "backgroundImage": {
+            "description": "Background image for the slide",
+            "default": {
+              "__image_url__": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80",
+              "__image_prompt__": "Inspirational mountain landscape with dramatic sky and clouds"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "heading",
+          "quote",
+          "author",
+          "backgroundImage"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "general:table-info-slide",
+      "name": "Table with Info",
+      "description": "A slide layout with a title at the top, structured table in the middle, and descriptive text at the bottom.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Market Comparison",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "tableData": {
+            "description": "Table structure with headers and rows",
+            "default": {
+              "headers": [
+                "Company",
+                "Revenue",
+                "Growth",
+                "Market Share"
+              ],
+              "rows": [
+                [
+                  "Company A",
+                  "$2.5M",
+                  "15%",
+                  "25%"
+                ],
+                [
+                  "Company B",
+                  "$1.8M",
+                  "12%",
+                  "18%"
+                ],
+                [
+                  "Company C",
+                  "$3.2M",
+                  "20%",
+                  "32%"
+                ],
+                [
+                  "Our Company",
+                  "$1.2M",
+                  "35%",
+                  "12%"
+                ]
+              ]
+            },
+            "type": "object",
+            "properties": {
+              "headers": {
+                "description": "Table column headers",
+                "minItems": 2,
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 30
+                }
+              },
+              "rows": {
+                "description": "Table rows data - each row should match the number of headers",
+                "minItems": 2,
+                "maxItems": 6,
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 50
+                  }
+                }
+              }
+            },
+            "required": [
+              "headers",
+              "rows"
+            ],
+            "additionalProperties": false
+          },
+          "description": {
+            "description": "Descriptive text that appears below the table",
+            "default": "This comparison shows our competitive position in the market. While we currently have a smaller market share, our growth rate significantly exceeds competitors, indicating strong potential for future expansion.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "title",
+          "tableData",
+          "description"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "general:table-of-contents-slide",
+      "name": "Table of Contents",
+      "description": "A professional table of contents layout with numbered sections, and page references. This should be right after introduction slide if ever used.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "sections": {
+            "description": "List of table of contents sections",
+            "default": [
+              {
+                "number": 1,
+                "title": "Problem",
+                "pageNumber": "03"
+              },
+              {
+                "number": 2,
+                "title": "Solution",
+                "pageNumber": "04"
+              },
+              {
+                "number": 3,
+                "title": "Product Overview",
+                "pageNumber": "05"
+              },
+              {
+                "number": 4,
+                "title": "Market Size",
+                "pageNumber": "06"
+              },
+              {
+                "number": 5,
+                "title": "Market Validation",
+                "pageNumber": "07"
+              },
+              {
+                "number": 6,
+                "title": "Company Traction",
+                "pageNumber": "08"
+              },
+              {
+                "number": 7,
+                "title": "Product Performance",
+                "pageNumber": "09"
+              },
+              {
+                "number": 8,
+                "title": "Business Model",
+                "pageNumber": "10"
+              },
+              {
+                "number": 9,
+                "title": "Competitive Advantage",
+                "pageNumber": "11"
+              },
+              {
+                "number": 10,
+                "title": "Team Member",
+                "pageNumber": "12"
+              }
+            ],
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "number": {
+                  "description": "Section number",
+                  "type": "number",
+                  "minimum": 1
+                },
+                "title": {
+                  "description": "Section title",
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "pageNumber": {
+                  "description": "Page number for this section",
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 10
+                }
+              },
+              "required": [
+                "number",
+                "title",
+                "pageNumber"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "sections"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "general:team-slide",
+      "name": "Team Slide",
+      "description": "A slide layout showcasing team members with photos, names, positions, and descriptions alongside company information.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Our Team Members",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "companyDescription": {
+            "description": "Company description or team introduction text",
+            "default": "Ginyard International Co. is a leading provider of innovative digital solutions tailored for businesses. Our mission is to empower organizations to achieve their goals through cutting-edge technology and strategic partnerships.",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 150
+          },
+          "teamMembers": {
+            "description": "List of team members with their information",
+            "default": [
+              {
+                "name": "Juliana Silva",
+                "position": "CEO",
+                "description": "Strategic leader with 15+ years experience in digital transformation and business growth.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+                  "__image_prompt__": "Professional businesswoman CEO headshot"
+                }
+              },
+              {
+                "name": "Daniel Gallego",
+                "position": "CTO",
+                "description": "Technology expert specializing in scalable solutions and innovative software architecture.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+                  "__image_prompt__": "Professional businessman CTO headshot"
+                }
+              },
+              {
+                "name": "Ketut Susilo",
+                "position": "COO",
+                "description": "Operations leader focused on efficiency, process optimization, and team development.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+                  "__image_prompt__": "Professional businessman COO headshot"
+                }
+              },
+              {
+                "name": "Anna Robertson",
+                "position": "CMO",
+                "description": "Marketing strategist with expertise in brand development and customer engagement.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+                  "__image_prompt__": "Professional businesswoman CMO headshot"
+                }
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "Team member's full name",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 50
+                },
+                "position": {
+                  "description": "Job title or position",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 50
+                },
+                "description": {
+                  "description": "Brief description of the team member (around 100 characters)",
+                  "type": "string",
+                  "maxLength": 150
+                },
+                "image": {
+                  "type": "object",
+                  "properties": {
+                    "__image_url__": {
+                      "description": "URL to image",
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "__image_prompt__": {
+                      "type": "string",
+                      "minLength": 10,
+                      "maxLength": 50
+                    }
+                  },
+                  "required": [
+                    "__image_url__",
+                    "__image_prompt__"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "name",
+                "position",
+                "description",
+                "image"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "companyDescription",
+          "teamMembers"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

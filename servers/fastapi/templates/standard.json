@@ -1,0 +1,1928 @@
+{
+  "version": "v1",
+  "name": "standard",
+  "ordered": false,
+  "slides": [
+    {
+      "id": "standard:header-counter-two-column-image-text-slide",
+      "name": "Intro Slide",
+      "description": "A slide with a header row containing label, separator, and counter, followed by a two-column layout with a media area and stacked text blocks. If used as the endig slide then it shoudn't have the intro card.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "maxWords": 460,
+        "type": "object",
+        "properties": {
+          "header": {
+            "default": {
+              "separatorIcon": {
+                "__icon_url__": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='230' height='2' viewBox='0 0 230 2'%3E%3Crect width='230' height='2' fill='%2322863A'/%3E%3C/svg%3E",
+                "__icon_query__": "green line"
+              },
+              "counter": "1"
+            },
+            "type": "object",
+            "properties": {
+              "separatorIcon": {
+                "description": "Graphic separator element",
+                "default": {
+                  "__icon_url__": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='230' height='2' viewBox='0 0 230 2'%3E%3Crect width='230' height='2' fill='%2322863A'/%3E%3C/svg%3E",
+                  "__icon_query__": "green line"
+                },
+                "type": "object",
+                "properties": {
+                  "__icon_url__": {
+                    "description": "URL to icon",
+                    "default": "https://static.thenounproject.com/png/5563447-200.png",
+                    "type": "string"
+                  },
+                  "__icon_query__": {
+                    "description": "Query used to search the icon. Max 3 words",
+                    "default": "image placeholder icon",
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 40
+                  }
+                },
+                "required": [
+                  "__icon_url__",
+                  "__icon_query__"
+                ],
+                "additionalProperties": false
+              },
+              "counter": {
+                "description": "Small counter text. Max 1 word",
+                "default": "1",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 3
+              }
+            },
+            "required": [
+              "separatorIcon",
+              "counter"
+            ],
+            "additionalProperties": false
+          },
+          "media": {
+            "default": {
+              "type": "image",
+              "image": {
+                "__image_url__": "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "__image_prompt__": "Abstract gradient image suitable for a presentation left panel"
+              }
+            },
+            "type": "object",
+            "properties": {
+              "type": {
+                "description": "Choose media type for left panel",
+                "default": "image",
+                "type": "string",
+                "enum": [
+                  "image"
+                ]
+              },
+              "image": {
+                "default": {
+                  "__image_url__": "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                  "__image_prompt__": "Abstract gradient image suitable for a presentation left panel"
+                },
+                "type": "object",
+                "properties": {
+                  "__image_url__": {
+                    "description": "URL to image",
+                    "default": "https://images.pexels.com/photos/31527637/pexels-photo-31527637.jpeg",
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "__image_prompt__": {
+                    "description": "Prompt used to generate the image. Max 30 words",
+                    "default": "High-quality illustrative image for the left panel of a pitch deck cover",
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 150
+                  }
+                },
+                "required": [
+                  "__image_url__",
+                  "__image_prompt__"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "type",
+              "image"
+            ],
+            "additionalProperties": false
+          },
+          "title": {
+            "description": "Main title, supports a line break. Max 6 words",
+            "default": "Introduction Our Pitchdeck",
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 30
+          },
+          "titleBreakAfter": {
+            "description": "Character index to insert a line break in title",
+            "default": 12,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 25
+          },
+          "paragraph": {
+            "description": "Paragraph text block. Max 20 words",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris",
+            "type": "string",
+            "minLength": 50,
+            "maxLength": 200
+          },
+          "introCard": {
+            "default": {
+              "enabled": true,
+              "initials": "PDT",
+              "name": "Pitch Deck Team",
+              "date": "December 22, 2025"
+            },
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "description": "Show intro card with name and date",
+                "default": false,
+                "type": "boolean"
+              },
+              "initials": {
+                "description": "Initials inside the circle",
+                "default": "PDT",
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 3
+              },
+              "name": {
+                "description": "Display name",
+                "default": "Pitch Deck Team",
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 40
+              },
+              "date": {
+                "description": "Display date string",
+                "default": "December 22, 2025",
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 40
+              }
+            },
+            "required": [
+              "enabled",
+              "initials",
+              "name",
+              "date"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "header",
+          "media",
+          "title",
+          "titleBreakAfter",
+          "paragraph",
+          "introCard"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "standard:chart-left-text-right-layout",
+      "name": "Chart Left Text Right",
+      "description": "A slide with header label, a left-side inline bar chart, and right-side title with paragraph.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main heading (max ~7 words)",
+            "default": "Insights At A Glance",
+            "type": "string",
+            "minLength": 16,
+            "maxLength": 64
+          },
+          "paragraph": {
+            "description": "Supporting description",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "type": "string",
+            "minLength": 50,
+            "maxLength": 200
+          },
+          "chart": {
+            "default": {
+              "type": "line",
+              "data": [
+                {
+                  "label": "A",
+                  "value": 60
+                },
+                {
+                  "label": "B",
+                  "value": 42
+                },
+                {
+                  "label": "C",
+                  "value": 75
+                },
+                {
+                  "label": "D",
+                  "value": 30
+                }
+              ],
+              "showLabels": true
+            },
+            "type": "object",
+            "properties": {
+              "type": {
+                "default": "line",
+                "type": "string",
+                "enum": [
+                  "bar",
+                  "horizontalBar",
+                  "line",
+                  "pie"
+                ]
+              },
+              "data": {
+                "default": [
+                  {
+                    "label": "A",
+                    "value": 60
+                  },
+                  {
+                    "label": "B",
+                    "value": 42
+                  },
+                  {
+                    "label": "C",
+                    "value": 75
+                  },
+                  {
+                    "label": "D",
+                    "value": 30
+                  }
+                ],
+                "minItems": 3,
+                "maxItems": 8,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "description": "Category label",
+                      "default": "A",
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 12
+                    },
+                    "value": {
+                      "description": "Value 0–100",
+                      "default": 60,
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "showLabels": {
+                "default": true,
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "type",
+              "data",
+              "showLabels"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "title",
+          "paragraph",
+          "chart"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "standard:header-left-media-contact-info-slide",
+      "name": "ContactLayout",
+      "description": "A slide with a top bar, left media with overlay and bottom bar, and right content with header and text blocks. This should only be used for contact information.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "metaMaxWords": {
+            "description": "Maximum number of words in any single text field",
+            "default": 24,
+            "type": "number"
+          },
+          "topBar": {
+            "default": {
+              "pageNumber": "9"
+            },
+            "type": "object",
+            "properties": {
+              "pageNumber": {
+                "description": "Top-right number text. Max 1 word",
+                "default": "9",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 3
+              }
+            },
+            "required": [
+              "pageNumber"
+            ],
+            "additionalProperties": false
+          },
+          "leftPanel": {
+            "default": {
+              "backgroundImage": {
+                "__image_url__": "https://images.pexels.com/photos/326576/pexels-photo-326576.jpeg",
+                "__image_prompt__": "Muted cover background image with subtle subject suitable for contact slide"
+              },
+              "centerIcon": {
+                "__icon_url__": "data:svg+xml,placeholder",
+                "__icon_query__": "photo placeholder"
+              },
+              "websiteBar": {
+                "websiteText": "www.yourwebsite.com",
+                "actionIcon": {
+                  "__icon_url__": "data:svg+xml,plus-arrow",
+                  "__icon_query__": "plus arrow"
+                }
+              }
+            },
+            "type": "object",
+            "properties": {
+              "backgroundImage": {
+                "default": {
+                  "__image_url__": "https://images.pexels.com/photos/31527637/pexels-photo-31527637.jpeg",
+                  "__image_prompt__": "Muted cover background image with subtle subject suitable for contact slide"
+                },
+                "type": "object",
+                "properties": {
+                  "__image_url__": {
+                    "description": "URL to image",
+                    "default": "https://images.pexels.com/photos/31527637/pexels-photo-31527637.jpeg",
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "__image_prompt__": {
+                    "description": "Prompt used to generate the image. Max 24 words",
+                    "default": "Muted cover background image with subtle subject suitable for contact slide",
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 120
+                  }
+                },
+                "required": [
+                  "__image_url__",
+                  "__image_prompt__"
+                ],
+                "additionalProperties": false
+              },
+              "centerIcon": {
+                "default": {
+                  "__icon_url__": "data:svg+xml,placeholder",
+                  "__icon_query__": "photo placeholder"
+                },
+                "type": "object",
+                "properties": {
+                  "__icon_url__": {
+                    "description": "URL to icon",
+                    "default": "data:svg+xml,placeholder",
+                    "type": "string"
+                  },
+                  "__icon_query__": {
+                    "description": "Query used to search the icon. Max 5 words",
+                    "default": "photo placeholder",
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 24
+                  }
+                },
+                "required": [
+                  "__icon_url__",
+                  "__icon_query__"
+                ],
+                "additionalProperties": false
+              },
+              "websiteBar": {
+                "default": {
+                  "websiteText": "www.yourwebsite.com",
+                  "actionIcon": {
+                    "__icon_url__": "data:svg+xml,plus-arrow",
+                    "__icon_query__": "plus arrow"
+                  }
+                },
+                "type": "object",
+                "properties": {
+                  "websiteText": {
+                    "description": "Website text in bottom green bar. Max 4 words",
+                    "default": "www.yourwebsite.com",
+                    "type": "string",
+                    "minLength": 12,
+                    "maxLength": 30
+                  },
+                  "actionIcon": {
+                    "default": {
+                      "__icon_url__": "data:svg+xml,plus-arrow",
+                      "__icon_query__": "plus arrow"
+                    },
+                    "type": "object",
+                    "properties": {
+                      "__icon_url__": {
+                        "description": "URL to icon",
+                        "default": "data:svg+xml,placeholder",
+                        "type": "string"
+                      },
+                      "__icon_query__": {
+                        "description": "Query used to search the icon. Max 5 words",
+                        "default": "photo placeholder",
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 24
+                      }
+                    },
+                    "required": [
+                      "__icon_url__",
+                      "__icon_query__"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "websiteText",
+                  "actionIcon"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "backgroundImage",
+              "centerIcon",
+              "websiteBar"
+            ],
+            "additionalProperties": false
+          },
+          "rightContent": {
+            "default": {
+              "title": "Let’s Get in\nTouch with Us",
+              "sections": [
+                {
+                  "label": "Address",
+                  "value": "Boston, Downtown Main Street 233, New York, US",
+                  "showDivider": true
+                },
+                {
+                  "label": "Phone",
+                  "value": "+1234 2345 1234",
+                  "showDivider": true
+                },
+                {
+                  "label": "E-mail:",
+                  "value": "mail@company.com",
+                  "showDivider": false
+                }
+              ]
+            },
+            "type": "object",
+            "properties": {
+              "title": {
+                "description": "Main heading. Max 6 words",
+                "default": "Let’s Get in\nTouch with Us",
+                "type": "string",
+                "minLength": 18,
+                "maxLength": 40
+              },
+              "sections": {
+                "description": "List of content sections",
+                "default": [
+                  {
+                    "label": "Address",
+                    "value": "Boston, Downtown Main Street 233, New York, US",
+                    "showDivider": true
+                  },
+                  {
+                    "label": "Phone",
+                    "value": "+1234 2345 1234",
+                    "showDivider": true
+                  },
+                  {
+                    "label": "E-mail:",
+                    "value": "mail@company.com",
+                    "showDivider": false
+                  }
+                ],
+                "minItems": 1,
+                "maxItems": 3,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "description": "Section label text. Max 2 words",
+                      "default": "Label",
+                      "type": "string",
+                      "minLength": 4,
+                      "maxLength": 10
+                    },
+                    "value": {
+                      "description": "Section value text. Max 100 characters",
+                      "default": "Value text",
+                      "type": "string",
+                      "minLength": 8,
+                      "maxLength": 50
+                    },
+                    "showDivider": {
+                      "description": "Whether to show bottom divider",
+                      "default": true,
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "value",
+                    "showDivider"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "title",
+              "sections"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "metaMaxWords",
+          "topBar",
+          "leftPanel",
+          "rightContent"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "standard:split-left-strip-header-title-subtitle-cards-slide",
+      "name": "Heading Bullet Image Description",
+      "description": "A slide with a left strip, top label with rule, right header, right description, floating small image, and a centered card with ...cards.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "metaMaxWords": {
+            "description": "Maximum number of words the text areas can handle collectively.",
+            "default": 200,
+            "type": "number"
+          },
+          "pageNumber": {
+            "description": "Top-right page number text. Max 3 chars",
+            "default": "7",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 3
+          },
+          "heading": {
+            "description": "Main heading across up to 2 lines. Max 7 words",
+            "default": "A Blueprint for\nSuccess",
+            "type": "string",
+            "minLength": 16,
+            "maxLength": 38
+          },
+          "subheading": {
+            "description": "Supporting paragraph under the heading. Max 35 words",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
+            "type": "string",
+            "minLength": 60,
+            "maxLength": 200
+          },
+          "smallImage": {
+            "description": "Small image partially behind the main card",
+            "default": {
+              "__image_url__": "https://images.pexels.com/photos/327533/pexels-photo-327533.jpeg",
+              "__image_prompt__": "A small landscape image suitable for a business slide"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "default": "https://images.pexels.com/photos/31527637/pexels-photo-31527637.jpeg",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "description": "Prompt used to generate the image. Max 30 words",
+                "default": "Small decorative photo partially behind the card showing a business theme",
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 150
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          },
+          "cards": {
+            "description": "Array of strategy cards",
+            "default": [
+              {
+                "title": "Strategy 01",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+              },
+              {
+                "title": "Strategy 02",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+              },
+              {
+                "title": "Strategy 03",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+              },
+              {
+                "title": "Strategy 04",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "Card ribbon title. Max 3 words",
+                  "default": "Strategy 01",
+                  "type": "string",
+                  "minLength": 8,
+                  "maxLength": 16
+                },
+                "body": {
+                  "description": "Card body text. Max 28 words",
+                  "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+                  "type": "string",
+                  "minLength": 60,
+                  "maxLength": 160
+                }
+              },
+              "required": [
+                "title",
+                "body"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "metaMaxWords",
+          "pageNumber",
+          "heading",
+          "subheading",
+          "smallImage",
+          "cards"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "standard:header-bullets-title-description-image-slide",
+      "name": "Icon Bullet Description",
+      "description": "A slide with a small header label and number, a left card of ...cards with round symbols and titles with descriptions, a large heading with supporting text, and a decorative image on a mid-page band",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "metaMaxWords": {
+            "description": "Maximum number of words any single text field can handle in this layout",
+            "default": 240,
+            "type": "number"
+          },
+          "headerNumber": {
+            "description": "Small header number text. Max 3 characters",
+            "default": "6",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 3
+          },
+          "rightTitle": {
+            "description": "Large heading on the right. Max 8 words",
+            "default": "Disrupting the\nIndustry",
+            "type": "string",
+            "minLength": 24,
+            "maxLength": 72
+          },
+          "rightDescription": {
+            "description": "Supporting paragraph under the large heading. Max 40 words",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
+            "type": "string",
+            "minLength": 120,
+            "maxLength": 240
+          },
+          "cards": {
+            "description": "Array of ...cards with a round symbol, title and description. Max 6 items",
+            "default": [
+              {
+                "symbolText": "i",
+                "symbolIcon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/fediverse-logo-bold.svg",
+                  "__icon_query__": "info icon"
+                },
+                "title": "Visionary Leadership",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+              },
+              {
+                "symbolText": "i",
+                "symbolIcon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/video-bold.png",
+                  "__icon_query__": "info icon"
+                },
+                "title": "Innovation at the Core",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+              },
+              {
+                "symbolText": "i",
+                "symbolIcon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/receipt-x-bold.png",
+                  "__icon_query__": "info icon"
+                },
+                "title": "Customer-Centric Disruption",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+              },
+              {
+                "symbolText": "i",
+                "symbolIcon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/users-four-bold.png",
+                  "__icon_query__": "info icon"
+                },
+                "title": "Customer-Centric Disruption",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "symbolText": {
+                  "description": "Single-character symbol inside the round badge",
+                  "default": "i",
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1
+                },
+                "symbolIcon": {
+                  "description": "Optional icon representation for the round symbol",
+                  "default": {
+                    "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/fediverse-logo-bold.png",
+                    "__icon_query__": "info icon"
+                  },
+                  "type": "object",
+                  "properties": {
+                    "__icon_url__": {
+                      "description": "URL to icon",
+                      "default": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/fediverse-logo-bold.svg",
+                      "type": "string"
+                    },
+                    "__icon_query__": {
+                      "description": "Query used to search the icon. Max 3 words",
+                      "default": "info icon",
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "__icon_url__",
+                    "__icon_query__"
+                  ],
+                  "additionalProperties": false
+                },
+                "title": {
+                  "description": "Title for the card item. Max 4 words",
+                  "default": "Visionary Leadership",
+                  "type": "string",
+                  "minLength": 16,
+                  "maxLength": 38
+                },
+                "description": {
+                  "description": "Description for the card item. Max 15 words.",
+                  "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+                  "type": "string",
+                  "minLength": 50,
+                  "maxLength": 100
+                }
+              },
+              "required": [
+                "symbolText",
+                "symbolIcon",
+                "title",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "metaMaxWords",
+          "headerNumber",
+          "rightTitle",
+          "rightDescription",
+          "cards"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "standard:header-title-card-slide",
+      "name": "Icon Image Description",
+      "description": "A slide with a top bar, centered title, placeholder icon area, and a colored card with circular icon, heading, and paragraph",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "default": {
+          "meta": {
+            "maxWords": 56
+          },
+          "topBar": {
+            "pageNumber": "3"
+          },
+          "title": "Transforming Ideas into\nReality",
+          "backgroundImage": {
+            "__image_url__": "https://images.unsplash.com/photo-1650831432942-aa352df4e9b4?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "__image_prompt__": "Background image covering the entire section behind the card"
+          },
+          "card": {
+            "circleIcon": {
+              "__icon_url__": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 24 24' fill='%230A8016' aria-hidden='true'><path d='M10 6V7H7C5.895 7 5 7.895 5 9V18C5 19.105 5.895 20 7 20H17C18.105 20 19 19.105 19 18V9C19 7.895 18.105 7 17 7H14V6C14 4.895 13.105 4 12 4H12C10.895 4 10 4.895 10 6ZM12 6C12.552 6 13 6.448 13 7H11C11 6.448 11.448 6 12 6ZM7 9H17V11H7V9Z'/></svg>",
+              "__icon_query__": "badge document icon"
+            },
+            "heading": "Idea Generation and Validation",
+            "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+            "image": {
+              "__image_url__": "https://via.placeholder.com/1200x600",
+              "__image_prompt__": "Optional supporting image inside card area"
+            }
+          }
+        },
+        "type": "object",
+        "properties": {
+          "meta": {
+            "default": {
+              "maxWords": 56
+            },
+            "type": "object",
+            "properties": {
+              "maxWords": {
+                "default": 56,
+                "type": "number"
+              }
+            },
+            "required": [
+              "maxWords"
+            ],
+            "additionalProperties": false
+          },
+          "topBar": {
+            "default": {
+              "pageNumber": "3"
+            },
+            "type": "object",
+            "properties": {
+              "pageNumber": {
+                "description": "Page number text. Max 1 word",
+                "default": "3",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 3
+              }
+            },
+            "required": [
+              "pageNumber"
+            ],
+            "additionalProperties": false
+          },
+          "title": {
+            "description": "Main title split across up to two lines. Max 10 words",
+            "default": "Transforming Ideas into\nReality",
+            "type": "string",
+            "minLength": 24,
+            "maxLength": 56
+          },
+          "backgroundImage": {
+            "description": "Full-bleed background image behind card area",
+            "default": {
+              "__image_url__": "https://images.unsplash.com/photo-1650831432942-aa352df4e9b4?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "__image_prompt__": "Background image covering the entire section behind the card"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "default": "https://via.placeholder.com/900x500",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "description": "Prompt used to generate the image. Max 30 words",
+                "default": "Wide landscape placeholder representing a slide image area",
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          },
+          "card": {
+            "default": {
+              "circleIcon": {
+                "__icon_url__": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 24 24' fill='%230A8016' aria-hidden='true'><path d='M10 6V7H7C5.895 7 5 7.895 5 9V18C5 19.105 5.895 20 7 20H17C18.105 20 19 19.105 19 18V9C19 7.895 18.105 7 17 7H14V6C14 4.895 13.105 4 12 4H12C10.895 4 10 4.895 10 6ZM12 6C12.552 6 13 6.448 13 7H11C11 6.448 11.448 6 12 6ZM7 9H17V11H7V9Z'/></svg>",
+                "__icon_query__": "badge document icon"
+              },
+              "heading": "Idea Generation and Validation",
+              "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+              "image": {
+                "__image_url__": "https://via.placeholder.com/1200x600",
+                "__image_prompt__": "Optional supporting image inside card area"
+              }
+            },
+            "type": "object",
+            "properties": {
+              "circleIcon": {
+                "default": {
+                  "__icon_url__": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 24 24' fill='%230A8016' aria-hidden='true'><path d='M10 6V7H7C5.895 7 5 7.895 5 9V18C5 19.105 5.895 20 7 20H17C18.105 20 19 19.105 19 18V9C19 7.895 18.105 7 17 7H14V6C14 4.895 13.105 4 12 4H12C10.895 4 10 4.895 10 6ZM12 6C12.552 6 13 6.448 13 7H11C11 6.448 11.448 6 12 6ZM7 9H17V11H7V9Z'/></svg>",
+                  "__icon_query__": "badge document icon"
+                },
+                "type": "object",
+                "properties": {
+                  "__icon_url__": {
+                    "description": "URL to icon",
+                    "default": "https://via.placeholder.com/60",
+                    "type": "string"
+                  },
+                  "__icon_query__": {
+                    "description": "Query used to search the icon. Max 3 words",
+                    "default": "camera landscape placeholder",
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 30
+                  }
+                },
+                "required": [
+                  "__icon_url__",
+                  "__icon_query__"
+                ],
+                "additionalProperties": false
+              },
+              "heading": {
+                "description": "Card heading text. Max 10 words",
+                "default": "Idea Generation and Validation",
+                "type": "string",
+                "minLength": 22,
+                "maxLength": 70
+              },
+              "body": {
+                "description": "Card body paragraph. Max 80 words",
+                "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "type": "string",
+                "minLength": 140,
+                "maxLength": 450
+              },
+              "image": {
+                "description": "Optional supporting image for the card. Max 30 words",
+                "default": {
+                  "__image_url__": "https://via.placeholder.com/1200x600",
+                  "__image_prompt__": "Optional supporting image inside card area"
+                },
+                "type": "object",
+                "properties": {
+                  "__image_url__": {
+                    "description": "URL to image",
+                    "default": "https://via.placeholder.com/900x500",
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "__image_prompt__": {
+                    "description": "Prompt used to generate the image. Max 30 words",
+                    "default": "Wide landscape placeholder representing a slide image area",
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "__image_url__",
+                  "__image_prompt__"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "circleIcon",
+              "heading",
+              "body",
+              "image"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "meta",
+          "topBar",
+          "title",
+          "backgroundImage",
+          "card"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "standard:header-smallbar-title-team-cards-slide",
+      "name": "Image List With Description",
+      "description": "A slide with a top utility bar, centered title, and a grid of cards with names, roles, and background images.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "utilityBar": {
+            "default": {
+              "pageNumber": "8",
+              "decorativeLine": {
+                "__icon_url__": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='2'%3E%3Crect width='220' height='2' fill='%231FA34A'/%3E%3C/svg%3E",
+                "__icon_query__": "green line separator"
+              }
+            },
+            "type": "object",
+            "properties": {
+              "pageNumber": {
+                "description": "Page number text. 1-2 digits",
+                "default": "8",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2
+              },
+              "decorativeLine": {
+                "description": "Decorative line representation.",
+                "default": {
+                  "__icon_url__": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='2'%3E%3Crect width='220' height='2' fill='%231FA34A'/%3E%3C/svg%3E",
+                  "__icon_query__": "green line separator"
+                },
+                "type": "object",
+                "properties": {
+                  "__icon_url__": {
+                    "description": "URL to icon",
+                    "default": "https://static.thenounproject.com/png/1137401-200.png",
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "__icon_query__": {
+                    "description": "Query used to search the icon. Max 5 words",
+                    "default": "photo image placeholder",
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 30
+                  }
+                },
+                "required": [
+                  "__icon_url__",
+                  "__icon_query__"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "pageNumber",
+              "decorativeLine"
+            ],
+            "additionalProperties": false
+          },
+          "title": {
+            "description": "Centered main title. Max 5 words",
+            "default": "Our Professional Team",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 50
+          },
+          "cards": {
+            "description": "Grid of member cards with name, role, and image. Up to 4 items",
+            "default": [
+              {
+                "name": "Sam Rawlings",
+                "role": "Marketing specialist with brand and growth experience",
+                "photo": {
+                  "__image_url__": "https://images.pexels.com/photos/1181695/pexels-photo-1181695.jpeg",
+                  "__image_prompt__": "Portrait of a professional team member with subtle background, soft light, business attire"
+                }
+              },
+              {
+                "name": "Sam Rawlings",
+                "role": "Marketing specialist with brand and growth experience",
+                "photo": {
+                  "__image_url__": "https://images.pexels.com/photos/450214/pexels-photo-450214.jpeg",
+                  "__image_prompt__": "Portrait of a professional team member with subtle background, soft light, business attire"
+                }
+              },
+              {
+                "name": "Sam Rawlings",
+                "role": "Marketing specialist with brand and growth experience",
+                "photo": {
+                  "__image_url__": "https://images.pexels.com/photos/756484/pexels-photo-756484.jpeg",
+                  "__image_prompt__": "Portrait of a professional team member with subtle background, soft light, business attire"
+                }
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "Member name. Up to 3 words.",
+                  "default": "Sam Rawlings",
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 30
+                },
+                "role": {
+                  "description": "Short description under name. Up to 10 words",
+                  "default": "Marketing specialist with brand and growth experience",
+                  "type": "string",
+                  "minLength": 20,
+                  "maxLength": 50
+                },
+                "photo": {
+                  "type": "object",
+                  "properties": {
+                    "__image_url__": {
+                      "description": "URL to image",
+                      "default": "https://images.pexels.com/photos/31527637/pexels-photo-31527637.jpeg",
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "__image_prompt__": {
+                      "description": "Prompt used to generate the image. Max 30 words",
+                      "default": "Portrait of a professional team member with subtle background, soft light, business attire",
+                      "type": "string",
+                      "minLength": 10,
+                      "maxLength": 160
+                    }
+                  },
+                  "required": [
+                    "__image_url__",
+                    "__image_prompt__"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "name",
+                "role",
+                "photo"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "utilityBar",
+          "title",
+          "cards"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "standard:header-tagline-cards-grid-slide",
+      "name": "Metrics Description",
+      "description": "A slide with a top utility row, a header, a tagline, and a grid of cards each with a number block and text",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title. Single line up to ~34 chars or two lines up to ~70 chars. Max 9 words",
+            "default": "Scaling New Heights Together",
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 70
+          },
+          "tagline": {
+            "description": "Subtitle/tagline under title. Max 20 words",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 120
+          },
+          "decorativeLine": {
+            "description": "SVG decorative line asset",
+            "default": {
+              "__image_url__": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='2' viewBox='0 0 220 2'><rect width='220' height='2' rx='1' fill='%230B8E26'/></svg>",
+              "__image_prompt__": "Thin green horizontal line divider, 220x2, rounded ends"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "default": "https://images.unsplash.com/photo-1503264116251-35a269479413?q=80&w=1200&auto=format&fit=crop",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "description": "Prompt used to generate the image. Max 40 words",
+                "default": "Elegant abstract green themed background for a presentation slide, minimal shapes, soft lighting",
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          },
+          "cards": {
+            "description": "Grid of cards with number block, subtitle, and body (<=100 chars)",
+            "default": [
+              {
+                "number": "87",
+                "numberSymbol": "%",
+                "subtitle": "Customer Satisfaction",
+                "body": "Our customers consistently rate their experience with our products and services as excellent.",
+                "icon": {
+                  "__icon_url__": "https://static.thenounproject.com/png/1783767-200.png",
+                  "__icon_query__": "happy customer icon"
+                }
+              },
+              {
+                "number": "2.5",
+                "numberSymbol": "M",
+                "subtitle": "Active Users Monthly",
+                "body": "Growing user base actively engaging with our platform across multiple regions worldwide.",
+                "icon": {
+                  "__icon_url__": "https://static.thenounproject.com/png/1783767-200.png",
+                  "__icon_query__": "users group icon"
+                }
+              },
+              {
+                "number": "99",
+                "numberSymbol": "%",
+                "subtitle": "System Uptime",
+                "body": "Maintaining exceptional reliability with industry-leading system availability and performance.",
+                "icon": {
+                  "__icon_url__": "https://static.thenounproject.com/png/1783767-200.png",
+                  "__icon_query__": "server uptime icon"
+                }
+              },
+              {
+                "number": "142",
+                "numberSymbol": "+",
+                "subtitle": "Global Partners",
+                "body": "Strategic partnerships driving innovation and market expansion across key industry sectors.",
+                "icon": {
+                  "__icon_url__": "https://static.thenounproject.com/png/1783767-200.png",
+                  "__icon_query__": "handshake deal icon"
+                }
+              },
+              {
+                "number": "32",
+                "numberSymbol": "x",
+                "subtitle": "Revenue Growth",
+                "body": "Year-over-year growth demonstrating strong market position and business model scalability.",
+                "icon": {
+                  "__icon_url__": "https://static.thenounproject.com/png/1783767-200.png",
+                  "__icon_query__": "growth chart icon"
+                }
+              },
+              {
+                "number": "500",
+                "numberSymbol": "K",
+                "subtitle": "Carbon Offset",
+                "body": "Committed to sustainability through significant carbon reduction and environmental initiatives.",
+                "icon": {
+                  "__icon_url__": "https://static.thenounproject.com/png/1783767-200.png",
+                  "__icon_query__": "leaf sustainability icon"
+                }
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "number": {
+                  "description": "Main number text inside number block. 1 to 3 digits",
+                  "default": "45",
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 5
+                },
+                "numberSymbol": {
+                  "description": "Optional symbol next to the number. Single character",
+                  "default": "%",
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 3
+                },
+                "subtitle": {
+                  "description": "Card subtitle. Max 5 words",
+                  "default": "Subtitle Here",
+                  "type": "string",
+                  "minLength": 8,
+                  "maxLength": 28
+                },
+                "body": {
+                  "description": "Card body text. Max 100 characters",
+                  "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.",
+                  "type": "string",
+                  "minLength": 20,
+                  "maxLength": 100
+                },
+                "icon": {
+                  "description": "Optional icon for the card header area",
+                  "default": {
+                    "__icon_url__": "https://static.thenounproject.com/png/1783767-200.png",
+                    "__icon_query__": "progress indicator"
+                  },
+                  "type": "object",
+                  "properties": {
+                    "__icon_url__": {
+                      "description": "URL to icon",
+                      "default": "https://static.thenounproject.com/png/1783767-200.png",
+                      "type": "string"
+                    },
+                    "__icon_query__": {
+                      "description": "Query used to search the icon. Max 6 words",
+                      "default": "leaf growth",
+                      "type": "string",
+                      "minLength": 3,
+                      "maxLength": 40
+                    }
+                  },
+                  "required": [
+                    "__icon_url__",
+                    "__icon_query__"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "number",
+                "numberSymbol",
+                "subtitle",
+                "body",
+                "icon"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "tagline",
+          "decorativeLine",
+          "cards"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "standard:header-bullets-image-split-slide",
+      "name": "Numbered Bullet Single Image",
+      "description": "A slide with a top bar, left column with numbered bullets, middle image panel, and right stacked heading with paragraph",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "metaMaxWords": {
+            "description": "Maximum number of words allowed in any prompt/description metadata fields.",
+            "default": 18,
+            "type": "number"
+          },
+          "topBar": {
+            "default": {
+              "lineIcon": {
+                "__icon_url__": "",
+                "__icon_query__": "thin green line"
+              }
+            },
+            "type": "object",
+            "properties": {
+              "lineIcon": {
+                "description": "Decorative line representation with query only",
+                "default": {
+                  "__icon_url__": "",
+                  "__icon_query__": "thin green line"
+                },
+                "type": "object",
+                "properties": {
+                  "__icon_url__": {
+                    "description": "URL to icon",
+                    "default": "",
+                    "type": "string"
+                  },
+                  "__icon_query__": {
+                    "description": "Query used to search the icon. Max 6 words",
+                    "default": "",
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 30
+                  }
+                },
+                "required": [
+                  "__icon_url__",
+                  "__icon_query__"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "lineIcon"
+            ],
+            "additionalProperties": false
+          },
+          "leftBullets": {
+            "description": "List of numbered bullets. Max 5 items",
+            "default": [
+              {
+                "numberText": "01",
+                "title": "Strategic Execution",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+              },
+              {
+                "numberText": "02",
+                "title": "Building a Strong Team",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+              },
+              {
+                "numberText": "03",
+                "title": "Market Expansion Strategy",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+              },
+              {
+                "numberText": "04",
+                "title": "Innovation Pipeline",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "numberText": {
+                  "description": "Two-digit bullet number. Max 2 chars",
+                  "default": "01",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 2
+                },
+                "title": {
+                  "description": "Bullet title text. Designed for 24px. Max ~36 chars",
+                  "default": "Strategic Execution",
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 36
+                },
+                "body": {
+                  "description": "Bullet body text. Max ~100 chars",
+                  "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.",
+                  "type": "string",
+                  "minLength": 60,
+                  "maxLength": 100
+                }
+              },
+              "required": [
+                "numberText",
+                "title",
+                "body"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "middleImage": {
+            "description": "Image displayed in the middle column",
+            "default": {
+              "__image_url__": "https://images.unsplash.com/photo-1515623959088-7617915baa1e?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "__image_prompt__": "Professional business meeting scene for roadmap presentation image"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "default": "https://images.pexels.com/photos/31527637/pexels-photo-31527637.jpeg",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "description": "Prompt used to generate the image. Max 18 words",
+                "default": "Professional business meeting scene for roadmap presentation image",
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 90
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          },
+          "rightHeader": {
+            "default": {
+              "heading": "Our Journey",
+              "paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore."
+            },
+            "type": "object",
+            "properties": {
+              "heading": {
+                "description": "Right column heading. Max ~30 chars",
+                "default": "Our Journey",
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 30
+              },
+              "paragraph": {
+                "description": "Right paragraph text. Max 200 chars",
+                "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.",
+                "type": "string",
+                "minLength": 80,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "heading",
+              "paragraph"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "metaMaxWords",
+          "topBar",
+          "leftBullets",
+          "middleImage",
+          "rightHeader"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "standard:table-of-contents-layout",
+      "name": "Table Of Contents",
+      "description": "Header with brand marker, title, optional description, and a two-column table of contents list",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "default": {
+          "topBar": {
+            "marker": "2"
+          },
+          "title": "Table Of Contents",
+          "description": "Use this as a quick guide to navigate the presentation sections.",
+          "items": [
+            {
+              "title": "Introduction"
+            },
+            {
+              "title": "Problem Statement"
+            },
+            {
+              "title": "Solution"
+            },
+            {
+              "title": "Market"
+            },
+            {
+              "title": "Business Model"
+            },
+            {
+              "title": "Roadmap"
+            },
+            {
+              "title": "Team"
+            },
+            {
+              "title": "Go-To-Market"
+            },
+            {
+              "title": "Financials"
+            },
+            {
+              "title": "Ask"
+            }
+          ]
+        },
+        "type": "object",
+        "properties": {
+          "topBar": {
+            "default": {
+              "marker": "2"
+            },
+            "type": "object",
+            "properties": {
+              "marker": {
+                "description": "Numeric marker on the top bar. Up to 3 digits",
+                "default": "2",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 3
+              }
+            },
+            "required": [
+              "marker"
+            ],
+            "additionalProperties": false
+          },
+          "title": {
+            "description": "Main slide title. Max 10 words",
+            "default": "Table Of Contents",
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 68
+          },
+          "description": {
+            "description": "Lead paragraph. Optional. Max 35 words",
+            "default": "Use this as a quick guide to navigate the presentation sections.",
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 200
+          },
+          "items": {
+            "description": "List of contents (3-10)",
+            "default": [
+              {
+                "title": "Introduction"
+              },
+              {
+                "title": "Problem Statement"
+              },
+              {
+                "title": "Solution"
+              },
+              {
+                "title": "Market"
+              },
+              {
+                "title": "Business Model"
+              },
+              {
+                "title": "Roadmap"
+              },
+              {
+                "title": "Team"
+              },
+              {
+                "title": "Go-To-Market"
+              },
+              {
+                "title": "Financials"
+              },
+              {
+                "title": "Ask"
+              }
+            ],
+            "minItems": 3,
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "default": {
+                "title": "Introduction"
+              },
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "Section title. Max 50 characters",
+                  "default": "Introduction",
+                  "type": "string",
+                  "minLength": 4,
+                  "maxLength": 50
+                }
+              },
+              "required": [
+                "title"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "topBar",
+          "title",
+          "description",
+          "items"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "standard:visual-metrics",
+      "name": "Visual Metrics",
+      "description": "A slide with a header bar, numeric marker, title, description, and grid of cards with headings, circular metrics, and texts",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "default": {
+          "topBar": {
+            "marker": "2"
+          },
+          "title": "Our Vision And Strategy For Excellence",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation",
+          "cards": [
+            {
+              "title": "Research",
+              "value": 67,
+              "unit": "K",
+              "description": "Lorem ipsum dolor sit amet, consectetur"
+            },
+            {
+              "title": "Ops",
+              "value": 42,
+              "unit": "M",
+              "description": "Lorem ipsum dolor sit amet, consectetur"
+            },
+            {
+              "title": "Efficiency",
+              "value": 67,
+              "unit": "%",
+              "description": "Lorem ipsum dolor sit amet, consectetur"
+            },
+            {
+              "title": "Development",
+              "value": 80,
+              "unit": "K",
+              "description": "Lorem ipsum dolor sit amet, consectetur"
+            }
+          ],
+          "chartPalette": [
+            "var(--primary-color, #1B8C2D)",
+            "var(--background-text, #E5E7EB)",
+            "#f59e0b",
+            "#3b82f6"
+          ]
+        },
+        "type": "object",
+        "properties": {
+          "topBar": {
+            "default": {
+              "marker": "2"
+            },
+            "type": "object",
+            "properties": {
+              "marker": {
+                "description": "Numeric marker on the top bar. Up to 3 digits",
+                "default": "2",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 3
+              }
+            },
+            "required": [
+              "marker"
+            ],
+            "additionalProperties": false
+          },
+          "title": {
+            "description": "Main slide title. Max 10 words",
+            "default": "Our Vision And Strategy For Excellence",
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 68
+          },
+          "description": {
+            "description": "Lead paragraph. Max 35 words",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation",
+            "type": "string",
+            "minLength": 70,
+            "maxLength": 200
+          },
+          "cards": {
+            "description": "Grid of cards with heading, circular metric, and text",
+            "default": [
+              {
+                "title": "Research",
+                "value": 6700,
+                "unit": "K",
+                "description": "Lorem ipsum dolor sit amet, consectetur"
+              },
+              {
+                "title": "Development",
+                "value": 80,
+                "unit": "K",
+                "description": "Lorem ipsum dolor sit amet, consectetur"
+              },
+              {
+                "title": "Research",
+                "value": 67,
+                "unit": "%",
+                "description": "Lorem ipsum dolor sit amet, consectetur"
+              },
+              {
+                "title": "Development",
+                "value": 80,
+                "unit": "K",
+                "description": "Lorem ipsum dolor sit amet, consectetur"
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "default": {
+                "title": "Research",
+                "value": 67,
+                "unit": "K",
+                "description": "Lorem ipsum dolor sit amet, consectetur"
+              },
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "Card heading. Max 3 words",
+                  "default": "Research",
+                  "type": "string",
+                  "minLength": 6,
+                  "maxLength": 18
+                },
+                "value": {
+                  "description": "Numeric value to display",
+                  "default": 67,
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 9999
+                },
+                "unit": {
+                  "description": "Unit for the value, e.g., %, K, M",
+                  "default": "K",
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 2
+                },
+                "description": {
+                  "description": "Card supporting text. Max 50 characters",
+                  "default": "Lorem ipsum dolor sit amet, consectetur",
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 50
+                }
+              },
+              "required": [
+                "title",
+                "value",
+                "unit",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "chartPalette": {
+            "description": "Palette for charts",
+            "default": [
+              "var(--primary-color, #1B8C2D)",
+              "var(--background-text, #E5E7EB)",
+              "#f59e0b",
+              "#3b82f6"
+            ],
+            "minItems": 2,
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 4,
+              "maxLength": 20
+            }
+          }
+        },
+        "required": [
+          "topBar",
+          "title",
+          "description",
+          "cards",
+          "chartPalette"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

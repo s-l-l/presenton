@@ -1,0 +1,1500 @@
+{
+  "version": "v1",
+  "name": "swift",
+  "ordered": false,
+  "slides": [
+    {
+      "id": "swift:IntroSlideLayout",
+      "name": "Intro Slide Layout",
+      "description": "Intro slide with header, title, subtitle, body, image. If used for last slide, then intro card should be disabled.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "default": {
+          "title": "Pitch Deck",
+          "subtitlePrefix": "Presentation",
+          "subtitleAccent": "Template",
+          "paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "website": "www.yourwebsite.com",
+          "introCard": {
+            "enabled": true,
+            "name": "John Doe",
+            "date": "Jan 1, 2025"
+          },
+          "media": {
+            "type": "image",
+            "image": {
+              "__image_url__": "https://images.unsplash.com/photo-1522199710521-72d69614c702?w=1200&q=80&auto=format&fit=crop",
+              "__image_prompt__": "abstract gradient background"
+            }
+          }
+        },
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main slide title",
+            "default": "Pitch Deck",
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 68
+          },
+          "subtitlePrefix": {
+            "default": "Presentation",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "subtitleAccent": {
+            "default": "Template",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "paragraph": {
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 200
+          },
+          "website": {
+            "default": "www.yourwebsite.com",
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 60
+          },
+          "introCard": {
+            "default": {
+              "enabled": true,
+              "name": "John Doe",
+              "date": "Jan 1, 2025"
+            },
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "default": false,
+                "type": "boolean"
+              },
+              "name": {
+                "default": "John Doe",
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 40
+              },
+              "date": {
+                "default": "Jan 1, 2025",
+                "type": "string",
+                "minLength": 4,
+                "maxLength": 40
+              }
+            },
+            "required": [
+              "enabled",
+              "name",
+              "date"
+            ],
+            "additionalProperties": false
+          },
+          "media": {
+            "default": {
+              "type": "image",
+              "image": {
+                "__image_url__": "https://images.unsplash.com/photo-1522199710521-72d69614c702?w=1200&q=80&auto=format&fit=crop",
+                "__image_prompt__": "abstract gradient background"
+              }
+            },
+            "type": "object",
+            "properties": {
+              "type": {
+                "default": "image",
+                "type": "string",
+                "const": "image"
+              },
+              "image": {
+                "default": {
+                  "__image_url__": "https://images.unsplash.com/photo-1522199710521-72d69614c702?w=1200&q=80&auto=format&fit=crop",
+                  "__image_prompt__": "abstract gradient background"
+                },
+                "type": "object",
+                "properties": {
+                  "__image_url__": {
+                    "default": "https://images.unsplash.com/photo-1522199710521-72d69614c702?w=1200&q=80&auto=format&fit=crop",
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "__image_prompt__": {
+                    "default": "abstract gradient background",
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 120
+                  }
+                },
+                "required": [
+                  "__image_url__",
+                  "__image_prompt__"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "type",
+              "image"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "title",
+          "subtitlePrefix",
+          "subtitleAccent",
+          "paragraph",
+          "website",
+          "introCard",
+          "media"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "swift:bullet-with-icons-title-description",
+      "name": "Bullet With Icons Title Description",
+      "description": "Bullet with icons with title and description and title and description for whole",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "default": {
+          "title": "Our Infographic",
+          "sideHeading": "Lorem ipsum dolor sit amet,",
+          "sideParagraph": "Concise paragraph describing context. Keep it short and readable across one or two lines.",
+          "items": [
+            {
+              "icon": {
+                "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/graduation-cap-bold.svg",
+                "__icon_query__": "feature icon"
+              },
+              "title": "Lorem ipsum dolor",
+              "description": "Concise supporting text under the first icon explaining the point."
+            },
+            {
+              "icon": {
+                "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/user-bold.svg",
+                "__icon_query__": "feature icon"
+              },
+              "title": "Lorem ipsum dolor",
+              "description": "Concise supporting text under the second icon explaining the point."
+            },
+            {
+              "icon": {
+                "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/calendar-blank-bold.svg",
+                "__icon_query__": "feature icon"
+              },
+              "title": "Lorem ipsum dolor",
+              "description": "Concise supporting text under the third icon explaining the point."
+            },
+            {
+              "icon": {
+                "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/x-bold.svg",
+                "__icon_query__": "feature icon"
+              },
+              "title": "Lorem ipsum dolor",
+              "description": "Concise supporting text under the fourth icon explaining the point."
+            }
+          ],
+          "website": "www.yourwebsite.com"
+        },
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Our Infographic",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 60
+          },
+          "sideHeading": {
+            "default": "Lorem ipsum dolor sit amet,",
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 60
+          },
+          "sideParagraph": {
+            "default": "Concise paragraph describing context. Keep it short and readable across one or two lines.",
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 300
+          },
+          "items": {
+            "default": [
+              {
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/graduation-cap-bold.svg",
+                  "__icon_query__": "feature icon"
+                },
+                "title": "Lorem ipsum dolor",
+                "description": "Concise supporting text under the first icon explaining the point."
+              },
+              {
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/user-bold.svg",
+                  "__icon_query__": "feature icon"
+                },
+                "title": "Lorem ipsum dolor",
+                "description": "Concise supporting text under the second icon explaining the point."
+              },
+              {
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/calendar-blank-bold.svg",
+                  "__icon_query__": "feature icon"
+                },
+                "title": "Lorem ipsum dolor",
+                "description": "Concise supporting text under the third icon explaining the point."
+              },
+              {
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/x-bold.svg",
+                  "__icon_query__": "feature icon"
+                },
+                "title": "Lorem ipsum dolor",
+                "description": "Concise supporting text under the fourth icon explaining the point."
+              }
+            ],
+            "minItems": 3,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "default": {
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/graduation-cap-bold.svg",
+                  "__icon_query__": "feature icon"
+                },
+                "title": "Lorem ipsum dolor",
+                "description": "Short supporting description that fits under the icon title."
+              },
+              "type": "object",
+              "properties": {
+                "icon": {
+                  "type": "object",
+                  "properties": {
+                    "__icon_url__": {
+                      "description": "URL to icon",
+                      "type": "string"
+                    },
+                    "__icon_query__": {
+                      "type": "string",
+                      "minLength": 5,
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "__icon_url__",
+                    "__icon_query__"
+                  ],
+                  "additionalProperties": false
+                },
+                "title": {
+                  "default": "Lorem ipsum dolor",
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 40
+                },
+                "description": {
+                  "default": "Short supporting description that fits under the icon title.",
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 160
+                }
+              },
+              "required": [
+                "icon",
+                "title",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "website": {
+            "default": "www.yourwebsite.com",
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 60
+          }
+        },
+        "required": [
+          "title",
+          "sideHeading",
+          "sideParagraph",
+          "items",
+          "website"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "swift:icon-bullet-list-description-slide",
+      "name": "Icon Bullet List Description",
+      "description": "Bullet list with title, description, and icon",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "default": {
+          "title": "Key Product Features",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor.",
+          "features": [
+            {
+              "title": "Customizable Workflows",
+              "body": "Lorem ipsum dolor sit amet, dolor sit amet.",
+              "icon": {
+                "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/file-text-bold.svg",
+                "__icon_query__": "feature icon"
+              }
+            },
+            {
+              "title": "Multi-Device Access",
+              "body": "Lorem ipsum dolor sit amet.",
+              "icon": {
+                "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/devices-bold.svg",
+                "__icon_query__": "feature icon"
+              }
+            },
+            {
+              "title": "Scalable Architecture",
+              "body": "Lorem ipsum dolor sit amet.",
+              "icon": {
+                "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/chart-line-up-bold.svg",
+                "__icon_query__": "feature icon"
+              }
+            },
+            {
+              "title": "Detailed Reports",
+              "body": "Lorem ipsum dolor sit amet.",
+              "icon": {
+                "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/checks-bold.svg",
+                "__icon_query__": "feature icon"
+              }
+            }
+          ],
+          "website": "www.yourwebsite.com"
+        },
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Key Product Features",
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 48
+          },
+          "description": {
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor.",
+            "type": "string",
+            "minLength": 30,
+            "maxLength": 200
+          },
+          "features": {
+            "default": [
+              {
+                "title": "Customizable Workflows",
+                "body": "Lorem ipsum dolor sit amet, dolor sit amet.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/file-text-bold.svg",
+                  "__icon_query__": "feature icon"
+                }
+              },
+              {
+                "title": "Multi-Device Access",
+                "body": "Lorem ipsum dolor sit amet.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/devices-bold.svg",
+                  "__icon_query__": "feature icon"
+                }
+              },
+              {
+                "title": "Scalable Architecture",
+                "body": "Lorem ipsum dolor sit amet.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/chart-line-up-bold.svg",
+                  "__icon_query__": "feature icon"
+                }
+              },
+              {
+                "title": "Detailed Reports",
+                "body": "Lorem ipsum dolor sit amet.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/checks-bold.svg",
+                  "__icon_query__": "feature icon"
+                }
+              }
+            ],
+            "minItems": 3,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "default": {
+                "title": "Customizable Workflows",
+                "body": "Lorem ipsum dolor sit amet, dolor sit amet.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/file-text-bold.svg",
+                  "__icon_query__": "feature icon"
+                }
+              },
+              "type": "object",
+              "properties": {
+                "title": {
+                  "default": "Customizable Workflows",
+                  "type": "string",
+                  "minLength": 4,
+                  "maxLength": 28
+                },
+                "body": {
+                  "default": "Lorem ipsum dolor sit amet, dolor sit amet.",
+                  "type": "string",
+                  "minLength": 20,
+                  "maxLength": 140
+                },
+                "icon": {
+                  "default": {
+                    "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/file-text-bold.svg",
+                    "__icon_query__": "feature icon"
+                  },
+                  "type": "object",
+                  "properties": {
+                    "__icon_url__": {
+                      "default": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/file-text-bold.svg",
+                      "type": "string"
+                    },
+                    "__icon_query__": {
+                      "default": "feature icon",
+                      "type": "string",
+                      "minLength": 0,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "__icon_url__",
+                    "__icon_query__"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "title",
+                "body",
+                "icon"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "website": {
+            "default": "www.yourwebsite.com",
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 60
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "features",
+          "website"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "swift:image-list-description-slide",
+      "name": "Image List Description",
+      "description": "List of Images with subtitle and description with one description for the entire page",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "default": {
+          "titleLine1": "Meet Our",
+          "titleLine2": "Team",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "items": [
+            {
+              "title": "Sample Title",
+              "description": "Short description for the image or item.",
+              "image": {
+                "__image_url__": "https://images.unsplash.com/photo-1522199710521-72d69614c702?w=1200&q=80&auto=format&fit=crop",
+                "__image_prompt__": "abstract gradient background"
+              }
+            },
+            {
+              "title": "Another Item",
+              "description": "Concise supporting text.",
+              "image": {
+                "__image_url__": "https://images.unsplash.com/photo-1522199710521-72d69614c702?w=1200&q=80&auto=format&fit=crop",
+                "__image_prompt__": "abstract gradient background"
+              }
+            },
+            {
+              "title": "Third Item",
+              "description": "Concise supporting text.",
+              "image": {
+                "__image_url__": "https://images.unsplash.com/photo-1522199710521-72d69614c702?w=1200&q=80&auto=format&fit=crop",
+                "__image_prompt__": "abstract gradient background"
+              }
+            }
+          ],
+          "website": "www.yourwebsite.com"
+        },
+        "type": "object",
+        "properties": {
+          "titleLine1": {
+            "default": "Meet Our",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 24
+          },
+          "titleLine2": {
+            "default": "Team",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 24
+          },
+          "description": {
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 200
+          },
+          "items": {
+            "default": [
+              {
+                "title": "Sample Title",
+                "description": "Short description for the image or item.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1522199710521-72d69614c702?w=1200&q=80&auto=format&fit=crop",
+                  "__image_prompt__": "abstract gradient background"
+                }
+              },
+              {
+                "title": "Another Item",
+                "description": "Concise supporting text.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1522199710521-72d69614c702?w=1200&q=80&auto=format&fit=crop",
+                  "__image_prompt__": "abstract gradient background"
+                }
+              },
+              {
+                "title": "Third Item",
+                "description": "Concise supporting text.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1522199710521-72d69614c702?w=1200&q=80&auto=format&fit=crop",
+                  "__image_prompt__": "abstract gradient background"
+                }
+              }
+            ],
+            "minItems": 3,
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "default": {
+                "title": "Sample Title",
+                "description": "Short description for the image or item.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1522199710521-72d69614c702?w=1200&q=80&auto=format&fit=crop",
+                  "__image_prompt__": "abstract gradient background"
+                }
+              },
+              "type": "object",
+              "properties": {
+                "title": {
+                  "default": "Sample Title",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 40
+                },
+                "description": {
+                  "default": "Short description for the image or item.",
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 140
+                },
+                "image": {
+                  "default": {
+                    "__image_url__": "https://images.unsplash.com/photo-1522199710521-72d69614c702?w=1200&q=80&auto=format&fit=crop",
+                    "__image_prompt__": "abstract gradient background"
+                  },
+                  "type": "object",
+                  "properties": {
+                    "__image_url__": {
+                      "default": "https://images.unsplash.com/photo-1522199710521-72d69614c702?w=1200&q=80&auto=format&fit=crop",
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "__image_prompt__": {
+                      "default": "abstract gradient background",
+                      "type": "string",
+                      "minLength": 0,
+                      "maxLength": 120
+                    }
+                  },
+                  "required": [
+                    "__image_url__",
+                    "__image_prompt__"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "title",
+                "description",
+                "image"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "website": {
+            "default": "www.yourwebsite.com",
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 60
+          }
+        },
+        "required": [
+          "titleLine1",
+          "titleLine2",
+          "description",
+          "items",
+          "website"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "swift:MetricsNumbers",
+      "name": "Metrics Numbers",
+      "description": "Swift: Our Impact in Numbers with three stacked metric cards",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "default": {
+          "title": "Our Impact in Numbers",
+          "leftTitle": "Proven Results\nThrough Data",
+          "leftBody": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "website": "www.yourwebsite.com",
+          "metrics": [
+            {
+              "value": "10K+",
+              "line1": "Total",
+              "line2": "Users",
+              "description": "active users across multiple industries"
+            },
+            {
+              "value": "150%",
+              "line1": "Revenue",
+              "line2": "Growth",
+              "description": "year-over-year revenue growth"
+            },
+            {
+              "value": "95%",
+              "line1": "Customer",
+              "line2": "Satisfaction",
+              "description": "retention rate with an average rating of 4.8/5"
+            }
+          ]
+        },
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Our Impact in Numbers",
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 60
+          },
+          "leftTitle": {
+            "default": "Proven Results\nThrough Data",
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 40
+          },
+          "leftBody": {
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "type": "string",
+            "minLength": 30,
+            "maxLength": 220
+          },
+          "website": {
+            "default": "www.yourwebsite.com",
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 60
+          },
+          "metrics": {
+            "default": [
+              {
+                "value": "10K+",
+                "line1": "Total",
+                "line2": "Users",
+                "description": "active users across multiple industries"
+              },
+              {
+                "value": "150%",
+                "line1": "Revenue",
+                "line2": "Growth",
+                "description": "year-over-year revenue growth"
+              },
+              {
+                "value": "95%",
+                "line1": "Customer",
+                "line2": "Satisfaction",
+                "description": "retention rate with an average rating of 4.8/5"
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "default": {
+                "value": "10K+",
+                "line1": "Total",
+                "line2": "Users",
+                "description": "active users across multiple industries"
+              },
+              "type": "object",
+              "properties": {
+                "value": {
+                  "default": "10K+",
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8
+                },
+                "line1": {
+                  "default": "Total",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 22
+                },
+                "line2": {
+                  "default": "Users",
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 22
+                },
+                "description": {
+                  "default": "active users across multiple industries",
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 140
+                }
+              },
+              "required": [
+                "value",
+                "line1",
+                "line2",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "leftTitle",
+          "leftBody",
+          "website",
+          "metrics"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "swift:simple-bullet-points-layout",
+      "name": "Simple Bullet Points",
+      "description": "Bullet Points with title and description",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "default": {
+          "title": "Our Commitment to Innovation",
+          "statement": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "points": [
+            {
+              "title": "Your Title Here",
+              "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa."
+            },
+            {
+              "title": "Your Title Here",
+              "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa."
+            },
+            {
+              "title": "Your Title Here",
+              "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa."
+            },
+            {
+              "title": "Your Title Here",
+              "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa."
+            }
+          ],
+          "website": "www.yourwebsite.com"
+        },
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Our Commitment",
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 36
+          },
+          "statement": {
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 260
+          },
+          "points": {
+            "default": [
+              {
+                "title": "Your Title Here",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa."
+              },
+              {
+                "title": "Your Title Here",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa."
+              },
+              {
+                "title": "Your Title Here",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa."
+              },
+              {
+                "title": "Your Title Here",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa."
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "default": {
+                "title": "Your Title Here",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa."
+              },
+              "type": "object",
+              "properties": {
+                "title": {
+                  "default": "Your Title Here",
+                  "type": "string",
+                  "minLength": 6,
+                  "maxLength": 60
+                },
+                "body": {
+                  "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+                  "type": "string",
+                  "minLength": 30,
+                  "maxLength": 220
+                }
+              },
+              "required": [
+                "title",
+                "body"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "website": {
+            "default": "www.yourwebsite.com",
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 60
+          }
+        },
+        "required": [
+          "title",
+          "statement",
+          "points",
+          "website"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "swift:SwiftTableOfContents",
+      "name": "Table Of Contents",
+      "description": "Swift: Table of contents with up to 10 items (title + description)",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "default": {
+          "title": "Table of Contents",
+          "items": [
+            {
+              "title": "Introduction",
+              "description": "A brief description of our company and goals."
+            },
+            {
+              "title": "Our Team",
+              "description": "Leadership and core contributors."
+            },
+            {
+              "title": "Timeline",
+              "description": "High-level execution plan and milestones."
+            },
+            {
+              "title": "Recommendations",
+              "description": "Key suggestions based on initial requirements."
+            },
+            {
+              "title": "Solution",
+              "description": "What we propose and why it works."
+            },
+            {
+              "title": "Market",
+              "description": "Audience, segments, and opportunity size."
+            },
+            {
+              "title": "Business Model",
+              "description": "How we create and capture value."
+            },
+            {
+              "title": "Conclusion",
+              "description": "Closing notes and next steps."
+            },
+            {
+              "title": "Business Model",
+              "description": "How we create and capture value."
+            },
+            {
+              "title": "Conclusion",
+              "description": "Closing notes and next steps."
+            }
+          ],
+          "website": "www.yourwebsite.com"
+        },
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Table of Contents",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 60
+          },
+          "items": {
+            "default": [
+              {
+                "title": "Introduction",
+                "description": "A brief description of our company and goals."
+              },
+              {
+                "title": "Our Team",
+                "description": "Leadership and core contributors."
+              },
+              {
+                "title": "Timeline",
+                "description": "High-level execution plan and milestones."
+              },
+              {
+                "title": "Recommendations",
+                "description": "Key suggestions based on initial requirements."
+              },
+              {
+                "title": "Solution",
+                "description": "What we propose and why it works."
+              },
+              {
+                "title": "Market",
+                "description": "Audience, segments, and opportunity size."
+              },
+              {
+                "title": "Business Model",
+                "description": "How we create and capture value."
+              },
+              {
+                "title": "Conclusion",
+                "description": "Closing notes and next steps."
+              },
+              {
+                "title": "Business Model",
+                "description": "How we create and capture value."
+              },
+              {
+                "title": "Conclusion",
+                "description": "Closing notes and next steps."
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "default": {
+                "title": "Introduction",
+                "description": "A brief overview of the section."
+              },
+              "type": "object",
+              "properties": {
+                "title": {
+                  "default": "Introduction",
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 40
+                },
+                "description": {
+                  "default": "A brief overview of the section.",
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 60
+                }
+              },
+              "required": [
+                "title",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "website": {
+            "default": "www.yourwebsite.com",
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 60
+          }
+        },
+        "required": [
+          "title",
+          "items",
+          "website"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "swift:tableorChart",
+      "name": "Table Or Chart",
+      "description": "Swift: Generic data table with option to render a chart (bar, horizontalBar, line, pie)",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "default": {
+          "title": "Data Table or Chart",
+          "description": "Present structured information in a flexible table or visualize it with a chart.",
+          "mode": "table",
+          "columns": [
+            "Column 1",
+            "Column 2",
+            "Column 3"
+          ],
+          "rows": [
+            {
+              "cells": [
+                "Row A",
+                "✓",
+                "-"
+              ]
+            },
+            {
+              "cells": [
+                "Row B",
+                "Text",
+                "123"
+              ]
+            },
+            {
+              "cells": [
+                "Row C",
+                "More text",
+                "456"
+              ]
+            }
+          ],
+          "chart": {
+            "type": "line",
+            "data": [
+              {
+                "label": "A",
+                "value": 60
+              },
+              {
+                "label": "B",
+                "value": 42
+              },
+              {
+                "label": "C",
+                "value": 75
+              },
+              {
+                "label": "D",
+                "value": 30
+              }
+            ],
+            "showLabels": true
+          },
+          "website": "www.yourwebsite.com"
+        },
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Data Table or Chart",
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 60
+          },
+          "description": {
+            "default": "Present structured information in a flexible table or visualize it with a chart.",
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 220
+          },
+          "mode": {
+            "default": "table",
+            "type": "string",
+            "enum": [
+              "table",
+              "chart"
+            ]
+          },
+          "columns": {
+            "default": [
+              "Column 1",
+              "Column 2",
+              "Column 3"
+            ],
+            "minItems": 2,
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 40
+            }
+          },
+          "rows": {
+            "default": [
+              {
+                "cells": [
+                  "Row A",
+                  "✓",
+                  "-"
+                ]
+              },
+              {
+                "cells": [
+                  "Row B",
+                  "Text",
+                  "123"
+                ]
+              },
+              {
+                "cells": [
+                  "Row C",
+                  "More text",
+                  "456"
+                ]
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 30,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "cells": {
+                  "description": "Row cells; count should match columns length",
+                  "default": [
+                    "Row 1",
+                    "Value",
+                    "Value"
+                  ],
+                  "minItems": 2,
+                  "maxItems": 10,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 200
+                  }
+                }
+              },
+              "required": [
+                "cells"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "chart": {
+            "default": {
+              "type": "line",
+              "data": [
+                {
+                  "label": "A",
+                  "value": 60
+                },
+                {
+                  "label": "B",
+                  "value": 42
+                },
+                {
+                  "label": "C",
+                  "value": 75
+                },
+                {
+                  "label": "D",
+                  "value": 30
+                }
+              ],
+              "showLabels": true
+            },
+            "type": "object",
+            "properties": {
+              "type": {
+                "default": "line",
+                "type": "string",
+                "enum": [
+                  "bar",
+                  "horizontalBar",
+                  "line",
+                  "pie"
+                ]
+              },
+              "data": {
+                "default": [
+                  {
+                    "label": "A",
+                    "value": 60
+                  },
+                  {
+                    "label": "B",
+                    "value": 42
+                  },
+                  {
+                    "label": "C",
+                    "value": 75
+                  },
+                  {
+                    "label": "D",
+                    "value": 30
+                  }
+                ],
+                "minItems": 3,
+                "maxItems": 12,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "default": "A",
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 12
+                    },
+                    "value": {
+                      "default": 60,
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1000000
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "showLabels": {
+                "default": true,
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "type",
+              "data",
+              "showLabels"
+            ],
+            "additionalProperties": false
+          },
+          "website": {
+            "default": "www.yourwebsite.com",
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 60
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "mode",
+          "columns",
+          "rows",
+          "chart",
+          "website"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "swift:Timeline",
+      "name": "Timeline",
+      "description": "Timeline of cards with title, subtitle banner",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "default": {
+          "title": "Our Journey at a Glance",
+          "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+          "items": [
+            {
+              "year": "2018",
+              "heading": "Founded in 2020",
+              "body": "Lorem ipsum dolor",
+              "icon": {
+                "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/clipboard-text-bold.svg",
+                "__icon_query__": "timeline icon"
+              }
+            },
+            {
+              "year": "2019",
+              "heading": "First Product in 2021",
+              "body": "Lorem ipsum dolor",
+              "icon": {
+                "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/clipboard-text-bold.svg",
+                "__icon_query__": "timeline icon"
+              }
+            },
+            {
+              "year": "2020",
+              "heading": "Key Milestone in 2022",
+              "body": "Lorem ipsum dolor",
+              "icon": {
+                "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/clipboard-text-bold.svg",
+                "__icon_query__": "timeline icon"
+              }
+            },
+            {
+              "year": "2021",
+              "heading": "Global Expansion in 2024",
+              "body": "Lorem ipsum dolor",
+              "icon": {
+                "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/clipboard-text-bold.svg",
+                "__icon_query__": "timeline icon"
+              }
+            }
+          ],
+          "website": "www.yourwebsite.com"
+        },
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Our Journey at a Glance",
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 60
+          },
+          "subtitle": {
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 200
+          },
+          "items": {
+            "default": [
+              {
+                "year": "2018",
+                "heading": "Founded in 2020",
+                "body": "Lorem ipsum dolor",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/clipboard-text-bold.svg",
+                  "__icon_query__": "timeline icon"
+                }
+              },
+              {
+                "year": "2019",
+                "heading": "First Product in 2021",
+                "body": "Lorem ipsum dolor",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/clipboard-text-bold.svg",
+                  "__icon_query__": "timeline icon"
+                }
+              },
+              {
+                "year": "2020",
+                "heading": "Key Milestone in 2022",
+                "body": "Lorem ipsum dolor",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/clipboard-text-bold.svg",
+                  "__icon_query__": "timeline icon"
+                }
+              },
+              {
+                "year": "2021",
+                "heading": "Global Expansion in 2024",
+                "body": "Lorem ipsum dolor",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/clipboard-text-bold.svg",
+                  "__icon_query__": "timeline icon"
+                }
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "default": {
+                "year": "2018",
+                "heading": "Founded in 2020",
+                "body": "Lorem ipsum dolor",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/clipboard-text-bold.svg",
+                  "__icon_query__": "timeline icon"
+                }
+              },
+              "type": "object",
+              "properties": {
+                "year": {
+                  "default": "2018",
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 6
+                },
+                "heading": {
+                  "default": "Founded in 2020",
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 28
+                },
+                "body": {
+                  "default": "Lorem ipsum dolor",
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 160
+                },
+                "icon": {
+                  "default": {
+                    "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/clipboard-text-bold.svg",
+                    "__icon_query__": "timeline icon"
+                  },
+                  "type": "object",
+                  "properties": {
+                    "__icon_url__": {
+                      "default": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/clipboard-text-bold.svg",
+                      "type": "string"
+                    },
+                    "__icon_query__": {
+                      "default": "timeline icon",
+                      "type": "string",
+                      "minLength": 0,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "__icon_url__",
+                    "__icon_query__"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "year",
+                "heading",
+                "body",
+                "icon"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "website": {
+            "default": "www.yourwebsite.com",
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 60
+          }
+        },
+        "required": [
+          "title",
+          "subtitle",
+          "items",
+          "website"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

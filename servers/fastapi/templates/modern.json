@@ -1,0 +1,1227 @@
+{
+  "version": "v1",
+  "name": "modern",
+  "ordered": false,
+  "slides": [
+    {
+      "id": "modern:intro-pitchdeck-slide",
+      "name": "Intro Pitch Deck Slide",
+      "description": "A visually appealing introduction slide for a pitch deck, featuring a large title, company name, date, and contact information with a modern design. This Slide is always the first slide in a pitch deck, setting the tone for the presentation with a clean and professional look.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Pitch Deck",
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 15
+          },
+          "description": {
+            "description": "Description shown below the title",
+            "default": "Add a short subtitle or description here. Add a short subtitle or description here. Add a short subtitle or description here. Add a short subtitle or description here.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "introCard": {
+            "description": "Optional intro card shown below description",
+            "default": {
+              "enabled": true,
+              "name": "John Doe",
+              "date": "December 2025"
+            },
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "default": true,
+                "type": "boolean"
+              },
+              "name": {
+                "default": "John Doe",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60
+              },
+              "date": {
+                "default": "December 2025",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60
+              }
+            },
+            "required": [
+              "enabled",
+              "name",
+              "date"
+            ],
+            "additionalProperties": false
+          },
+          "image": {
+            "default": {
+              "__image_url__": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop",
+              "__image_prompt__": "Abstract business background"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "introCard",
+          "image"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "modern:bullet-with-icons-description-grid",
+      "name": "Bullet With Icons Description Grid",
+      "description": "A bullet with icons description grid slide layout",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Businesses struggle",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 25
+          },
+          "mainDescription": {
+            "description": "Main content text describing the solution",
+            "default": "Show that we offer a solution that solves the problems previously described and identified. Make sure that the solutions we offer uphold the values of effectiveness, efficiency, and are highly relevant to the market situation and society is here and what is hsd sdksdf klfdslkf lkflkfsldkf.",
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 300
+          },
+          "sections": {
+            "description": "List of solution sections with titles, descriptions, and optional icons",
+            "default": [
+              {
+                "title": "Market",
+                "description": "Innovative and widely accepted. Innovative and widely accepted. Innovative and widely accepted.",
+                "icon": {
+                  "__icon_query__": "market innovation",
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/checks-bold.svg"
+                }
+              },
+              {
+                "title": "Industry",
+                "description": "Based on sound market decisions.",
+                "icon": {
+                  "__icon_query__": "industry building",
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/fediverse-logo-bold.svg"
+                }
+              },
+              {
+                "title": "SEM",
+                "description": "Driven by precise data and analysis.",
+                "icon": {
+                  "__icon_query__": "SEM data analysis",
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/video-bold.svg"
+                }
+              },
+              {
+                "title": "End User",
+                "description": "Focused on real user impact.",
+                "icon": {
+                  "__icon_query__": "end user impact",
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/users-four-bold.svg"
+                }
+              },
+              {
+                "title": "Industry",
+                "description": "Based on sound market decisions.",
+                "icon": {
+                  "__icon_query__": "industry building",
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/fediverse-logo-bold.svg"
+                }
+              },
+              {
+                "title": "SEM",
+                "description": "Driven by precise data and analysis.",
+                "icon": {
+                  "__icon_query__": "SEM data analysis",
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/video-bold.svg"
+                }
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "Section title",
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 30
+                },
+                "description": {
+                  "description": "Section description",
+                  "type": "string",
+                  "minLength": 5,
+                  "maxLength": 70
+                },
+                "icon": {
+                  "description": "Icon for the section",
+                  "type": "object",
+                  "properties": {
+                    "__icon_url__": {
+                      "description": "URL to icon",
+                      "type": "string"
+                    },
+                    "__icon_query__": {
+                      "type": "string",
+                      "minLength": 5,
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "__icon_url__",
+                    "__icon_query__"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "title",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "mainDescription",
+          "sections"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "modern:bullet-with-icons",
+      "name": "Bullet With Icons Slide Layout",
+      "description": "Bullets with icons slide layout",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the problem statement slide",
+            "default": "Problem",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 20
+          },
+          "description": {
+            "description": "Main content text describing the problem statement",
+            "default": "A problem needs to be discussed further and in detail because this problem is the main foundation in the initial development of a product, service, and decision making. Without a well-defined problem, it will have an impact on a job that is unfocused, unmanaged, and less relevant.",
+            "type": "string",
+            "minLength": 50,
+            "maxLength": 200
+          },
+          "problemCategories": {
+            "description": "List of problem categories with titles, descriptions, and optional icons",
+            "default": [
+              {
+                "title": "Inefficiency",
+                "description": "Businesses struggle to find digital tools that meet their needs, causing operational slowdowns.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/checks-bold.svg",
+                  "__icon_query__": "warning alert inefficiency"
+                }
+              },
+              {
+                "title": "High Costs",
+                "description": "Outdated systems increase expenses, while small businesses struggle to expand their market reach.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/fediverse-logo-bold.svg",
+                  "__icon_query__": "trending up costs chart"
+                }
+              },
+              {
+                "title": "Inefficiency",
+                "description": "Businesses struggle to find digital tools that meet their needs, causing operational slowdowns.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/video-bold.svg",
+                  "__icon_query__": "warning alert inefficiency"
+                }
+              },
+              {
+                "title": "Inefficiency",
+                "description": "Businesses struggle to find digital tools that meet their needs, causing operational slowdowns.",
+                "icon": {
+                  "__icon_url__": "https://presenton-public.s3.ap-southeast-1.amazonaws.com/static/icons/bold/users-four-bold.svg",
+                  "__icon_query__": "warning alert inefficiency"
+                }
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "Title of the problem category",
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 30
+                },
+                "description": {
+                  "description": "Description of the problem category",
+                  "type": "string",
+                  "minLength": 20,
+                  "maxLength": 100
+                },
+                "icon": {
+                  "description": "Optional icon for the problem category",
+                  "type": "object",
+                  "properties": {
+                    "__icon_url__": {
+                      "description": "URL to icon",
+                      "type": "string"
+                    },
+                    "__icon_query__": {
+                      "type": "string",
+                      "minLength": 5,
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "__icon_url__",
+                    "__icon_query__"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "title",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "problemCategories"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "modern:chart-or-table-with-description",
+      "name": "Chart or Table With Description",
+      "description": "Chart with description slide layout",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "default": {
+          "title": "Data Table or Chart",
+          "description": "Present structured information in a flexible table or visualize it with a chart.",
+          "mode": "table",
+          "columns": [
+            "Column 1",
+            "Column 2",
+            "Column 3"
+          ],
+          "rows": [
+            {
+              "cells": [
+                "Row A",
+                "✓",
+                "-"
+              ]
+            },
+            {
+              "cells": [
+                "Row B",
+                "Text",
+                "123"
+              ]
+            },
+            {
+              "cells": [
+                "Row C",
+                "More text",
+                "456"
+              ]
+            }
+          ],
+          "chart": {
+            "type": "line",
+            "data": [
+              {
+                "label": "A",
+                "value": 60
+              },
+              {
+                "label": "B",
+                "value": 42
+              },
+              {
+                "label": "C",
+                "value": 75
+              },
+              {
+                "label": "D",
+                "value": 30
+              }
+            ],
+            "showLabels": true
+          }
+        },
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Data Table or Chart",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 60
+          },
+          "description": {
+            "description": "Supporting description for the table/chart",
+            "default": "Present structured information in a flexible table or visualize it with a chart.",
+            "type": "string"
+          },
+          "mode": {
+            "default": "chart",
+            "type": "string",
+            "enum": [
+              "table",
+              "chart"
+            ]
+          },
+          "columns": {
+            "default": [
+              "Column 1",
+              "Column 2",
+              "Column 3"
+            ],
+            "minItems": 2,
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 40
+            }
+          },
+          "rows": {
+            "default": [
+              {
+                "cells": [
+                  "Row A",
+                  "✓",
+                  "-"
+                ]
+              },
+              {
+                "cells": [
+                  "Row B",
+                  "Text",
+                  "123"
+                ]
+              },
+              {
+                "cells": [
+                  "Row C",
+                  "More text",
+                  "456"
+                ]
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 30,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "cells": {
+                  "default": [
+                    "Row 1",
+                    "Value",
+                    "Value"
+                  ],
+                  "minItems": 2,
+                  "maxItems": 10,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 200
+                  }
+                }
+              },
+              "required": [
+                "cells"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "chart": {
+            "default": {
+              "type": "line",
+              "data": [
+                {
+                  "label": "A",
+                  "value": 60
+                },
+                {
+                  "label": "B",
+                  "value": 42
+                },
+                {
+                  "label": "C",
+                  "value": 75
+                },
+                {
+                  "label": "D",
+                  "value": 30
+                }
+              ],
+              "showLabels": true
+            },
+            "type": "object",
+            "properties": {
+              "type": {
+                "default": "line",
+                "type": "string",
+                "enum": [
+                  "bar",
+                  "horizontalBar",
+                  "line",
+                  "pie"
+                ]
+              },
+              "data": {
+                "default": [
+                  {
+                    "label": "A",
+                    "value": 60
+                  },
+                  {
+                    "label": "B",
+                    "value": 42
+                  },
+                  {
+                    "label": "C",
+                    "value": 75
+                  },
+                  {
+                    "label": "D",
+                    "value": 30
+                  }
+                ],
+                "minItems": 3,
+                "maxItems": 12,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 12
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "showLabels": {
+                "default": true,
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "type",
+              "data",
+              "showLabels"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "mode",
+          "columns",
+          "rows",
+          "chart"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "modern:chart-with-metrics",
+      "name": "Chart With Metrics Slide",
+      "description": "A chart or table with metrics slide layout",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Company Traction",
+            "type": "string"
+          },
+          "description": {
+            "description": "Main content text describing the company's traction and growth momentum.",
+            "default": "Traction is a period where the company is feeling momentum during its development period. If traction momentum is not harnessed, sales figures can decline and the customer base can shrink. In general, companies will judge success by the amount of revenue and new customers they receive.",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 200
+          },
+          "tableMode": {
+            "default": false,
+            "type": "boolean"
+          },
+          "tableColumns": {
+            "default": [
+              "Metric",
+              "Value"
+            ],
+            "minItems": 2,
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 40
+            }
+          },
+          "tableRows": {
+            "default": [
+              [
+                "Users",
+                "10K+"
+              ],
+              [
+                "Revenue",
+                "$1.2M"
+              ],
+              [
+                "Satisfaction",
+                "95%"
+              ]
+            ],
+            "minItems": 1,
+            "maxItems": 30,
+            "type": "array",
+            "items": {
+              "minItems": 2,
+              "maxItems": 10,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 200
+              }
+            }
+          },
+          "growthStats": {
+            "description": "Growth statistics for the company, used for chart visualization. Each entry is an object representing a specific year, with the 'year' key as a string (e.g., '2020'), and additional keys for each metric (such as 'artificialIntelligence', 'internetOfThings', 'others'), where the values are numbers representing the metric's value for that year. Example:\n\n[\n  { year: '2020', artificialIntelligence: 5, internetOfThings: 10, others: 8 },\n  { year: '2021', artificialIntelligence: 10, internetOfThings: 20, others: 15 },\n  ...\n]\nThis structure allows the chart to dynamically render multiple series over time, with each metric visualized as a separate line.",
+            "default": [
+              {
+                "year": "2020",
+                "artificialIntelligence": 5,
+                "internetOfThings": 10,
+                "others": 8
+              },
+              {
+                "year": "2021",
+                "artificialIntelligence": 10,
+                "internetOfThings": 20,
+                "others": 15
+              },
+              {
+                "year": "2022",
+                "artificialIntelligence": 20,
+                "internetOfThings": 30,
+                "others": 22
+              },
+              {
+                "year": "2023",
+                "artificialIntelligence": 28,
+                "internetOfThings": 38,
+                "others": 29
+              },
+              {
+                "year": "2024",
+                "artificialIntelligence": 35,
+                "internetOfThings": 45,
+                "others": 34
+              },
+              {
+                "year": "2025",
+                "artificialIntelligence": 45,
+                "internetOfThings": 53,
+                "others": 42
+              },
+              {
+                "year": "2026",
+                "artificialIntelligence": 55,
+                "internetOfThings": 65,
+                "others": 52
+              },
+              {
+                "year": "2029",
+                "artificialIntelligence": 55,
+                "internetOfThings": 65,
+                "others": 52
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 20,
+            "type": "array",
+            "items": {
+              "description": "Growth statistics for a specific year, with any number of metrics as key-value pairs where keys are metric names and values are numbers.",
+              "type": "object",
+              "properties": {
+                "year": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "year"
+              ],
+              "additionalProperties": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "tableMode",
+          "tableColumns",
+          "tableRows",
+          "growthStats"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "modern:image-and-description",
+      "name": "Image And Description",
+      "description": "A slide layout with a title, a description, and an image.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Image With Description",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 30
+          },
+          "content": {
+            "description": "Main content text describing the company or topic",
+            "default": "In the presentation session, the background/introduction can be filled with information that is arranged systematically and effectively with respect to an interesting topic to be used as material for discussion at the opening of the presentation session. The introduction can provide a general overview for those who are listening to your presentation so that the key words on the topic of discussion are emphasized during this background/introductory presentation session.",
+            "type": "string",
+            "minLength": 25,
+            "maxLength": 300
+          },
+          "image": {
+            "description": "Optional supporting image for the slide (building, office, etc.)",
+            "default": {
+              "__image_url__": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop",
+              "__image_prompt__": "Abstract business background"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "title",
+          "content",
+          "image"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "modern:image-list-with-description",
+      "name": "Image List with Description",
+      "description": "An image list with description slide layout",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide. Max 4 words",
+            "default": "Product Overview",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "products": {
+            "description": "List of products or services to showcase",
+            "default": [
+              {
+                "title": "Internet of Things",
+                "description": "Detail and explain each product. Our examination of community and market issues increases with additional products/services.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop",
+                  "__image_prompt__": "Person working on electronics with headphones"
+                },
+                "isBlueBackground": true
+              },
+              {
+                "title": "Analytics Dashboard",
+                "description": "Our alternate product category is available. Our products must work together to solve social and economic issues.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1556157382-97eda2d62296?w=300&h=200&fit=crop",
+                  "__image_prompt__": "Analytics dashboard on laptop screen"
+                },
+                "isBlueBackground": true
+              },
+              {
+                "title": "Mobile App Suite",
+                "description": "Our alternate product category is available. Our products must work together to solve social and economic issues.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&h=200&fit=crop",
+                  "__image_prompt__": "Mobile apps on smartphone in hand"
+                },
+                "isBlueBackground": true
+              },
+              {
+                "title": "Smart Home Platform",
+                "description": "Our alternate product category is available. Our products must work together to solve social and economic issues.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=300&h=200&fit=crop",
+                  "__image_prompt__": "Woman working at computer with technical equipment"
+                },
+                "isBlueBackground": true
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "Product title",
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 50
+                },
+                "description": {
+                  "description": "Product description",
+                  "type": "string",
+                  "minLength": 30,
+                  "maxLength": 100
+                },
+                "image": {
+                  "description": "Product image",
+                  "type": "object",
+                  "properties": {
+                    "__image_url__": {
+                      "description": "URL to image",
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "__image_prompt__": {
+                      "type": "string",
+                      "minLength": 10,
+                      "maxLength": 50
+                    }
+                  },
+                  "required": [
+                    "__image_url__",
+                    "__image_prompt__"
+                  ],
+                  "additionalProperties": false
+                },
+                "isBlueBackground": {
+                  "description": "Whether the product box has a blue background",
+                  "default": false,
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "title",
+                "description",
+                "image",
+                "isBlueBackground"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "products"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "modern:images-with-description",
+      "name": "Images With Description",
+      "description": "Images with description slide layout",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title of the slide",
+            "default": "Our Team",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "subtitle": {
+            "description": "Optional subtitle describing the team",
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 120
+          },
+          "teamMembers": {
+            "description": "List of team members with their information",
+            "default": [
+              {
+                "name": "Sarah Johnson",
+                "description": "Strategic leader with 15+ years experience in technology and business development. Former VP at Fortune 500 company.",
+                "image": {
+                  "__image_url__": "https://plus.unsplash.com/premium_photo-1661589856899-6dd0871f9db6?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YnVzaW5lc3N3b21lbnxlbnwwfHwwfHx8MA%3D%3D",
+                  "__image_prompt__": "Professional businesswoman CEO headshot"
+                }
+              },
+              {
+                "name": "Michael Chen",
+                "description": "Technology expert specializing in scalable architecture and AI solutions. PhD in Computer Science from MIT.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+                  "__image_prompt__": "Professional businessman CTO headshot"
+                }
+              },
+              {
+                "name": "Emily Rodriguez",
+                "description": "Sales leader with proven track record of building high-performing teams and driving revenue growth in B2B markets.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+                  "__image_prompt__": "Professional businesswoman VP headshot"
+                }
+              },
+              {
+                "name": "David Kim",
+                "description": "Product strategist focused on user experience and market-driven solutions. Former product manager at leading tech companies.",
+                "image": {
+                  "__image_url__": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+                  "__image_prompt__": "Professional businessman product manager headshot"
+                }
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "Card title",
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 50
+                },
+                "description": {
+                  "description": "Short description for the card",
+                  "type": "string",
+                  "minLength": 20,
+                  "maxLength": 120
+                },
+                "image": {
+                  "type": "object",
+                  "properties": {
+                    "__image_url__": {
+                      "description": "URL to image",
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "__image_prompt__": {
+                      "type": "string",
+                      "minLength": 10,
+                      "maxLength": 50
+                    }
+                  },
+                  "required": [
+                    "__image_url__",
+                    "__image_prompt__"
+                  ],
+                  "additionalProperties": false
+                },
+                "linkedIn": {
+                  "description": "LinkedIn profile URL (optional)",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "description",
+                "image"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "teamMembers"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "modern:metrics-with-description-image",
+      "name": "Metrics With Description and Image Slide Layout",
+      "description": "Metrics with description slide layout with an image as whole for the slide",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main slide title",
+            "default": "Market Size",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 15
+          },
+          "mapImage": {
+            "default": {
+              "__image_url__": "https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg",
+              "__image_prompt__": "World map with location pins or points"
+            },
+            "type": "object",
+            "properties": {
+              "__image_url__": {
+                "description": "URL to image",
+                "type": "string",
+                "format": "uri"
+              },
+              "__image_prompt__": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "__image_url__",
+              "__image_prompt__"
+            ],
+            "additionalProperties": false
+          },
+          "marketStats": {
+            "description": "Market statistics including TAM, SAM, and SOM with labels, values, and descriptions.",
+            "default": [
+              {
+                "label": "Total Available Market (TAM)",
+                "value": "1.4 Billion",
+                "description": "In the TAM Section, we can fill in the potential of any person who can buy an offer or the maximum amount of revenue a business can earn by selling their offer."
+              },
+              {
+                "label": "Serviceable Available Market (SAM)",
+                "value": "194 Million",
+                "description": "It is a part of TAM that has the potential to become a target market for the company by considering the type of product, technology available and geographical conditions."
+              },
+              {
+                "label": "Total Available Market (TAM)",
+                "value": "1.4 Billion",
+                "description": "In the TAM Section, we can fill in the potential of any person who can buy an offer or the maximum amount of revenue a business can earn by selling their offer."
+              },
+              {
+                "label": "Serviceable Available Market (SAM)",
+                "value": "194 Million",
+                "description": "It is a part of TAM that has the potential to become a target market for the company by considering the type of product, technology available and geographical conditions."
+              }
+            ],
+            "minItems": 1,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 30
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 30
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 130
+                }
+              },
+              "required": [
+                "label",
+                "value",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "description": {
+            "description": "Main description text for the slide",
+            "default": "Market size is the total amount of all sales and customers that can be seen directly by stakeholders. This technique is usually calculated at the end of the year, the market size can be used by companies to determine the potential of their market and business in the future. This is very useful, especially for new companies that will offer services to those who are interested in our services.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "mapImage",
+          "marketStats",
+          "description"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "modern:table-of-contents",
+      "name": "Table Of Contents",
+      "description": "A clean table of contents layout with up to 10 items, each with a short description, styled to match the modern template.",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Main title displayed at the top",
+            "default": "Table Of Contents",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "items": {
+            "description": "List of up to 10 TOC items",
+            "default": [
+              {
+                "title": "Section 1",
+                "description": "Brief description for this section."
+              },
+              {
+                "title": "Section 2",
+                "description": "Brief description for this section."
+              },
+              {
+                "title": "Section 3",
+                "description": "Brief description for this section."
+              },
+              {
+                "title": "Section 4",
+                "description": "Brief description for this section."
+              },
+              {
+                "title": "Section 5",
+                "description": "Brief description for this section."
+              },
+              {
+                "title": "Section 6",
+                "description": "Brief description for this section."
+              },
+              {
+                "title": "Section 7",
+                "description": "Brief description for this section."
+              },
+              {
+                "title": "Section 8",
+                "description": "Brief description for this section."
+              },
+              {
+                "title": "Section 9",
+                "description": "Brief description for this section."
+              },
+              {
+                "title": "Section 10",
+                "description": "Brief description for this section."
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "Item title (short)",
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 40
+                },
+                "description": {
+                  "description": "Short item description",
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 80
+                }
+              },
+              "required": [
+                "title",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "items"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

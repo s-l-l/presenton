@@ -9,9 +9,8 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Missing group name" }, { status: 400 });
   }
 
-  const schemaPageUrl = `http://localhost/schema?group=${encodeURIComponent(
-    groupName
-  )}`;
+  const origin = new URL(request.url).origin;
+  const schemaPageUrl = `${origin}/schema?group=${encodeURIComponent(groupName)}`;
 
   let browser;
   try {
@@ -57,6 +56,9 @@ export async function GET(request: Request) {
     } catch (e) {
       slides = [];
     }
+    if (!Array.isArray(slides)) {
+      slides = [];
+    }
     try {
       groupSettings = JSON.parse(dataGroupSettings || "null");
     } catch (e) {
@@ -76,6 +78,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(response);
   } catch (err) {
+    console.error("api/template failed", err);
     return NextResponse.json(
       { error: "Failed to fetch or parse client page" },
       { status: 500 }

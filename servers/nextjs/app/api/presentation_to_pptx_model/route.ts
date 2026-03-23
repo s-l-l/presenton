@@ -79,6 +79,7 @@ async function getBrowserAndPage(id: string): Promise<[Browser, Page]> {
   const browser = await puppeteer.launch({
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     headless: true,
+    protocolTimeout: 600000,
     args: [
       "--no-sandbox",
       "--disable-setuid-sandbox",
@@ -99,7 +100,7 @@ async function getBrowserAndPage(id: string): Promise<[Browser, Page]> {
   page.setDefaultNavigationTimeout(300000);
   page.setDefaultTimeout(300000);
   await page.goto(`http://localhost:3000/pdf-maker?id=${id}`, {
-    waitUntil: "networkidle0",
+    waitUntil: "domcontentloaded",
     timeout: 300000,
   });
   return [browser, page];
@@ -248,12 +249,18 @@ async function getSlidesAttributes(
 
 async function getSlidesAndSpeakerNotes(page: Page) {
   const slides_wrapper = await getSlidesWrapper(page);
+  await waitForRenderedSlides(page);
   const speakerNotes = await getSpeakerNotes(slides_wrapper);
   const slides = await slides_wrapper.$$(":scope > div > div");
+  if (!slides || slides.length === 0) {
+    throw new ApiError("Presentation slides are empty after render");
+  }
   return { slides, speakerNotes };
 }
 
 async function getSlidesWrapper(page: Page): Promise<ElementHandle<Element>> {
+  await page.waitForSelector("body", { timeout: 300000 });
+  await page.waitForSelector("#presentation-slides-wrapper", { timeout: 300000 });
   const slides_wrapper = await page.$("#presentation-slides-wrapper");
   if (!slides_wrapper) {
     throw new ApiError("Presentation slides not found");
@@ -267,6 +274,31 @@ async function getSpeakerNotes(slides_wrapper: ElementHandle<Element>) {
       (el) => el.getAttribute("data-speaker-note") || ""
     );
   });
+}
+
+async function waitForRenderedSlides(page: Page) {
+  await page.waitForFunction(
+    () => {
+      const wrapper = document.querySelector("#presentation-slides-wrapper");
+      if (!wrapper) {
+        return false;
+      }
+
+      const directSlideWrappers = wrapper.querySelectorAll(":scope > div[data-speaker-note]");
+      if (!directSlideWrappers || directSlideWrappers.length === 0) {
+        return false;
+      }
+
+      // Guard against exporting while loading placeholders are still dominant.
+      const loadingSkeletons = wrapper.querySelectorAll(".animate-pulse");
+      if (loadingSkeletons.length > 0) {
+        return false;
+      }
+
+      return true;
+    },
+    { timeout: 300000 }
+  );
 }
 
 async function getAllChildElementsAttributes({
