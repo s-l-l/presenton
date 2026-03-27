@@ -12,6 +12,8 @@ import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import sharp from "sharp";
 
+export const dynamic = "force-dynamic";
+
 interface GetAllChildElementsAttributesArgs {
   element: ElementHandle<Element>;
   rootRect?: {

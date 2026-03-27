@@ -96,7 +96,12 @@ export async function POST(req: NextRequest) {
   await fs.promises.mkdir(path.dirname(destinationPath), { recursive: true });
   await fs.promises.writeFile(destinationPath, pdfBuffer);
 
-  return new NextResponse(pdfBuffer, {
+  const pdfArrayBuffer = pdfBuffer.buffer.slice(
+    pdfBuffer.byteOffset,
+    pdfBuffer.byteOffset + pdfBuffer.byteLength
+  ) as ArrayBuffer;
+
+  return new NextResponse(pdfArrayBuffer, {
     status: 200,
     headers: {
       "Content-Type": "application/pdf",

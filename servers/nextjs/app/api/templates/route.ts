@@ -7,6 +7,11 @@ export async function GET() {
     try {
         // Get the path to the presentation-templates directory
         const templatesDirectory = path.join(process.cwd(), 'presentation-templates')
+
+        const exists = await fs.stat(templatesDirectory).then(() => true).catch(() => false)
+        if (!exists) {
+            return NextResponse.json([])
+        }
         
         // Read all directories in the presentation-templates directory
         const items = await fs.readdir(templatesDirectory, { withFileTypes: true })

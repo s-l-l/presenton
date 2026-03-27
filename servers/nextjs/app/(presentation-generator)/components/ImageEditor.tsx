@@ -127,7 +127,7 @@ const ImageEditor = ({
     try {
       trackEvent(MixpanelEvent.ImageEditor_GetPreviousGeneratedImages_API_Call);
       const response =
-        await PresentationGenerationApi.getPreviousGeneratedImages(presentationId);
+        await PresentationGenerationApi.getPreviousGeneratedImages(presentationId ?? undefined);
       setPreviousGeneratedImages(response);
     } catch (error: any) {
       toast.error("获取之前生成的图片失败。请重试。");
@@ -228,7 +228,7 @@ const ImageEditor = ({
       const response = await PresentationGenerationApi.generateImage({
         prompt: prompt,
         count: 4,
-      }, presentationId);
+      }, presentationId ?? undefined);
 
       const images = (Array.isArray(response) ? response : [response])
         .map((item) => normalizeImageUrl(item))
