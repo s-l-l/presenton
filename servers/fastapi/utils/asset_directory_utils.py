@@ -1,6 +1,6 @@
 import os
 from typing import Optional
-from urllib.parse import urlparse, unquote
+from urllib.parse import urlparse, unquote, quote
 
 from utils.get_env import get_app_data_directory_env
 
@@ -99,7 +99,10 @@ def to_public_image_url(path_or_url: str) -> str:
     if not path_or_url:
         return path_or_url
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
-        return path_or_url
+        # Route remote images through same-origin proxy to avoid browser CORS issues
+        # when images are used in canvas/export flows.
+        encoded = quote(path_or_url, safe="")
+        return f"/api/v1/ppt/images/proxy?url={encoded}"
     if path_or_url.startswith("file://"):
         parsed = urlparse(path_or_url)
         path_or_url = unquote(parsed.path).lstrip("/")

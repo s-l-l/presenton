@@ -3,7 +3,14 @@
     "allow": [
       "Bash(find D:/codeWorkspase/dataAgent -name *.java -path */controller/*)",
       "Bash(ls:*)",
-      "Bash(find D:codeWorkspasepresenton -name *presentation_service* -type f)"
+      "Bash(find D:codeWorkspasepresenton -name *presentation_service* -type f)",
+      "Bash(find /d/codeWorkspase/presenton -type f -name *.env*)",
+      "Bash(grep -r localhost D:codeWorkspasedataAgentdata-agent-frontendsrc --include=*.ts --include=*.js --include=*.vue)",
+      "Bash(find D:codeWorkspasepresenton -name .env* -o -name next.config.*)",
+      "Bash(find D:codeWorkspasepresenton -path */api/* -name route.ts -o -path */api/* -name route.js)",
+      "Bash(find D:codeWorkspasepresentonserversfastapiapp -name *.py)",
+      "Bash(find D:codeWorkspasepresentonserversfastapiapi -name *.py)",
+      "Bash(grep -r \"DATA_AGENT\\\\|dataAgent\\\\|8065\\\\|3001\" D:codeWorkspasepresenton --include=*.py --include=*.ts --include=*.tsx --include=*.js)"
     ],
     "additionalDirectories": [
       "D:\\codeWorkspase\\dataAgent"

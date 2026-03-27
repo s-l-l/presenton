@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 import logging
 import os
 import sys
 import time
+from pathlib import Path
 
 # Load .env file explicitly
 load_dotenv()
@@ -34,6 +36,12 @@ error_logger = logging.getLogger("uvicorn.error")
 app.include_router(API_V1_PPT_ROUTER)
 app.include_router(API_V1_WEBHOOK_ROUTER)
 app.include_router(API_V1_MOCK_ROUTER)
+
+# Static mounts for local/dev and direct backend access.
+FASTAPI_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = FASTAPI_ROOT.parents[1]
+app.mount("/static", StaticFiles(directory=FASTAPI_ROOT / "static"), name="static")
+app.mount("/app_data", StaticFiles(directory=PROJECT_ROOT / "app_data"), name="app_data")
 
 # Middlewares
 origins = ["*"]

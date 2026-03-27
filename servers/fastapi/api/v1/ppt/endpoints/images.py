@@ -1,6 +1,10 @@
 import asyncio
 from typing import List
+from urllib.parse import urlparse
+
+import httpx
 from fastapi import APIRouter, Depends, File, UploadFile, HTTPException
+from fastapi.responses import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
@@ -14,6 +18,56 @@ import uuid
 from utils.file_utils import get_file_name_with_random_uuid
 
 IMAGES_ROUTER = APIRouter(prefix="/images", tags=["Images"])
+
+
+async def _download_remote_image_to_local(url: str, images_directory: str):
+    try:
+        timeout = httpx.Timeout(20.0, connect=10.0)
+        async with httpx.AsyncClient(timeout=timeout, follow_redirects=True) as client:
+            resp = await client.get(url)
+            if resp.status_code >= 400:
+                return None
+
+            parsed = urlparse(url)
+            original_name = os.path.basename(parsed.path) or "generated.jpg"
+            ext = os.path.splitext(original_name)[1] or ".jpg"
+            local_name = f"{uuid.uuid4().hex}{ext}"
+            local_path = os.path.join(images_directory, local_name)
+
+            with open(local_path, "wb") as f:
+                f.write(resp.content)
+            return local_path
+    except Exception:
+        return None
+
+
+@IMAGES_ROUTER.get("/proxy")
+async def proxy_image(url: str):
+    """
+    Proxy remote image bytes through backend to avoid browser-side CORS restrictions.
+    """
+    if not (url.startswith("http://") or url.startswith("https://")):
+        raise HTTPException(status_code=400, detail="Invalid url")
+
+    try:
+        timeout = httpx.Timeout(20.0, connect=10.0)
+        async with httpx.AsyncClient(timeout=timeout, follow_redirects=True) as client:
+            resp = await client.get(url)
+            if resp.status_code >= 400:
+                raise HTTPException(status_code=resp.status_code, detail="Failed to fetch image")
+
+            content_type = resp.headers.get("content-type", "image/jpeg")
+            return Response(
+                content=resp.content,
+                media_type=content_type,
+                headers={
+                    "Cache-Control": "public, max-age=86400",
+                },
+            )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"Image proxy error: {str(e)}")
 
 
 @IMAGES_ROUTER.get("/generate")
@@ -42,10 +96,11 @@ async def generate_image(
             sql_session.add(item)
             results.append(to_public_image_url(item.path))
         elif isinstance(item, str):
-            # 将外部 URL 也作为 ImageAsset 保存到数据库中
-            new_asset = ImageAsset(path=item, is_uploaded=False, presentation_id=presentation_id, extras={"prompt": prompt})
+            local_path = await _download_remote_image_to_local(item, images_directory)
+            final_path = local_path or item
+            new_asset = ImageAsset(path=final_path, is_uploaded=False, presentation_id=presentation_id, extras={"prompt": prompt})
             sql_session.add(new_asset)
-            results.append(to_public_image_url(item))
+            results.append(to_public_image_url(final_path))
 
     await sql_session.commit()
     if safe_count == 1:
@@ -62,7 +117,7 @@ async def get_generated_images(
         query = select(ImageAsset).where(ImageAsset.is_uploaded == False)
         if presentation_id:
             query = query.where(ImageAsset.presentation_id == presentation_id)
-            
+
         images = await sql_session.scalars(
             query.order_by(ImageAsset.created_at.desc())
         )
@@ -148,10 +203,11 @@ async def generate_images_batch(
             sql_session.add(item)
             results.append(to_public_image_url(item.path))
         elif isinstance(item, str):
-            # 将外部 URL 也作为 ImageAsset 保存到数据库中
-            new_asset = ImageAsset(path=item, is_uploaded=False, presentation_id=presentation_id, extras={"prompt": prompt})
+            local_path = await _download_remote_image_to_local(item, images_directory)
+            final_path = local_path or item
+            new_asset = ImageAsset(path=final_path, is_uploaded=False, presentation_id=presentation_id, extras={"prompt": prompt})
             sql_session.add(new_asset)
-            results.append(to_public_image_url(item))
+            results.append(to_public_image_url(final_path))
 
     await sql_session.commit()
     return results
@@ -162,7 +218,6 @@ async def delete_uploaded_image_by_id(
     id: uuid.UUID, sql_session: AsyncSession = Depends(get_async_session)
 ):
     try:
-        # Fetch the asset to get its actual file path
         image = await sql_session.get(ImageAsset, id)
         if not image:
             raise HTTPException(status_code=404, detail="Image not found")

@@ -21,7 +21,7 @@ const Schema = z
 
     title: z
       .string()
-      .min(12)
+      .min(10)
       .max(68)
       .default("Pitch Deck")
       .meta({ description: "Main slide title" }),

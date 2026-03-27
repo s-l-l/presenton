@@ -15,7 +15,7 @@ const IconSchema = z.object({
   __icon_url__: z.string().default("").meta({
     description: "URL to icon",
   }),
-  __icon_query__: z.string().min(3).max(30).default("").meta({
+  __icon_query__: z.string().min(0).max(30).default("").meta({
     description: "Query used to search the icon. Max 6 words",
   }),
 })

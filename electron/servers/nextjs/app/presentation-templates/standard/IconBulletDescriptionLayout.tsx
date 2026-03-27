@@ -38,7 +38,7 @@ const Schema = z.object({
   rightTitle: z.string().min(24).max(72).default("Disrupting the\nIndustry").meta({
     description: "Large heading on the right. Max 8 words",
   }),
-  rightDescription: z.string().min(120).max(240).default("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna").meta({
+  rightDescription: z.string().min(110).max(240).default("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna").meta({
     description: "Supporting paragraph under the large heading. Max 40 words",
   }),
   // decorative image removed
