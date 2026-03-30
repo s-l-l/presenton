@@ -95,8 +95,8 @@ const SettingsPage = () => {
         isDisabled: false,
         text: "保存配置",
       }));
-      trackEvent(MixpanelEvent.Navigation, { from: pathname, to: "/upload" });
-      router.push("/upload");
+      trackEvent(MixpanelEvent.Navigation, { from: pathname, to: "/ppt/deck-studio" });
+      router.push("/ppt/deck-studio");
     } catch (error) {
       toast.info(error instanceof Error ? error.message : "保存配置失败");
       setButtonState(prev => ({
@@ -148,7 +148,7 @@ const SettingsPage = () => {
 
   useEffect(() => {
     if (!canChangeKeys) {
-      router.push("/dashboard");
+      router.push("/ppt/deck-dashboard");
     }
   }, [canChangeKeys, router]);
 

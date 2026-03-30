@@ -39,14 +39,14 @@ export const usePresentationNavigation = (
 
   const handlePresentExit = useCallback(() => {
     setIsFullscreen(false);
-    router.push(`/presentation?id=${presentationId}`);
+    router.push(`/ppt/presentation?id=${presentationId}`);
   }, [router, presentationId, setIsFullscreen]);
 
   const handleSlideChange = useCallback((newSlide: number, presentationData: any) => {
     if (newSlide >= 0 && newSlide < presentationData?.slides.length!) {
       setSelectedSlide(newSlide);
       router.push(
-        `/presentation?id=${presentationId}&mode=present&slide=${newSlide}`,
+        `/ppt/presentation?id=${presentationId}&mode=present&slide=${newSlide}`,
         { scroll: false }
       );
     }

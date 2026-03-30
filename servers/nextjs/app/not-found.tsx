@@ -12,14 +12,14 @@ const NotFound = () => {
                     className="w-3/4 mx-auto mb-6"
                 />
                 <h1 className="text-3xl font-bold text-gray-800 mb-4">
-                    Oops! Page Not Found
+                    页面未找到
                 </h1>
                 <p className="text-lg text-gray-600 mb-4">
                     It seems you've found a page that doesn't exist. But don't worry, every great presentation starts with a blank slide!
                 </p>
 
                 <div className="flex justify-center space-x-4 mb-8">
-                    <Link href="/dashboard">
+                    <Link href="/ppt/deck-dashboard">
                         <Button className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700">
                             Go to Homepage
                         </Button>

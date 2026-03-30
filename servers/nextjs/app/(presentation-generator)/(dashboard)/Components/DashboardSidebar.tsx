@@ -37,7 +37,7 @@ const DashboardSidebar = () => {
         >
             <div>
 
-                <div onClick={() => router.push("/dashboard")} className="flex items-center  pb-6 border-b border-slate-200/60   gap-2    ">
+                <div onClick={() => router.push("/ppt/deck-dashboard")} className="flex items-center  pb-6 border-b border-slate-200/60   gap-2    ">
                     <div className="bg-[#7C51F8] rounded-full cursor-pointer p-1 flex justify-center items-center mx-auto">
                         <img src="/logo-with-bg.png" alt="Presenton logo" className="h-[40px] object-contain w-full" />
                     </div>
@@ -48,44 +48,44 @@ const DashboardSidebar = () => {
                         {/* Dashboard */}
                         <Link
                             prefetch={false}
-                            href={`/dashboard`}
+                            href={`/ppt/deck-dashboard`}
                             className={[
                                 "flex flex-col tex-center items-center gap-2  transition-colors",
-                                pathname === "/dashboard" ? "" : "ring-transparent",
+                                pathname === "/ppt/deck-dashboard" ? "" : "ring-transparent",
                             ].join(" ")}
                             aria-label="控制台"
                             title="控制台"
                         >
-                            <LayoutDashboard className={["h-4 w-4", pathname === "/dashboard" ? "text-[#5146E5]" : "text-slate-600"].join(" ")} />
+                            <LayoutDashboard className={["h-4 w-4", pathname === "/ppt/deck-dashboard" ? "text-[#5146E5]" : "text-slate-600"].join(" ")} />
                             <span className="text-[11px] text-slate-800">控制台</span>
                         </Link>
                         <Link
                             prefetch={false}
-                            href={`/templates`}
+                            href={`/ppt/templates`}
                             className={[
                                 "flex flex-col tex-center items-center gap-2  transition-colors",
-                                pathname === "/templates" ? "" : "ring-transparent",
+                                pathname === "/ppt/templates" ? "" : "ring-transparent",
                             ].join(" ")}
                             aria-label="模板"
                             title="模板"
                         >
                             <div className="flex flex-col cursor-pointer tex-center items-center gap-2  transition-colors">
-                                <Star className={`h-4 w-4 ${pathname === "/templates" ? "text-[#5146E5]" : "text-slate-600"}`} />
+                                <Star className={`h-4 w-4 ${pathname === "/ppt/templates" ? "text-[#5146E5]" : "text-slate-600"}`} />
                                 <span className="text-[11px] text-slate-800">模板</span>
                             </div>
                         </Link>
                         <Link
                             prefetch={false}
-                            href={`/theme`}
+                            href={`/ppt/theme`}
                             className={[
                                 "flex flex-col tex-center items-center gap-2  transition-colors",
-                                pathname === "/theme" ? "" : "ring-transparent",
+                                pathname === "/ppt/theme" ? "" : "ring-transparent",
                             ].join(" ")}
                             aria-label="主题"
                             title="主题"
                         >
                             <div className="flex flex-col cursor-pointer tex-center items-center gap-2  transition-colors">
-                                <Palette className={`h-4 w-4 ${pathname === "/theme" ? "text-[#5146E5]" : "text-slate-600"}`} />
+                                <Palette className={`h-4 w-4 ${pathname === "/ppt/theme" ? "text-[#5146E5]" : "text-slate-600"}`} />
                                 <span className="text-[11px] text-slate-800">主题</span>
                             </div>
                         </Link>
@@ -101,7 +101,7 @@ const DashboardSidebar = () => {
                         <Link
                             prefetch={false}
                             key={key}
-                            href={`/${key}`}
+                            href={`/ppt/${key}`}
                             className={[
                                 "flex flex-col tex-center items-center gap-2  transition-colors ",
                                 isActive ? "" : "ring-transparent",

@@ -7,7 +7,7 @@ const CreateCustomTemplate = () => {
     return (
         <div
             onClick={() => {
-                router.push('/custom-template')
+                router.push('/ppt/custom-template')
             }}
             className='w-full rounded-xl border border-[#EDEEEF] cursor-pointer font-syne'>
             <div className='relative h-[215px] flex justify-center items-center '>

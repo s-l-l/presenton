@@ -21,68 +21,102 @@ export function ConfigurationInitializer({ children }: { children: React.ReactNo
   }, []);
 
   const setLoadingToFalseAfterNavigatingTo = (pathname: string) => {
+    const target = pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
+    const normalize = (value: string) => (value.endsWith('/') && value !== '/' ? value.slice(0, -1) : value);
+    const startedAt = Date.now();
     const interval = setInterval(() => {
-      if (window.location.pathname === pathname) {
+      const current = normalize(window.location.pathname);
+      const matched = current === target || current.endsWith(target);
+      const timedOut = Date.now() - startedAt > 2500;
+      if (matched || timedOut) {
         clearInterval(interval);
         setIsLoading(false);
       }
-    }, 500);
+    }, 100);
   }
 
-  const fetchUserConfigState = async () => {
-    setIsLoading(true);
-    const response = await fetch('/api/can-change-keys');
-    const canChangeKeys = (await response.json()).canChange;
-    dispatch(setCanChangeKeys(canChangeKeys));
+  const fetchJsonWithTimeout = async (url: string, options?: RequestInit, timeoutMs = 8000) => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const response = await fetch(url, { ...options, signal: controller.signal });
+      return await response.json();
+    } finally {
+      clearTimeout(timer);
+    }
+  };
 
-    if (canChangeKeys) {
-      const response = await fetch('/api/user-config');
-      const llmConfig = await response.json();
-      if (!llmConfig.LLM) {
-        llmConfig.LLM = 'openai';
-      }
-      if (!llmConfig.IMAGE_PROVIDER) {
-        llmConfig.IMAGE_PROVIDER = 'gpt-image-1.5';
-      }
-      dispatch(setLLMConfig(llmConfig));
-      const isValid = hasValidLLMConfig(llmConfig);
-      if (isValid) {
-        // Check if the selected Ollama model is pulled
-        if (llmConfig.LLM === 'ollama') {
-          const isPulled = await checkIfSelectedOllamaModelIsPulled(llmConfig.OLLAMA_MODEL);
-          if (!isPulled) {
-            router.push('/');
-            setLoadingToFalseAfterNavigatingTo('/');
-            return;
-          }
+  const fetchUserConfigState = async () => {
+    const normalizedRoute = route?.endsWith('/') && route !== '/' ? route.slice(0, -1) : route;
+    const bypassInitRoutes = [
+      '/pdf-maker',
+      '/ppt/pdf-maker',
+    ];
+    const shouldBypassInitialization = bypassInitRoutes.some((bypassRoute) =>
+      normalizedRoute === bypassRoute || normalizedRoute?.startsWith(`${bypassRoute}/`)
+    );
+
+    if (shouldBypassInitialization) {
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const canChangeKeys = (await fetchJsonWithTimeout('/api/can-change-keys')).canChange;
+      dispatch(setCanChangeKeys(canChangeKeys));
+
+      if (canChangeKeys) {
+        const llmConfig = await fetchJsonWithTimeout('/api/user-config');
+        if (!llmConfig.LLM) {
+          llmConfig.LLM = 'openai';
         }
-        if (llmConfig.LLM === 'custom') {
-          const isAvailable = await checkIfSelectedCustomModelIsAvailable(llmConfig);
-          if (!isAvailable) {
-            router.push('/');
-            setLoadingToFalseAfterNavigatingTo('/');
-            return;
-          }
+        if (!llmConfig.IMAGE_PROVIDER) {
+          llmConfig.IMAGE_PROVIDER = 'gpt-image-1.5';
         }
-        if (route === '/') {
-          router.push('/upload');
-          setLoadingToFalseAfterNavigatingTo('/upload');
+        dispatch(setLLMConfig(llmConfig));
+        const isValid = hasValidLLMConfig(llmConfig);
+        if (isValid) {
+          // Check if the selected Ollama model is pulled
+          if (llmConfig.LLM === 'ollama') {
+            const isPulled = await checkIfSelectedOllamaModelIsPulled(llmConfig.OLLAMA_MODEL);
+            if (!isPulled) {
+              router.push('/ppt');
+              setLoadingToFalseAfterNavigatingTo('/ppt');
+              return;
+            }
+          }
+          if (llmConfig.LLM === 'custom') {
+            const isAvailable = await checkIfSelectedCustomModelIsAvailable(llmConfig);
+            if (!isAvailable) {
+              router.push('/ppt');
+              setLoadingToFalseAfterNavigatingTo('/ppt');
+              return;
+            }
+          }
+          if (route === '/' || route === '/ppt' || route === '/ppt/') {
+            router.push('/ppt/deck-studio');
+            setLoadingToFalseAfterNavigatingTo('/deck-studio');
+          } else {
+            setIsLoading(false);
+          }
+        } else if (route !== '/' && route !== '/ppt' && route !== '/ppt/') {
+          router.push('/ppt');
+          setLoadingToFalseAfterNavigatingTo('/ppt');
         } else {
           setIsLoading(false);
         }
-      } else if (route !== '/') {
-        router.push('/');
-        setLoadingToFalseAfterNavigatingTo('/');
       } else {
-        setIsLoading(false);
+        if (route === '/' || route === '/ppt' || route === '/ppt/') {
+          router.push('/ppt/deck-studio');
+          setLoadingToFalseAfterNavigatingTo('/deck-studio');
+        } else {
+          setIsLoading(false);
+        }
       }
-    } else {
-      if (route === '/') {
-        router.push('/upload');
-        setLoadingToFalseAfterNavigatingTo('/upload');
-      } else {
-        setIsLoading(false);
-      }
+    } catch (error) {
+      console.error('Error during app initialization:', error);
+      setIsLoading(false);
     }
   }
 
@@ -126,10 +160,10 @@ export function ConfigurationInitializer({ children }: { children: React.ReactNo
             {/* Loading Text */}
             <div className="space-y-2">
               <h3 className="text-lg font-semibold text-gray-800 font-inter">
-                Initializing Application
+                正在初始化应用
               </h3>
               <p className="text-sm text-gray-600 font-inter">
-                Loading configuration and checking model availability...
+                正在加载配置并检查模型可用性...
               </p>
             </div>
 

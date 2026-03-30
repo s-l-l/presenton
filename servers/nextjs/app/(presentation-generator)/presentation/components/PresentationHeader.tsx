@@ -79,10 +79,32 @@ const PresentationHeader = ({
 
   const { onUndo, onRedo, canUndo, canRedo } = usePresentationUndoRedo();
 
-  const get_presentation_pptx_model = async (id: string): Promise<PptxPresentationModel> => {
-    const response = await fetch(`/api/presentation_to_pptx_model?id=${id}`);
-    const pptx_model = await response.json();
-    return pptx_model;
+  const get_presentation_pptx_model = async (id: string, traceId: string): Promise<PptxPresentationModel> => {
+    if (!id) {
+      throw new Error("Presentation ID missing");
+    }
+
+    console.log(`[EXPORT_PPTX][${traceId}] request model id=${id}`);
+    const response = await fetch(`/api/presentation_to_pptx_model?id=${encodeURIComponent(id)}`, {
+      headers: {
+        "x-trace-id": traceId,
+        "x-presentation-id": id,
+      },
+    });
+    const payload = await response.json();
+
+    if (!response.ok) {
+      const detail = payload?.detail || "Failed to get PPTX model";
+      console.error(`[EXPORT_PPTX][${traceId}] model failed status=${response.status} detail=${detail}`);
+      throw new Error(detail);
+    }
+
+    if (!payload?.slides || !Array.isArray(payload.slides)) {
+      console.error(`[EXPORT_PPTX][${traceId}] model invalid payload keys=${Object.keys(payload || {}).join(",")}`);
+      throw new Error("Invalid PPTX model: slides missing");
+    }
+
+    return payload as PptxPresentationModel;
   };
 
   const exportViaIpc = async (format: "pptx" | "pdf"): Promise<boolean> => {
@@ -127,13 +149,15 @@ const PresentationHeader = ({
         return;
       }
 
+      const traceId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
       trackEvent(MixpanelEvent.Header_GetPptxModel_API_Call);
-      const pptx_model = await get_presentation_pptx_model(presentation_id);
+      const pptx_model = await get_presentation_pptx_model(presentation_id, traceId);
       if (!pptx_model) {
         throw new Error("获取演示文稿 PPTX 模型失败");
       }
       trackEvent(MixpanelEvent.Header_ExportAsPPTX_API_Call);
-      const blob = await PresentationGenerationApi.exportAsPPTX(pptx_model);
+      console.log(`[EXPORT_PPTX][${traceId}] export request slides=${pptx_model?.slides?.length ?? 0}`);
+      const blob = await PresentationGenerationApi.exportAsPPTX(pptx_model, traceId);
       if (blob) {
         const url = window.URL.createObjectURL(blob);
         downloadLink(url, `${presentationData?.title || '演示文稿'}.pptx`);
@@ -197,7 +221,7 @@ const PresentationHeader = ({
     dispatch(clearPresentationData());
     dispatch(clearHistory())
     trackEvent(MixpanelEvent.Header_ReGenerate_Button_Clicked, { pathname });
-    router.push(`/presentation?id=${presentation_id}&stream=true`);
+    router.push(`/ppt/presentation?id=${presentation_id}&stream=true`);
   };
 
   const ExportOptions = ({ mobile }: { mobile: boolean }) => (

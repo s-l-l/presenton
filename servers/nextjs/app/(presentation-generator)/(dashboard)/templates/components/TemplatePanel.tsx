@@ -20,9 +20,9 @@ export const CustomTemplateCard = React.memo(function CustomTemplateCard({ templ
     const { previewLayouts, loading, totalLayouts } = useCustomTemplatePreview(`${template.id}`);
     const handleOpen = useCallback(() => {
         if (template.id.startsWith('custom-')) {
-            router.push(`/template-preview/${template.id}`)
+            router.push(`/ppt/template-preview/${template.id}`)
         } else {
-            router.push(`/template-preview/custom-${template.id}`)
+            router.push(`/ppt/template-preview/custom-${template.id}`)
         }
     }
         , [router, template.id]);
@@ -172,7 +172,7 @@ const LayoutPreview = () => {
         }
     }, []);
 
-    const handleOpenPreview = useCallback((id: string) => router.push(`/template-preview/${id}`), [router]);
+    const handleOpenPreview = useCallback((id: string) => router.push(`/ppt/template-preview/${id}`), [router]);
 
 
 
@@ -211,7 +211,7 @@ const LayoutPreview = () => {
 
 
                         <Link
-                            href="/custom-template"
+                            href="/ppt/custom-template"
                             className="inline-flex items-center font-syne font-semibold gap-2 rounded-xl px-4 py-2.5 text-black text-sm  shadow-sm hover:shadow-md"
                             aria-label="Create new template"
                             style={{

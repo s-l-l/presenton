@@ -34,30 +34,57 @@ interface GetAllChildElementsAttributesArgs {
 export async function GET(request: NextRequest) {
   let browser: Browser | null = null;
   let page: Page | null = null;
+  const startedAt = Date.now();
+  const traceId =
+    request.headers.get("x-trace-id") ||
+    request.nextUrl.searchParams.get("trace_id") ||
+    uuidv4();
 
   try {
-    const id = await getPresentationId(request);
-    [browser, page] = await getBrowserAndPage(id);
-    const screenshotsDir = getScreenshotsDir();
+    const mark = (step: string, extra = "") => {
+      const cost = Date.now() - startedAt;
+      console.log(`[PPTX_MODEL][${traceId}] step=${step} cost_ms=${cost}${extra ? ` ${extra}` : ""}`);
+    };
 
-    const { slides, speakerNotes } = await getSlidesAndSpeakerNotes(page);
+    const id = await getPresentationId(request);
+    const renderBaseUrl = getRenderBaseUrl(request);
+    mark("parsed_request", `id=${id}`);
+    console.log(
+      `[PPTX_MODEL][${traceId}] incoming url=${request.nextUrl.toString()} id=${id} referer=${request.headers.get("referer") || ""} ua=${request.headers.get("user-agent") || ""}`
+    );
+    [browser, page] = await getBrowserAndPage(id, renderBaseUrl, traceId);
+    mark("browser_ready");
+    const screenshotsDir = getScreenshotsDir();
+    mark("screenshots_dir_ready", `dir=${screenshotsDir}`);
+
+    const { slides, speakerNotes } = await getSlidesAndSpeakerNotes(page, traceId);
+    mark("slides_collected", `slides=${slides.length} notes=${speakerNotes.length}`);
     const slides_attributes = await getSlidesAttributes(slides, screenshotsDir);
+    mark("attributes_collected", `slides=${slides_attributes.length}`);
     await postProcessSlidesAttributes(
       slides_attributes,
       screenshotsDir,
       speakerNotes
     );
+    mark("attributes_post_processed");
     const slides_pptx_models =
       convertElementAttributesToPptxSlides(slides_attributes);
+    mark("pptx_model_converted", `slides=${slides_pptx_models.length}`);
     const presentation_pptx_model: PptxPresentationModel = {
       slides: slides_pptx_models,
     };
 
     await closeBrowserAndPage(browser, page);
+    mark("browser_closed");
 
+    console.log(
+      `[PPTX_MODEL][${traceId}] success id=${id} slides=${presentation_pptx_model.slides.length} total_ms=${Date.now() - startedAt}`
+    );
     return NextResponse.json(presentation_pptx_model);
   } catch (error: any) {
-    console.error(error);
+    console.error(
+      `[PPTX_MODEL][${traceId}] failed url=${request.nextUrl.toString()} error=${error?.message || error} total_ms=${Date.now() - startedAt}`
+    );
     await closeBrowserAndPage(browser, page);
     if (error instanceof ApiError) {
       return NextResponse.json(error, { status: 400 });
@@ -70,14 +97,28 @@ export async function GET(request: NextRequest) {
 }
 
 async function getPresentationId(request: NextRequest) {
-  const id = request.nextUrl.searchParams.get("id");
+  const id =
+    request.nextUrl.searchParams.get("id") ||
+    request.nextUrl.searchParams.get("presentation_id") ||
+    request.headers.get("x-presentation-id");
   if (!id) {
+    console.error(
+      `[PPTX_MODEL] missing id. query=${request.nextUrl.search} pathname=${request.nextUrl.pathname}`
+    );
     throw new ApiError("Presentation ID not found");
   }
   return id;
 }
 
-async function getBrowserAndPage(id: string): Promise<[Browser, Page]> {
+function getRenderBaseUrl(request: NextRequest): string {
+  const forwardedProto = request.headers.get("x-forwarded-proto");
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const host = forwardedHost || request.headers.get("host") || "127.0.0.1:3000";
+  const proto = forwardedProto || "http";
+  return `${proto}://${host}`;
+}
+
+async function getBrowserAndPage(id: string, renderBaseUrl: string, traceId: string): Promise<[Browser, Page]> {
   const browser = await puppeteer.launch({
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     headless: true,
@@ -101,10 +142,14 @@ async function getBrowserAndPage(id: string): Promise<[Browser, Page]> {
   await page.setViewport({ width: 1280, height: 720, deviceScaleFactor: 1 });
   page.setDefaultNavigationTimeout(300000);
   page.setDefaultTimeout(300000);
-  await page.goto(`http://localhost:3000/pdf-maker?id=${id}`, {
+  const renderUrl = `${renderBaseUrl}/ppt/pdf-maker?id=${encodeURIComponent(id)}`;
+  console.log(`[PPTX_MODEL][${traceId}] render_url=${renderUrl}`);
+  const gotoStart = Date.now();
+  await page.goto(renderUrl, {
     waitUntil: "domcontentloaded",
     timeout: 300000,
   });
+  console.log(`[PPTX_MODEL][${traceId}] page_goto_done ms=${Date.now() - gotoStart}`);
   return [browser, page];
 }
 
@@ -249,9 +294,9 @@ async function getSlidesAttributes(
   return slideAttributes;
 }
 
-async function getSlidesAndSpeakerNotes(page: Page) {
-  const slides_wrapper = await getSlidesWrapper(page);
-  await waitForRenderedSlides(page);
+async function getSlidesAndSpeakerNotes(page: Page, traceId: string) {
+  const slides_wrapper = await getSlidesWrapper(page, traceId);
+  await waitForRenderedSlides(page, traceId);
   const speakerNotes = await getSpeakerNotes(slides_wrapper);
   const slides = await slides_wrapper.$$(":scope > div > div");
   if (!slides || slides.length === 0) {
@@ -260,11 +305,17 @@ async function getSlidesAndSpeakerNotes(page: Page) {
   return { slides, speakerNotes };
 }
 
-async function getSlidesWrapper(page: Page): Promise<ElementHandle<Element>> {
+async function getSlidesWrapper(page: Page, traceId: string): Promise<ElementHandle<Element>> {
   await page.waitForSelector("body", { timeout: 300000 });
-  await page.waitForSelector("#presentation-slides-wrapper", { timeout: 300000 });
+  try {
+    await page.waitForSelector("#presentation-slides-wrapper", { timeout: 300000 });
+  } catch (error: any) {
+    await logPageDiagnostics(page, traceId, "wait_wrapper_timeout");
+    throw error;
+  }
   const slides_wrapper = await page.$("#presentation-slides-wrapper");
   if (!slides_wrapper) {
+    await logPageDiagnostics(page, traceId, "wrapper_not_found");
     throw new ApiError("Presentation slides not found");
   }
   return slides_wrapper;
@@ -278,29 +329,65 @@ async function getSpeakerNotes(slides_wrapper: ElementHandle<Element>) {
   });
 }
 
-async function waitForRenderedSlides(page: Page) {
-  await page.waitForFunction(
-    () => {
+async function waitForRenderedSlides(page: Page, traceId: string) {
+  try {
+    await page.waitForFunction(
+      () => {
+        const wrapper = document.querySelector("#presentation-slides-wrapper");
+        if (!wrapper) {
+          return false;
+        }
+
+        const directSlideWrappers = wrapper.querySelectorAll(":scope > div[data-speaker-note]");
+        if (!directSlideWrappers || directSlideWrappers.length === 0) {
+          return false;
+        }
+
+        // Guard against exporting while loading placeholders are still dominant.
+        const loadingSkeletons = wrapper.querySelectorAll(".animate-pulse");
+        if (loadingSkeletons.length > 0) {
+          return false;
+        }
+
+        return true;
+      },
+      { timeout: 300000 }
+    );
+  } catch (error: any) {
+    await logPageDiagnostics(page, traceId, "wait_rendered_slides_timeout");
+    throw error;
+  }
+}
+
+async function logPageDiagnostics(page: Page, traceId: string, stage: string) {
+  try {
+    const currentUrl = page.url();
+    const title = await page.title().catch(() => "");
+    const summary = await page.evaluate(() => {
       const wrapper = document.querySelector("#presentation-slides-wrapper");
-      if (!wrapper) {
-        return false;
-      }
-
-      const directSlideWrappers = wrapper.querySelectorAll(":scope > div[data-speaker-note]");
-      if (!directSlideWrappers || directSlideWrappers.length === 0) {
-        return false;
-      }
-
-      // Guard against exporting while loading placeholders are still dominant.
-      const loadingSkeletons = wrapper.querySelectorAll(".animate-pulse");
-      if (loadingSkeletons.length > 0) {
-        return false;
-      }
-
-      return true;
-    },
-    { timeout: 300000 }
-  );
+      const slideNodes = wrapper ? wrapper.querySelectorAll(":scope > div[data-speaker-note]").length : 0;
+      const loadingNodes = wrapper ? wrapper.querySelectorAll(".animate-pulse").length : 0;
+      const hasLoginKeyword =
+        document.body?.innerText?.includes("login") ||
+        document.body?.innerText?.includes("登录") ||
+        document.body?.innerText?.includes("Initializing Application");
+      return {
+        readyState: document.readyState,
+        hasWrapper: !!wrapper,
+        slideNodes,
+        loadingNodes,
+        hasLoginKeyword,
+      };
+    });
+    const htmlSnippet = (await page.content()).slice(0, 2000).replace(/\s+/g, " ");
+    console.error(
+      `[PPTX_MODEL][${traceId}] diag stage=${stage} url=${currentUrl} title=${title} summary=${JSON.stringify(
+        summary
+      )} html_snippet=${htmlSnippet}`
+    );
+  } catch (e: any) {
+    console.error(`[PPTX_MODEL][${traceId}] diag stage=${stage} failed=${e?.message || e}`);
+  }
 }
 
 async function getAllChildElementsAttributes({

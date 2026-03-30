@@ -38,7 +38,7 @@ export const SaveLayoutModal: React.FC<SaveLayoutModalProps> = ({
     const id = await onSave(layoutName.trim(), description.trim());
     if (id) {
       // Redirect to the new template preview page
-      router.push(`/template-preview/custom-${id}`);
+      router.push(`/ppt/template-preview/custom-${id}`);
     }
     // Reset form after navigation decision
     setLayoutName("");

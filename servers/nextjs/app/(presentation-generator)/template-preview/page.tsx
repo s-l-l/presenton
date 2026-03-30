@@ -22,9 +22,9 @@ const CustomTemplateCard = ({ template }: { template: CustomTemplates }) => {
 
   const handleNavigate = () => {
     if (template.id.startsWith('custom-')) {
-      router.push(`/template-preview/${template.id}`);
+      router.push(`/ppt/template-preview/${template.id}`);
     } else {
-      router.push(`/template-preview/custom-${template.id}`);
+      router.push(`/ppt/template-preview/custom-${template.id}`);
     }
   }
 
@@ -137,7 +137,7 @@ const LayoutPreview = () => {
                 <Card
                   key={template.id}
                   className="cursor-pointer hover:shadow-lg transition-all duration-200 group overflow-hidden"
-                  onClick={() => router.push(`/template-preview/${template.id}`)}
+                  onClick={() => router.push(`/ppt/template-preview/${template.id}`)}
                 >
                   <div className="p-5">
                     <div className="flex items-center justify-between mb-2">
@@ -189,7 +189,7 @@ const LayoutPreview = () => {
             <h2 className="text-xl font-semibold text-gray-800 ">
               My Custom Templates
             </h2>
-            <a href="/custom-template" className="text-sm flex font-bold font-inter items-center justify-center gap-2  bg-[#5146E5] text-white px-4 py-2 rounded-md">
+            <a href="/ppt/custom-template" className="text-sm flex font-bold font-inter items-center justify-center gap-2  bg-[#5146E5] text-white px-4 py-2 rounded-md">
               <Plus className="w-4 h-4" /> Create new template
             </a>
           </div>

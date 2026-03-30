@@ -58,7 +58,7 @@ const DashboardPage: React.FC = () => {
 
 
             <Link
-              href="/generate"
+              href="/ppt/deck-studio"
               className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-black text-sm font-semibold font-syne shadow-sm hover:shadow-md"
               aria-label="创建新演示文稿"
               style={{
@@ -73,7 +73,7 @@ const DashboardPage: React.FC = () => {
             </Link>
             {/* {
               <Link
-                href="/theme?tab=new-theme"
+                href="/ppt/theme?tab=new-theme"
                 className="inline-flex items-center font-inter font-normal gap-2 rounded-xl px-4 py-2.5 text-black text-sm  shadow-sm hover:shadow-md"
                 aria-label="Create new themes"
                 style={{

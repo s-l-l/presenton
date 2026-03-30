@@ -21,6 +21,10 @@ def get_user_config_path_env():
     return os.getenv("USER_CONFIG_PATH")
 
 
+def get_container_db_path_env():
+    return os.getenv("CONTAINER_DB_PATH")
+
+
 def get_llm_provider_env():
     return os.getenv("LLM")
 

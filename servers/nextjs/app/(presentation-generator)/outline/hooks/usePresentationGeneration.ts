@@ -149,7 +149,7 @@ export const usePresentationGeneration = (
       if (response) {
         dispatch(clearPresentationData());
         clearTheme();
-        router.replace(`/presentation?id=${presentationId}&stream=true&type=standard`);
+        router.replace(`/ppt/presentation?id=${presentationId}&stream=true&type=standard`);
       }
     } catch (error: any) {
       console.error('Error In Presentation Generation(prepare).', error);

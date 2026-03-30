@@ -496,12 +496,38 @@ async def update_presentation(
 async def export_presentation_as_pptx(
     request: Request,
 ):
+    trace_id = request.headers.get("x-trace-id") or str(uuid.uuid4())
     try:
         body = await request.json()
+        print(
+            f"[EXPORT_PPTX][{trace_id}] incoming client={request.client.host if request.client else ''} "
+            f"referer={request.headers.get('referer', '')} ua={request.headers.get('user-agent', '')} "
+            f"content_type={request.headers.get('content-type', '')}"
+        )
+        if isinstance(body, dict):
+            print(
+                f"[EXPORT_PPTX][{trace_id}] body_keys={list(body.keys())[:20]} "
+                f"id={body.get('id')} presentation_id={body.get('presentation_id')} "
+                f"slides_type={type(body.get('slides')).__name__ if 'slides' in body else 'missing'}"
+            )
         print(f"DEBUG: /export/pptx received body: {json.dumps(body)[:500]}...")
+        if isinstance(body, dict) and body.get("detail") and not body.get("slides"):
+            print(f"[EXPORT_PPTX][{trace_id}] rejected detail_payload detail={body.get('detail')}")
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid PPTX model payload: {body.get('detail')}",
+            )
         pptx_model = PptxPresentationModel(**body)
+        if not pptx_model.slides:
+            print(f"[EXPORT_PPTX][{trace_id}] rejected empty slides")
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid PPTX model payload: slides is empty",
+            )
+    except HTTPException:
+        raise
     except Exception as e:
-        print(f"ERROR: Validation failed for /export/pptx: {e}")
+        print(f"[EXPORT_PPTX][{trace_id}] ERROR: Validation failed for /export/pptx: {e}")
         # Re-raise or return detailed error to help debug
         raise HTTPException(status_code=422, detail=f"Validation Error: {str(e)}")
 
@@ -514,6 +540,9 @@ async def export_presentation_as_pptx(
     filename = f"{pptx_model.name or uuid.uuid4()}.pptx"
     pptx_path = os.path.join(export_directory, filename)
     pptx_creator.save(pptx_path)
+    print(
+        f"[EXPORT_PPTX][{trace_id}] success name={pptx_model.name} slides={len(pptx_model.slides)} file={pptx_path}"
+    )
 
     return FileResponse(
         path=pptx_path,

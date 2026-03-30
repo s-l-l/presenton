@@ -233,13 +233,17 @@ export class PresentationGenerationApi {
 
 
   // EXPORT PRESENTATION
-  static async exportAsPPTX(presentationData: any) {
+  static async exportAsPPTX(presentationData: any, traceId?: string) {
     try {
+      const headers = {
+        ...getHeader(),
+        ...(traceId ? { "x-trace-id": traceId } : {}),
+      };
       const response = await fetch(
         `/api/v1/ppt/presentation/export/pptx`,
         {
           method: "POST",
-          headers: getHeader(),
+          headers,
           body: JSON.stringify(presentationData),
           cache: "no-cache",
         }

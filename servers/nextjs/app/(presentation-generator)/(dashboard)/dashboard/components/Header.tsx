@@ -12,8 +12,8 @@ const Header = () => {
       <Wrapper className="px-5 sm:px-10 lg:px-20">
         <div className="flex items-center justify-between py-1">
           <div className="flex items-center gap-3">
-            {/* {(pathname !== "/upload" && pathname !== "/dashboard") && <BackBtn />} */}
-            <Link href="/dashboard" onClick={() => trackEvent(MixpanelEvent.Navigation, { from: pathname, to: "/dashboard" })}>
+            {/* {(pathname !== "/upload" && pathname !== "/ppt/deck-dashboard") && <BackBtn />} */}
+            <Link href="/ppt/deck-dashboard" onClick={() => trackEvent(MixpanelEvent.Navigation, { from: pathname, to: "/ppt/deck-dashboard" })}>
               <img
                 src="/logo-with-bg.png"
                 alt="Presentation logo"

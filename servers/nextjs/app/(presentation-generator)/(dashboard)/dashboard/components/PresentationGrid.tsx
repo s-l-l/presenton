@@ -23,7 +23,7 @@ export const PresentationGrid = ({
   const router = useRouter();
   const handleCreateNewPresentation = () => {
     if (type === "slide") {
-      router.push("/upload");
+      router.push("/ppt/deck-studio");
     } else {
       router.push("/editor");
     }

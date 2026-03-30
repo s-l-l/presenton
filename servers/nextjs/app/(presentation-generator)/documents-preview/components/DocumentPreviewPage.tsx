@@ -29,6 +29,7 @@ import { ChevronRight, PanelRightOpen, X } from "lucide-react";
 import ToolTip from "@/components/ToolTip";
 import Header from "@/app/(presentation-generator)/(dashboard)/dashboard/components/Header";
 import { trackEvent, MixpanelEvent } from "@/utils/mixpanel";
+import { LanguageType } from "@/app/(presentation-generator)/upload/type";
 
 // Types
 interface LoadingState {
@@ -152,7 +153,7 @@ const DocumentsPreviewPage: React.FC = () => {
           content: config?.prompt ?? "",
           n_slides: config?.slides ? parseInt(config.slides) : null,
           file_paths: documentPaths,
-          language: config?.language ?? "",
+          language: LanguageType.ChineseSimplified,
           tone: config?.tone,
           verbosity: config?.verbosity,
           instructions: config?.instructions || null,
@@ -163,8 +164,8 @@ const DocumentsPreviewPage: React.FC = () => {
       );
 
       dispatch(setPresentationId(createResponse.id));
-      trackEvent(MixpanelEvent.Navigation, { from: pathname, to: "/outline" });
-      router.replace("/outline");
+      trackEvent(MixpanelEvent.Navigation, { from: pathname, to: "/ppt/outline" });
+      router.replace("/ppt/outline");
     } catch (error: any) {
       console.error("Error in radar presentation creation:", error);
       toast.error("Error", {

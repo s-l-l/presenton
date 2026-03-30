@@ -86,7 +86,7 @@ const ThemeSelector = ({ presentation_id, current_theme, themes: allThemes }: { 
             </PopoverTrigger>
             <PopoverContent className="w-fit rounded-[18px] max-h-80 overflow-y-auto hide-scrollbar">
                 <div className='pb-2 flex  gap-2 justify-end'>
-                    <button className='text-xs text-gray-500 pb-2 text-right underline' onClick={() => router.push(`/theme?tab=new-theme`)}>+Customize Theme</button>
+                    <button className='text-xs text-gray-500 pb-2 text-right underline' onClick={() => router.push(`/ppt/theme?tab=new-theme`)}>+Customize Theme</button>
                     <button className='text-xs text-gray-500 pb-2 text-right underline' onClick={resetTheme}>Reset Theme</button>
                 </div>
                 <div className="grid grid-cols-3 gap-4">

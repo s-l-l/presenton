@@ -47,7 +47,7 @@ const CustomTemplatePage = () => {
     trackEvent(MixpanelEvent.CustomTemplate_Save_Templates_API_Call);
     const id = await saveLayout(layoutName, description);
     if (id) {
-      router.push(`/template-preview/custom-${id}`);
+      router.push(`/ppt/template-preview/custom-${id}`);
     }
     return id;
   };

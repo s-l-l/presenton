@@ -1,5 +1,6 @@
 from collections.abc import AsyncGenerator
 import os
+from pathlib import Path
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     create_async_engine,
@@ -21,6 +22,7 @@ from models.sql.presentation_layout_code import PresentationLayoutCodeModel
 from models.sql.template import TemplateModel
 from models.sql.webhook_subscription import WebhookSubscription
 from utils.db_utils import get_database_url_and_connect_args
+from utils.get_env import get_container_db_path_env, get_app_data_directory_env
 
 
 database_url, connect_args = get_database_url_and_connect_args()
@@ -34,8 +36,20 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
         yield session
 
 
-# Container DB (Lives inside the container)
-container_db_url = "sqlite+aiosqlite:////app/container.db"
+container_db_path = get_container_db_path_env()
+if not container_db_path:
+    app_data_dir = get_app_data_directory_env()
+    if not app_data_dir:
+        app_data_dir = os.path.join(
+            os.environ.get("APPDATA") or os.environ.get("HOME") or os.getcwd(),
+            ".presenton",
+        )
+    container_db_path = str(Path(app_data_dir) / "container.db")
+
+container_db_path_obj = Path(container_db_path).expanduser().resolve()
+container_db_path_obj.parent.mkdir(parents=True, exist_ok=True)
+container_db_path_normalized = str(container_db_path_obj).replace("\\", "/")
+container_db_url = f"sqlite+aiosqlite:///{container_db_path_normalized}"
 container_db_engine: AsyncEngine = create_async_engine(
     container_db_url, connect_args={"check_same_thread": False}
 )

@@ -31,7 +31,7 @@ export const PresentationCard = ({
   useFontLoader(presentation.fonts || []);
   const handlePreview = (e: React.MouseEvent) => {
     e.preventDefault();
-    router.push(`/presentation?id=${id}&type=standard`);
+    router.push(`/ppt/presentation?id=${id}&type=standard`);
   };
 
   const handleDelete = async (e: React.MouseEvent) => {

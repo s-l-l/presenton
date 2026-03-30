@@ -61,7 +61,7 @@ const GroupLayoutPreview = () => {
     const success = await TemplateService.deleteCustomTemplate(customTemplateId);
     if (success.success) {
       toast.success("Template deleted successfully");
-      router.push("/template-preview");
+      router.push("/ppt/template-preview");
     } else {
       toast.error("Failed to delete template");
     }
@@ -89,7 +89,7 @@ const GroupLayoutPreview = () => {
         <div className="flex flex-col items-center justify-center py-24">
           <h2 className="text-2xl font-bold text-red-600 mb-4">Error loading template</h2>
           <p className="text-gray-600 mb-4">{customError}</p>
-          <Button onClick={() => router.push("/template-preview")}>
+          <Button onClick={() => router.push("/ppt/template-preview")}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Templates
           </Button>
@@ -110,7 +110,7 @@ const GroupLayoutPreview = () => {
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Template not found
           </h2>
-          <Button onClick={() => router.push("/template-preview")}>
+          <Button onClick={() => router.push("/ppt/template-preview")}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Templates
           </Button>
@@ -156,7 +156,7 @@ const GroupLayoutPreview = () => {
                 size="sm"
                 onClick={() => {
                   trackEvent(MixpanelEvent.TemplatePreview_All_Groups_Button_Clicked, { pathname });
-                  router.push("/template-preview");
+                  router.push("/ppt/template-preview");
                 }}
                 className="flex items-center gap-2"
               >

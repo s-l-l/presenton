@@ -118,7 +118,7 @@ const ThemePanel: React.FC = () => {
   const handleCloseSheet = (open: boolean) => {
     setIsSheetOpen(false)
     if (!open) {
-      window.history.pushState({}, '', '/theme')
+      window.history.pushState({}, '', '/ppt/theme')
     }
   }
 
@@ -418,7 +418,7 @@ const ThemePanel: React.FC = () => {
       setIsSheetOpen(false)
 
 
-      window.history.pushState({}, '', '/theme')
+      window.history.pushState({}, '', '/ppt/theme')
       toast.success('主题已保存')
     } catch (error: any) {
       console.error('Failed to save theme', error)
@@ -852,7 +852,7 @@ const ThemePanel: React.FC = () => {
           主题
         </h3>
         <Link
-          href="/theme?tab=new-theme"
+          href="/ppt/theme?tab=new-theme"
           className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-black text-sm font-semibold font-syne shadow-sm hover:shadow-md"
           aria-label="创建新主题"
           style={{

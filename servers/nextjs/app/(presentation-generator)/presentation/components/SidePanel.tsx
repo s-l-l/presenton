@@ -126,7 +126,7 @@ const SidePanel = ({
     <div className="bg-[#F6F6F9] pt-8 px-4 w-[200px]">
 
       <img onClick={() => {
-        router.push("/dashboard");
+        router.push("/ppt/deck-dashboard");
       }} src="/logo-with-bg.png" alt="" className="w-10 h-10 cursor-pointer object-contain" />
 
       <Separator orientation="horizontal" className="my-6 " />

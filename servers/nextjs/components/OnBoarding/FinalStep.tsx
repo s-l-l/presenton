@@ -7,12 +7,12 @@ const FinalStep = () => {
     const router = useRouter()
     const pathname = usePathname()
     const handleGoToDashboard = () => {
-        trackEvent(MixpanelEvent.Navigation, { from: pathname, to: "/dashboard" });
-        router.push('/dashboard')
+        trackEvent(MixpanelEvent.Navigation, { from: pathname, to: "/ppt/deck-dashboard" });
+        router.push('/ppt/deck-dashboard')
     }
     const handleGoToUpload = () => {
-        trackEvent(MixpanelEvent.Navigation, { from: pathname, to: "/upload" });
-        router.push('/upload')
+        trackEvent(MixpanelEvent.Navigation, { from: pathname, to: "/ppt/deck-studio" });
+        router.push('/ppt/deck-studio')
     }
     return (
         <div className='fixed top-0 left-0 w-full h-full flex flex-col items-center justify-center'>

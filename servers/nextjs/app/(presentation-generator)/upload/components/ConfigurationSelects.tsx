@@ -5,24 +5,10 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import { LanguageType, PresentationConfig, ToneType, VerbosityType } from "../type";
 import { useState } from "react";
-import { Check, ChevronsUpDown, GalleryVertical, Languages, SlidersHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "@/components/ui/command";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { GalleryVertical, SlidersHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
@@ -39,6 +25,21 @@ type SlideOption = "5" | "8" | "9" | "10" | "11" | "12" | "13" | "14" | "15" | "
 
 // Constants
 const SLIDE_OPTIONS: SlideOption[] = ["5", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"];
+
+const TONE_LABELS: Record<ToneType, string> = {
+    [ToneType.Default]: "默认",
+    [ToneType.Casual]: "随和",
+    [ToneType.Professional]: "专业",
+    [ToneType.Funny]: "幽默",
+    [ToneType.Educational]: "教育",
+    [ToneType.Sales_Pitch]: "销售",
+};
+
+const VERBOSITY_LABELS: Record<VerbosityType, string> = {
+    [VerbosityType.Concise]: "简洁",
+    [VerbosityType.Standard]: "标准",
+    [VerbosityType.Text_Heavy]: "详尽",
+};
 
 /**
  * Renders a select component for slide count
@@ -130,77 +131,10 @@ const SlideCountSelect: React.FC<{
     );
 };
 
-/**
- * Renders a language selection component with search functionality
- */
-const LanguageSelect: React.FC<{
-    value: string | null;
-    onValueChange: (value: string) => void;
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-}> = ({ value, onValueChange, open, onOpenChange }) => (
-    <Popover open={open} onOpenChange={onOpenChange}>
-        <PopoverTrigger asChild>
-            <Button
-                variant="outline"
-                role="combobox"
-                name="language"
-                data-testid="language-select"
-                aria-expanded={open}
-                className="w-[180px] flex justify-between items-center gap-2 font-instrument_sans font-semibold overflow-hidden bg-white text-slate-700   h-10 rounded-xl px-3 ring-1 ring-inset ring-slate-200 shadow-sm"
-            >
-                <span className="flex justify-center items-center gap-2.5">
-                    <span className="border border-slate-200  rounded-md p-1">
-                        <Languages className="w-4 h-4" />
-                    </span>
-                    <span className="text-sm font-medium truncate">
-                        {value || "选择语言"}
-                    </span>
-                </span>
-                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-[300px] p-0" align="end">
-            <Command>
-                <CommandInput
-                    placeholder="搜索语言..."
-                    className="font-instrument_sans"
-                />
-                <CommandList>
-                    <CommandEmpty>未找到语言。</CommandEmpty>
-                    <CommandGroup>
-                        {Object.values(LanguageType).map((language) => (
-                            <CommandItem
-                                key={language}
-                                value={language}
-                                role="option"
-                                onSelect={(currentValue) => {
-                                    onValueChange(currentValue);
-                                    onOpenChange(false);
-                                }}
-                                className="font-instrument_sans"
-                            >
-                                <Check
-                                    className={cn(
-                                        "mr-2 h-4 w-4",
-                                        value === language ? "opacity-100" : "opacity-0"
-                                    )}
-                                />
-                                {language}
-                            </CommandItem>
-                        ))}
-                    </CommandGroup>
-                </CommandList>
-            </Command>
-        </PopoverContent>
-    </Popover>
-);
-
 export function ConfigurationSelects({
     config,
     onConfigChange,
 }: ConfigurationSelectsProps) {
-    const [openLanguage, setOpenLanguage] = useState(false);
     const [openAdvanced, setOpenAdvanced] = useState(false);
 
     const [advancedDraft, setAdvancedDraft] = useState({
@@ -242,12 +176,6 @@ export function ConfigurationSelects({
                 value={config.slides}
                 onValueChange={(value) => onConfigChange("slides", value)}
             />
-            <LanguageSelect
-                value={config.language}
-                onValueChange={(value) => onConfigChange("language", value)}
-                open={openLanguage}
-                onOpenChange={setOpenLanguage}
-            />
             <ToolTip content="高级设置">
 
                 <button
@@ -283,7 +211,7 @@ export function ConfigurationSelects({
                                 <SelectContent className="font-instrument_sans">
                                     {Object.values(ToneType).map((tone) => (
                                         <SelectItem key={tone} value={tone} className="text-sm font-medium capitalize">
-                                            {tone}
+                                            {TONE_LABELS[tone]}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
@@ -304,7 +232,7 @@ export function ConfigurationSelects({
                                 <SelectContent className="font-instrument_sans">
                                     {Object.values(VerbosityType).map((verbosity) => (
                                         <SelectItem key={verbosity} value={verbosity} className="text-sm font-medium capitalize">
-                                            {verbosity}
+                                            {VERBOSITY_LABELS[verbosity]}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>

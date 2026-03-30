@@ -1,8 +1,7 @@
 import React from "react";
-
-import UploadPage from "./components/UploadPage";
+import type { Metadata } from "next";
+import UploadPage from "../upload/components/UploadPage";
 import Header from "@/app/(presentation-generator)/(dashboard)/dashboard/components/Header";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Presenton | Open Source AI presentation generator",
@@ -41,20 +40,19 @@ export const metadata: Metadata = {
   },
 };
 
-const page = () => {
+export default function DeckStudioPage() {
   return (
     <div className="relative">
       <Header />
-      <div className="flex flex-col items-center justify-center  mb-8">
+      <div className="flex flex-col items-center justify-center mb-8">
         <h1 className="text-[64px] font-normal font-unbounded text-[#101323] ">
           AI 演示文稿
         </h1>
-        <p className="text-xl font-syne text-[#101323CC]">选择一个设计主题，设置偏好后，一键生成高质量演示文稿。</p>
+        <p className="text-xl font-syne text-[#101323CC]">
+          选择一个设计主题，设置偏好后，一键生成高质量演示文稿。
+        </p>
       </div>
-
       <UploadPage />
     </div>
   );
-};
-
-export default page;
+}

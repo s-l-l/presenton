@@ -8,7 +8,7 @@ const CustomTabEmpty = () => {
     return (
         <div
             onClick={() => {
-                router.push('/theme?tab=new-theme')
+                router.push('/ppt/theme?tab=new-theme')
             }}
             className='w-[305px] rounded-xl border border-[#EDEEEF] cursor-pointer'>
             <div className='relative h-[250px] flex justify-center items-center '>

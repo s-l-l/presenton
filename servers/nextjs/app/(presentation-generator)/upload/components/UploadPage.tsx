@@ -45,7 +45,7 @@ const UploadPage = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [config, setConfig] = useState<PresentationConfig>({
     slides: "5",
-    language: LanguageType.English,
+    language: LanguageType.ChineseSimplified,
     prompt: "",
     tone: ToneType.Default,
     verbosity: VerbosityType.Standard,
@@ -140,8 +140,8 @@ const UploadPage = () => {
       files: responses,
     }));
     dispatch(clearOutlines())
-    trackEvent(MixpanelEvent.Navigation, { from: pathname, to: "/documents-preview" });
-    router.push("/documents-preview");
+    trackEvent(MixpanelEvent.Navigation, { from: pathname, to: "/ppt/documents-preview" });
+    router.push("/ppt/documents-preview");
   };
 
   /**
@@ -161,7 +161,7 @@ const UploadPage = () => {
       content: config?.prompt ?? "",
       n_slides: config?.slides ? parseInt(config.slides) : null,
       file_paths: [],
-      language: config?.language ?? "",
+      language: LanguageType.ChineseSimplified,
       tone: config?.tone,
       verbosity: config?.verbosity,
       instructions: config?.instructions || null,
@@ -173,8 +173,8 @@ const UploadPage = () => {
 
     dispatch(setPresentationId(createResponse.id));
     dispatch(clearOutlines())
-    trackEvent(MixpanelEvent.Navigation, { from: pathname, to: "/outline" });
-    router.push("/outline");
+    trackEvent(MixpanelEvent.Navigation, { from: pathname, to: "/ppt/outline" });
+    router.push("/ppt/outline");
   };
 
   /**

@@ -14,11 +14,11 @@ const Header: React.FC = () => {
           </Link>
 
           <nav className="flex items-center gap-4">
-            <Link href="/custom-layout" className="inline-flex items-center gap-2 text-gray-700 hover:text-gray-900">
+            <Link href="/ppt/custom-template" className="inline-flex items-center gap-2 text-gray-700 hover:text-gray-900">
               <Plus className="w-5 h-5" />
               <span className="text-sm font-medium font-inter">创建模板</span>
             </Link>
-            <Link href="/template-preview" className="inline-flex items-center gap-2 text-gray-700 hover:text-gray-900">
+            <Link href="/ppt/template-preview" className="inline-flex items-center gap-2 text-gray-700 hover:text-gray-900">
               <Layout className="w-5 h-5" />
               <span className="text-sm font-medium font-inter">模板管理</span>
             </Link>
