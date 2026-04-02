@@ -22,6 +22,7 @@ export const usePresentationStreaming = (
   useEffect(() => {
     let eventSource: EventSource;
     let accumulatedChunks = "";
+    let timeoutTimer: ReturnType<typeof setTimeout>;
 
     const initializeStream = async () => {
       dispatch(setStreaming(true));
@@ -33,7 +34,21 @@ export const usePresentationStreaming = (
         `/api/v1/ppt/presentation/stream/${presentationId}`
       );
 
+      // 60s 无任何消息则超时关闭
+      const resetTimeout = () => {
+        clearTimeout(timeoutTimer);
+        timeoutTimer = setTimeout(() => {
+          console.warn("EventSource timed out after 60s of inactivity");
+          eventSource.close();
+          setLoading(false);
+          dispatch(setStreaming(false));
+          setError(true);
+        }, 60000);
+      };
+      resetTimeout();
+
       eventSource.addEventListener("response", (event) => {
+        resetTimeout();
         const data = JSON.parse(event.data);
 
         switch (data.type) {
@@ -122,6 +137,7 @@ export const usePresentationStreaming = (
     }
 
     return () => {
+      clearTimeout(timeoutTimer);
       if (eventSource) {
         eventSource.close();
       }

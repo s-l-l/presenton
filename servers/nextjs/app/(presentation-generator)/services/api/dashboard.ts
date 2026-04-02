@@ -24,9 +24,15 @@ export interface PresentationResponse {
 
 export class DashboardApi {
 
+  private static fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = 15000): Promise<Response> {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(timer));
+  }
+
   static async getPresentations(): Promise<PresentationResponse[]> {
     try {
-      const response = await fetch(
+      const response = await this.fetchWithTimeout(
         `/api/v1/ppt/presentation/all`,
         {
           method: "GET",
@@ -48,7 +54,7 @@ export class DashboardApi {
 
   static async getPresentation(id: string) {
     try {
-      const response = await fetch(
+      const response = await this.fetchWithTimeout(
         `/api/v1/ppt/presentation/${id}`,
         {
           method: "GET",
@@ -64,7 +70,7 @@ export class DashboardApi {
 
   static async deletePresentation(presentation_id: string) {
     try {
-      const response = await fetch(
+      const response = await this.fetchWithTimeout(
         `/api/v1/ppt/presentation/${presentation_id}`,
         {
           method: "DELETE",

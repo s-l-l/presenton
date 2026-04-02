@@ -10,7 +10,7 @@
  */
 
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { clearOutlines, setPresentationId } from "@/store/slices/presentationGeneration";
@@ -54,6 +54,21 @@ const UploadPage = () => {
     includeTitleSlide: false,
     webSearch: false,
   });
+
+  // Listen for postMessage from parent (e.g. dataAgent iframe)
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type === 'FILL_PPT_CONTENT' && event.data.content) {
+        setConfig(prev => ({ ...prev, prompt: event.data.content }));
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    // Notify parent that we're ready to receive content
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'PPT_READY' }, '*');
+    }
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
 
   const [loadingState, setLoadingState] = useState<LoadingState>({
     isLoading: false,
